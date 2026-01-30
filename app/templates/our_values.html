@@ -1,0 +1,409 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+  /* ===== OUR VALUES – Scoped styles ===== */
+  :root{
+    --ov-blue: #3B8BEB;
+    --ov-red:  #B23850;
+    --ov-ink:  #0f172a;
+    --ov-muted:#6b7280;
+    --ov-soft: #f7fafc;
+  }
+
+  .ov-page{ color:var(--ov-ink); }
+  .ov-wrap{ max-width:1200px; margin:0 auto; padding:40px 22px; }
+
+  /* Hero */
+  .ov-hero{ padding:42px 0 18px; }
+  .ov-title{
+    font-size: clamp(40px, 6vw, 47px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+  }
+  .ov-underline{
+    width:80px; height:6px; border-radius:6px;
+    background: linear-gradient(90deg,var(--ov-red),var(--ov-blue));
+    box-shadow: 0 6px 18px rgba(59,139,235,.25);
+  }
+  .ov-lede{
+    font-size: clamp(18px,2.2vw,21px);
+    color:#233244;
+    max-width: 980px;
+    margin-top: 24px;
+    line-height:1.55;
+  }
+
+  /* ===== GRID ===== */
+  .ov-grid{
+    display:grid;
+    gap: 32px;
+    max-width: 1200px;
+    margin: 56px auto;
+  }
+
+  /* Desktop: 12-col system to get 3 on top, 2 full-width below */
+  @media (min-width: 992px){
+    .ov-grid{
+      grid-template-columns: repeat(12, minmax(0,1fr));
+      grid-auto-rows: 1fr;
+    }
+    /* First row: 3 cards × 4 columns each (spans full width) */
+    .ov-grid > .ov-card{ grid-column: span 4; }
+
+    /* Second row (cards 4 & 5): 2 cards × 6 columns each (spans full width) */
+    .ov-grid > .ov-card:nth-child(n+4){ grid-column: span 6; }
+
+    /* If you later add a 6th card and want it centered on a new row:
+       .ov-grid > .ov-card:nth-child(6){ grid-column: 4 / span 6; }
+    */
+  }
+
+  /* Tablet: 2 per row */
+  @media (max-width: 991px){
+    .ov-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+  }
+
+  /* Mobile: 1 per row */
+  @media (max-width: 640px){
+    .ov-grid{ grid-template-columns: 1fr; }
+  }
+
+  /* ===== Card styling ===== */
+  .ov-card{
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    background:#000;
+    aspect-ratio: 16/10;   /* keeps all cards same visual height */
+    box-shadow: 0 20px 40px rgba(0,0,0,.12);
+    transition: transform .3s ease, box-shadow .3s ease;
+    isolation: isolate;
+  }
+  .ov-card img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display:block;
+    opacity:.9;
+    transform: scale(1);
+    transition: transform .35s ease;
+  }
+  .ov-card::after{
+    content:"";
+    position:absolute; inset:0;
+    z-index:0;
+    background: linear-gradient(0deg, rgba(2,7,20,.66) 0%, rgba(2,7,20,.10) 70%);
+  }
+  .ov-card:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 26px 60px rgba(0,0,0,.18);
+  }
+  .ov-card:hover img{ transform: scale(1.04); }
+
+  /* Text overlay */
+  .ov-text{
+    position:absolute; left:24px; right:24px; bottom:24px; z-index:1;
+    color:#fff; text-shadow:0 2px 14px rgba(0,0,0,.35);
+  }
+  .ov-kicker{
+    font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+    font-size:13px; color:#dbeafe; margin-bottom:4px;
+  }
+  .ov-heading{
+    font-size: clamp(22px, 2.6vw, 32px);
+    font-weight: 800; line-height: 1.12; margin:0;
+  }
+
+  /* ===== Belief band ===== */
+  .ov-belief{
+    background: var(--ov-soft);
+    padding: 64px 0;
+    border-top:1px solid #eef2f6; border-bottom:1px solid #eef2f6;
+  }
+  .ov-belief h2{
+    font-size: clamp(28px,3.6vw,44px);
+    text-align:center; max-width: 1050px; margin:0 auto 14px;
+    line-height:1.25; font-weight:800;
+  }
+  .ov-centerline{
+    width:84px;height:6px;border-radius:6px;margin:16px auto 0;
+    background: linear-gradient(90deg,var(--ov-red),var(--ov-blue));
+    box-shadow: 0 6px 18px rgba(59,139,235,.25);
+  }
+  .ov-belief p{
+    max-width:980px;margin:22px auto 0;text-align:center;
+    color:#42546b;font-size:18px;line-height:1.6;
+  }
+/* ===============================
+   OUR VALUES – Mobile/iPad hero text fix
+   (keeps desktop exactly the same)
+================================= */
+
+/* Phones + small tablets (portrait & general) */
+@media (max-width: 768px){
+  .ov-wrap{
+    padding: 28px 16px !important;   /* less side padding = more text width */
+  }
+
+  .ov-hero{
+    padding: 28px 0 12px !important; /* reduce vertical spacing */
+  }
+
+  .ov-lede{
+    max-width: none !important;      /* let it use full available width */
+    width: 100%;
+    font-size: 17px !important;
+    line-height: 1.65 !important;
+    margin-top: 16px !important;
+  }
+}
+
+/* Mobile landscape (wide but short screens) */
+@media (max-width: 932px) and (orientation: landscape){
+  .ov-wrap{
+    padding: 20px 18px !important;
+  }
+
+  .ov-hero{
+    padding: 22px 0 10px !important;
+  }
+
+  .ov-title{
+    font-size: clamp(30px, 4.2vw, 42px) !important;
+  }
+
+  .ov-lede{
+    max-width: none !important;
+    width: 100%;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin-top: 14px !important;
+  }
+}
+
+/* iPads (portrait + landscape) */
+@media (min-width: 768px) and (max-width: 1024px){
+  .ov-wrap{
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  .ov-lede{
+    max-width: none !important;  /* stops the “narrow column” look */
+  }
+}
+
+/* iPad landscape specifically (give it a touch more room) */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape){
+  .ov-wrap{
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+  }
+}
+
+/* === FORCE portrait fix (phones) === */
+@media (max-width: 520px) and (orientation: portrait){
+
+  /* make sure the hero wrapper can actually use the full width */
+  section.ov-page .ov-wrap.ov-hero{
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  /* force the paragraph to stop behaving like a narrow column */
+  section.ov-page .ov-wrap.ov-hero .ov-lede{
+    max-width: 100% !important;
+    width: 100% !important;
+    display: block !important;
+    font-size: 17px !important;
+    line-height: 1.7 !important;
+    margin-top: 16px !important;
+  }
+}
+/* =========================================================
+   FIX: Portrait lede width + wrapping (phones + iPads)
+   Put this at the END of the <style> in our_values.html
+   ========================================================= */
+
+/* Always ensure the lede can wrap nicely (just in case any global CSS interferes) */
+.ov-lede{
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* ✅ Portrait (covers iPad portrait + phone portrait) */
+@media (orientation: portrait) {
+  .ov-wrap{
+    padding-left: clamp(18px, 5vw, 44px) !important;
+    padding-right: clamp(18px, 5vw, 44px) !important;
+  }
+
+  .ov-lede{
+    max-width: 62ch !important;              /* stops “one long line” look */
+    font-size: clamp(16px, 2.4vw, 20px) !important;
+    line-height: 1.65 !important;
+    margin-top: 18px !important;
+  }
+}
+
+/* ✅ Small phones portrait (iPhone SE etc.) */
+@media (max-width: 420px) and (orientation: portrait) {
+  .ov-hero{ padding: 30px 0 14px !important; }
+
+  .ov-title{
+    font-size: 34px !important;
+    line-height: 1.1 !important;
+  }
+
+  .ov-lede{
+    max-width: 36ch !important;              /* tighter for tiny screens */
+    font-size: 16px !important;
+  }
+}
+
+/* ✅ iPad portrait specifically (810px wide portrait, etc.) */
+@media (min-width: 600px) and (max-width: 900px) and (orientation: portrait) {
+  .ov-lede{
+    max-width: 68ch !important;              /* comfortable iPad portrait measure */
+  }
+}
+/* =========================================================
+   FIX: LEFT-OUT LANDSCAPE SIZES (iPad + short landscape phones)
+   Put this at the END of the <style> in our_values.html
+   ========================================================= */
+
+/* Safety: always allow wrapping */
+.ov-lede{
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+}
+
+/* ✅ Short landscape phones (Galaxy 760×360, iPhone SE 667×375, etc.) */
+@media (orientation: landscape) and (max-height: 450px){
+  .ov-wrap{
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    padding-top: 22px !important;
+    padding-bottom: 18px !important;
+  }
+
+  .ov-hero{ padding: 22px 0 12px !important; }
+
+  .ov-title{
+    font-size: 32px !important;
+    line-height: 1.08 !important;
+  }
+
+  .ov-lede{
+    max-width: 60ch !important;     /* ✅ prevents the “one long line” */
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin-top: 14px !important;
+  }
+}
+
+/* ✅ iPad landscape (1024×768-ish up to 1180×820-ish etc.) */
+@media (orientation: landscape) and (min-width: 600px) and (max-width: 1200px){
+  .ov-wrap{
+    padding-left: clamp(24px, 4vw, 44px) !important;
+    padding-right: clamp(24px, 4vw, 44px) !important;
+  }
+
+  .ov-lede{
+    max-width: 78ch !important;     /* ✅ keeps it from spanning edge-to-edge */
+    line-height: 1.6 !important;
+  }
+}
+
+
+</style>
+
+<section class="ov-page">
+
+  <!-- Hero -->
+  <div class="ov-wrap ov-hero">
+    <h1 class="ov-title">Our Core Values</h1>
+    <div class="ov-underline"></div>
+    <p class="ov-lede">
+      From our snack selection to our relationships, our goal is that everything we create
+      and cultivate lives up to the core values below—because what we do every day shapes
+      our reputation, our results, and the positive impact we have on people’s wellbeing.
+    </p>
+  </div>
+
+  <!-- Values grid (3 on top, 2 full-width below) -->
+  <div class="ov-wrap">
+    <div class="ov-grid">
+
+      <!-- 1 -->
+      <article class="ov-card">
+        <img src="{{ url_for('static', filename='images/banners/teams1.jpg') }}" alt="Health Above All Else">
+        <div class="ov-text">
+          <div class="ov-kicker">Wellbeing</div>
+          <h3 class="ov-heading">Health Above All Else</h3>
+        </div>
+      </article>
+
+      <!-- 2 -->
+      <article class="ov-card">
+        <img src="{{ url_for('static', filename='images/banners/team2.jpg') }}" alt="Display Grit Without Ego">
+        <div class="ov-text">
+          <div class="ov-kicker">Character</div>
+          <h3 class="ov-heading">Display Grit Without Ego</h3>
+        </div>
+      </article>
+
+      <!-- 3 -->
+      <article class="ov-card">
+        <img src="{{ url_for('static', filename='images/banners/team3.jpg') }}" alt="Serve and Inspire">
+        <div class="ov-text">
+          <div class="ov-kicker">Service</div>
+          <h3 class="ov-heading">Serve and Inspire</h3>
+        </div>
+      </article>
+
+      <!-- 4 -->
+      <article class="ov-card">
+        <img src="{{ url_for('static', filename='images/banners/appliances.jpg') }}" alt="Seek Perpetual Growth">
+        <div class="ov-text">
+          <div class="ov-kicker">Mindset</div>
+          <h3 class="ov-heading">Seek Perpetual Growth</h3>
+        </div>
+      </article>
+
+      <!-- 5 -->
+      <article class="ov-card">
+        <img src="{{ url_for('static', filename='images/banners/delivery.jpg') }}" alt="Spread Joy and Optimism">
+        <div class="ov-text">
+          <div class="ov-kicker">Culture</div>
+          <h3 class="ov-heading">Spread Joy and Optimism</h3>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <!-- Belief band -->
+  <section class="ov-belief">
+    <div class="ov-wrap">
+      <h2>
+        We believe values aren’t posters on a wall—they’re habits that create happier,
+        healthier teams and a more purposeful life.
+      </h2>
+      <div class="ov-centerline"></div>
+      <p>
+        These aren’t just statements we admire. They’re the standard we hold ourselves to
+        when we design products, help customers, and support one another.
+      </p>
+    </div>
+  </section>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+{% set page_title = "Contact Sales" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cz_sales.css') }}?v=12345">
+
+
+<section class="czs-hero">
+  <div class="czs-wrap">
+    <div class="czs-hero-left">
+      <span class="czs-kicker">Business Solutions • Bulk Orders • Tech Bundles</span>
+      <h1 style="color: steelblue">Contact Sales </h1>
+      <p>
+        Speak to an ElectroZone sales specialist. Whether you're outfitting an office,
+        upgrading your retail store, or ordering in bulk — we’ll help you build the right package.
+      </p>
+
+      <div class="czs-cards">
+        <div class="czs-card">
+          <h3>Bulk Pricing</h3>
+          <p>Get wholesale rates and multi-item discounts.</p>
+        </div>
+        <div class="czs-card">
+          <h3>Business Bundles</h3>
+          <p>Curated bundles for teams, rooms, and stores.</p>
+        </div>
+        <div class="czs-card">
+          <h3>Fast Delivery</h3>
+          <p>Delivery options tailored to your location and timeline.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="czs-hero-right">
+      <div class="czs-image-box">
+        <img class="czs-hero-img" src="{{ url_for('static', filename='images/contact.jpeg') }}" alt="Sales Team">
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="czs-section">
+  <div class="czs-wrap czs-grid">
+    <div class="czs-panel">
+      <h2>Sales Enquiry</h2>
+
+      <form method="POST" action="{{ url_for('routes.ez_send_sales_form_to_gmail') }}" class="czs-form">
+
+        <div class="czs-row">
+          <div class="czs-field">
+            <label>Full Name</label>
+            <input type="text" name="contact" placeholder="Your name" required>
+          </div>
+          <div class="czs-field">
+            <label>Company</label>
+            <input type="text" name="company" placeholder="Company name" required>
+          </div>
+        </div>
+
+        <div class="czs-row">
+          <div class="czs-field">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="you@company.com" required>
+          </div>
+          <div class="czs-field">
+            <label>Phone</label>
+            <input type="text" name="phone" placeholder="+61 ...">
+          </div>
+        </div>
+
+        <div class="czs-row">
+          <div class="czs-field">
+            <label>What are you interested in?</label>
+            <select name="category">
+              <option value="Office Setup">Office Setup</option>
+              <option value="Retail Setup">Retail Setup</option>
+              <option value="Bulk Order">Bulk Order</option>
+              <option value="Corporate Partnership">Corporate Partnership</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="czs-field">
+            <label>Estimated Quantity</label>
+            <input type="text" name="qty" placeholder="e.g., 25 units">
+          </div>
+        </div>
+
+        <div class="czs-field">
+          <label>Message</label>
+          <textarea name="message" rows="6" placeholder="Tell us what you need, preferred brands, budget, and timeline..." required></textarea>
+        </div>
+
+        <div class="cz-form-actions">
+            <button type="submit" class="cz-btn-submit">Send to Sales</button>
+        </div>
+
+
+        <p class="czs-small">
+          Need pricing instead?
+          <a href="{{ url_for('routes.request_quote') }}">Request a Quote</a>
+        </p>
+      </form>
+    </div>
+
+    <div class="czs-panel czs-side">
+      <h2>Sales Hours</h2>
+      <div class="czs-info">
+        <div class="czs-info-row"><span>Mon–Fri</span><strong>9:00am – 5:00pm</strong></div>
+        <div class="czs-info-row"><span>Sat</span><strong>10:00am – 2:00pm</strong></div>
+        <div class="czs-info-row"><span>Sun</span><strong>Closed</strong></div>
+      </div>
+
+      <div class="czs-highlight">
+        <h3>Prefer Support?</h3>
+        <p>If your enquiry is about orders, delivery, or technical help — Support is faster.</p>
+        <a class="czs-link-btn" href="{{ url_for('routes.contact_support') }}">Contact Support</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

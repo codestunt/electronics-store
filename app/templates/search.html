@@ -1,0 +1,275 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<section class="ezsr-section">
+  <div class="ezsr-wrap ezsr-wrap--with-side">
+    <!-- Left column: Back button (will sit on same line as cards' bottom) -->
+    <aside class="ezsr-side ezsr-side--bottom">
+      <a href="{{ url_for('routes.home') }}" class="ezsr-btn ezsr-btn-ghost">← Back to Home</a>
+    </aside>
+
+    <!-- Right column: results -->
+    <main class="ezsr-main">
+      <header class="ezsr-head">
+        <h2>Results for “{{ q }}”</h2>
+        <p>{{ total }} product{{ '' if total==1 else 's' }} found</p>
+      </header>
+
+      {% if results %}
+        <div class="ezsr-grid">
+          {% for p in results %}
+          <article class="ezsr-card">
+            <div class="ezsr-imgbox">
+              <img src="{{ url_for('static', filename=p.image_path) }}" alt="{{ p.name }}">
+            </div>
+            <h3 class="ezsr-title">{{ p.name }}</h3>
+            <div class="ezsr-price">${{ '%.2f'|format(p.price|float) }}</div>
+            <form action="{{ url_for('routes.add_to_cart') }}" method="POST" class="ezsr-actions">
+              <input type="hidden" name="product_id" value="{{ p.id }}">
+              <button type="submit" class="ezsr-btn ezsr-btn-primary">Add to Cart</button>
+            </form>
+          </article>
+          {% endfor %}
+        </div>
+
+        {% if pages > 1 %}
+        <nav class="ezsr-pager">
+          {% for i in range(1, pages+1) %}
+            {% if i == page %}
+              <span class="ezsr-page is-current">{{ i }}</span>
+            {% else %}
+              <a class="ezsr-page" href="{{ url_for('routes.search', q=q, page=i) }}">{{ i }}</a>
+            {% endif %}
+          {% endfor %}
+        </nav>
+        {% endif %}
+
+      {% else %}
+        <p class="ezsr-muted">No products matched your search.</p>
+      {% endif %}
+    </main>
+  </div>
+</section>
+
+<style>
+/* Two-column layout: left = back button, right = results grid */
+.ezsr-wrap.ezsr-wrap--with-side{
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 220px 1fr;  /* ← makes space on the left */
+  gap: 24px;                         /* safe distance between button and cards */
+  align-items: end;                  /* align left column to bottom of right column */
+}
+
+/* Put the button at the column bottom */
+.ezsr-side.ezsr-side--bottom{
+  align-self: end;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 6px;                /* tiny breathing room */
+}
+
+/* Button base styling */
+.ezsr-btn{
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 10px 14px; border-radius: 10px; font-weight: 700;
+  text-decoration: none; border: none; cursor: pointer;
+}
+
+/* Back button */
+.ezsr-btn-ghost{
+  background:#f0f2f5;
+  color:#072543;
+}
+
+/* 🔵 PRIMARY BUTTON – MATCH HOME PAGE BLUE */
+.ezsr-btn-primary{
+  background:#2a6ac9;   /* same main blue as site */
+  color:#fff;
+  width:100%;
+  transition: background-color 0.25s ease;
+}
+
+.ezsr-btn-primary:hover,
+.ezsr-btn-primary:focus{
+  background:#3b6d99;   /* hover blue (same combo you use on home) */
+}
+
+/* Grid + cards */
+.ezsr-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:18px;
+}
+.ezsr-card{
+  background:#fff;
+  border-radius:14px;
+  padding:14px;
+  box-shadow:0 6px 18px rgba(0,0,0,.06);
+  display:flex;
+  flex-direction:column;
+}
+.ezsr-imgbox{
+  height:280px;
+  border-radius:12px;
+  background:#fff;
+  border:1px solid #eef0f3;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:14px;
+}
+.ezsr-imgbox img{
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+  display:block;
+}
+.ezsr-title{
+  margin:10px 0 2px;
+  font-weight:700;
+  font-size:1rem;
+}
+.ezsr-price{
+  opacity:.85;
+  margin-bottom:10px;
+}
+.ezsr-actions{
+  margin-top:auto;
+}
+
+.ezsr-head h2{ margin:0 0 6px; }
+.ezsr-head p{ margin:0; opacity:.75; }
+
+.ezsr-pager{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  margin:14px 0 6px;
+}
+.ezsr-page{
+  padding:8px 12px;
+  border-radius:8px;
+  background:#f0f2f5;
+  text-decoration:none;
+  color:#072543;
+}
+.ezsr-page.is-current{
+  background:#072543;
+  color:#fff;
+}
+
+.ezsr-muted{ opacity:.75; }
+
+/* Mobile: stack; center the back button below the grid */
+@media (max-width: 900px){
+  .ezsr-wrap.ezsr-wrap--with-side{ grid-template-columns: 1fr; }
+  .ezsr-side.ezsr-side--bottom{
+    align-self: auto;
+    justify-content: center;
+    order: 2;
+    margin-top: 12px;
+  }
+}
+
+/* extra breathing room above the footer on the search page */
+.ezsr-section{
+  padding-bottom: 72px;   /* tweak: 48–96px as you like */
+}
+
+@media (max-width: 900px){
+  .ezsr-section{ padding-bottom: 88px; } /* a bit more on mobile */
+}
+
+
+/* === Match Search Page Button to Homepage "Add to Cart" Button === */
+.ezsr-btn-primary {
+    background-color: #4682B4 !important; /* Steel Blue - same as homepage */
+    color: #fff !important;
+    border: none !important;
+    padding: 8px 14px !important;
+    border-radius: 6px !important;
+    cursor: pointer;
+    transition: background-color 0.3s ease !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    width: 100% !important;  /* Same wide button layout */
+}
+
+.ezsr-btn-primary:hover {
+    background-color: #3b6d99 !important; /* darker hover blue */
+}
+
+/* === Make Search Buttons IDENTICAL to Homepage Add-to-Cart Buttons === */
+.ezsr-btn-primary {
+    background-color: #4682B4 !important;  /* steel blue */
+    color: #fff !important;
+    border: none !important;
+
+    /* 🔥 Match homepage button size EXACTLY (from .pz-cart-btn) */
+    padding: 8px 22px !important; 
+    height: 42px !important; 
+    border-radius: 6px !important;
+
+    /* Layout/behavior */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+    transition: background-color .3s ease !important;
+}
+
+.ezsr-btn-primary:hover {
+    background-color: #3b6d99 !important; /* same hover color */
+}
+/* Match index.html Add to Cart buttons */
+.ezsr-btn-primary{
+  background-color: #4682B4;     /* Steel Blue (index.html normal state) */
+  color: #fff;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;         /* prevents stretching */
+  width: auto !important;        /* FORCE compact size */
+  transition: background-color 0.3s ease;
+}
+
+.ezsr-btn-primary:hover{
+  background-color: #3b6d99;     /* Darker hover blue (index.html hover) */
+}
+/* Match EXACT Add to Cart button from index.html */
+.ezsr-btn-primary {
+    background-color: #4682B4;      /* Steel Blue (normal) */
+    color: #fff;
+    font-size: 14px;                /* exact font size */
+    font-weight: 600;
+    padding: 6px 18px;              /* EXACT compact size */
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    width: auto !important;          /* stop stretching */
+    display: inline-block !important; 
+    text-align: center;
+    transition: background-color 0.25s ease;
+}
+
+.ezsr-btn-primary:hover {
+    background-color: #3b6d99;      /* match hover color */
+}
+/* Right-align the Add to Cart button inside each product card */
+.ezsr-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+}
+
+</style>
+
+{% endblock %}

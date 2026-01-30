@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% set body_class = "edge-hero" %}
+
+
+{# Defaults (can be overridden from the route or per page) #}
+{% set page_title    = page_title|default('TVs') %}
+{% set page_subtitle = page_subtitle|default('Explore our best-in-class TVs.') %}
+{% set page_bg       = page_bg|default('images/products/tvCamera.jpg') %}
+{% set hero_bg_color = hero_bg_color|default('#6F6F6F') %}   {# ← NEW: fallback that matches the banner edge #}
+
+{% block content %}
+
+<style>
+  /* Flush hero under the bottom navbar */
+  main { padding-top: 0 !important; }
+
+  /* No-zoom, full-width background */
+  .cat-hero.no-zoom{
+    width: 100%;
+    aspect-ratio: var(--hero-ar);
+    background-image: var(--hero-url, none);
+    background-size: contain;   /* shows full image */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: var(--hero-bg, #f5f5f5);
+
+    max-height: 300px;
+    margin-top: 0px;
+    display: flex;
+    align-items: flex-end;
+    padding: var(--pad-y,24px) var(--pad-x,36px);
+    color: #fff;
+  }
+
+  .cat-hero__text{ text-shadow: 0 2px 12px rgba(0,0,0,.45); }
+  .cat-hero__text h1{ margin:0 0 6px; font-size: 40px; font-weight: 700; }
+  .cat-hero__text p{  margin:0;       font-size: 18px; font-weight: 400; }
+
+  @media (max-width: 900px){
+    .cat-hero{ --hero-h: 180px; padding: 16px 20px; }
+    .cat-hero__text h1{ font-size: 30px; }
+    .cat-hero__text p{  font-size: 16px; }
+  }
+
+  /* Desktop only: pull hero under fixed nav stack cleanly */
+@media (min-width: 901px){
+  body.edge-hero .cat-hero.no-zoom{
+    margin-top: -125px; /* matches your fixed nav stack (61 + 64) */
+  }
+}
+
+  /* ...keep all your existing CSS above... */
+
+  /* ✅ MOBILE ONLY: lift the hero text to a more professional position */
+  @media (max-width: 900px){
+    .cat-hero.no-zoom{
+      align-items: center !important;     /* stops it sitting too low */
+      padding-top: 22px !important;
+      padding-bottom: 22px !important;
+    }
+
+    .cat-hero__text{
+      transform: translateY(-152px) !important; /* ✅ move text upwards */
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+
+
+</style>
+
+<div class="cat-hero no-zoom"
+     style="--hero-ar: 20/9;
+            --hero-url: url('{{ url_for('static', filename=page_bg) }}');
+            --hero-bg: {{ hero_bg_color }};">
+
+  <div class="cat-hero__text">
+    <h1>{{ page_title }}</h1>
+    <p>{{ page_subtitle }}</p>
+  </div>
+</div>
+
+{% if products and products|length %}
+  {% set items = products %}
+  {% set heading = page_title %}
+  {% set carousel_id = 'cat-' ~ page_title|lower|replace(' ', '-') %}
+  {% include 'partials/pz_carousel.html' %}
+{% else %}
+  <p class="container" style="padding:24px;">No products found in this category.</p>
+{% endif %}
+
+{% endblock %}

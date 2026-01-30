@@ -1,0 +1,1449 @@
+<!-- templates/layout.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ElectroZone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- External stylesheets -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pz.css') }}?v=20251226">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=1003">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  
+
+  <style>
+    :root{
+      --red:#B23850;
+      --page-bg: #fff;
+      --page-text: #111;
+
+      /* mobile nav height (mobile only) */
+      --ezm-nav-h: 64px;
+
+      /* carousel spacing */
+      --pz-gap: 24px;
+    }
+
+    /* ===== Base (safe) ===== */
+    html, body{
+      margin:0;
+      padding:0;
+      background: var(--page-bg) !important;
+      color: var(--page-text);
+      overflow-x: hidden;
+      max-width: 100%;
+    }
+
+    /* ========= TOP NAVBAR ========= */
+    .top-navbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:10px 20px;
+      background:#fff;
+    }
+
+    .top-right-links{
+      display:flex;
+      align-items:center;
+      gap:3px;
+      font-size:13px;
+      margin-right:90px;
+    }
+    .top-right-links a{
+      color:#000;
+      text-decoration:none;
+      padding:0 7px;
+      border-left:.5px solid #ccc;
+    }
+    .top-right-links a:first-child{ border-left:none; }
+
+    /* ========= MAIN NAVBAR ========= */
+    .main-navbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      min-height:60px;
+      background:#fff;
+      font-weight:bold;
+    }
+    .main-navbar ul{
+      display:flex;
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+    .main-navbar ul li{
+      margin-right:24px;
+      font-size:18px;
+      line-height:100px;
+    }
+    .main-navbar ul li a{ font-weight:bold; }
+
+    /* Search pill */
+    .search-form{
+      display:flex;
+      align-items:center;
+      background:#f3f3f3;
+      border-radius:999px;
+      padding:10px 14px;
+      height:40px;
+      margin-top:0;
+      margin-right:157px;
+      transform: translateX(15px); /* your existing nudge */
+    }
+    @media (max-width: 992px){
+      .search-form{ transform:none; }
+    }
+    .search-form input[type="text"]{
+      border:none;
+      outline:none;
+      background:transparent;
+      padding-left:8px;
+      font-size:16px;
+      color:#333;
+    }
+    .search-form button{
+      background:transparent;
+      border:none;
+      cursor:pointer;
+      font-size:18px;
+      color:#444;
+    }
+
+    /* Desktop icons wrapper */
+    .user-icon-wrapper{
+      position:relative;
+      right:-15px;
+      display:inline-block;
+    }
+
+    /* Outline SVG icon style (desktop + mobile) */
+    .nav-icon svg{
+      width:28px;
+      height:28px;
+      fill:none;
+      stroke:currentColor;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      margin-right:8px;
+    }
+
+    /* Desktop-only: nudge icons left without moving search */
+    @media (min-width: 901px){
+      .nav-right .user-icon-wrapper,
+      .nav-right .cart-link{
+        transform: translateX(-16px);
+      }
+      .nav-right .cart-link{ margin-left:14px; }
+    }
+
+    /* Red dot indicator */
+    .red-dot{
+      position:absolute;
+      top:-2px;
+      right:6px;
+      width:8px;
+      height:8px;
+      background:var(--red);
+      border:2px solid #fff;
+      border-radius:50%;
+      pointer-events:none;
+      z-index:10;
+    }
+
+    /* Cart count badge (desktop) */
+    .cart-link{ position:relative; display:inline-block; }
+    .cart-count-badge{
+      position:absolute;
+      left:-126px;
+      top:-8px;
+      background: var(--red);
+      color:#fff;
+      min-width:20px;
+      height:20px;
+      padding:0 6px;
+      border-radius:50%;
+      font-size:12px;
+      font-weight:700;
+      line-height:20px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:none !important;
+      text-shadow:none !important;
+      pointer-events:none;
+    }
+
+    /* ========= Flash Messages ========= */
+    .flash-container{ display:flex; justify-content:center; }
+    .flash-message{
+      width:420px;
+      max-width:92vw;
+      margin:16px auto;
+      padding:12px 16px;
+      border-radius:10px;
+      text-align:center;
+      font-weight:700;
+      line-height:1.3;
+      color:#fff;
+      background:#006400;
+      border:1px solid #004d00;
+      box-shadow:0 8px 18px rgba(0,0,0,.08);
+    }
+    .flash-message.flash-success{ background:#006400; border-color:#004d00; }
+    .flash-message.flash-danger{ background:var(--red); border-color:#8e2c40; }
+
+    /* ========= MOBILE NAV (≤900px only) ========= */
+    .ezm-nav{ display:none; }
+    @media (max-width: 900px){
+      .top-navbar, .main-navbar{ display:none !important; }
+
+      .ezm-nav{
+        position:fixed;
+        top:0; left:0; right:0;
+        height:var(--ezm-nav-h);
+        padding:12px 14px;
+        background:#fff;
+        border-bottom:1px solid #eee;
+        z-index:2000;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:12px;
+      }
+
+      /* Push page content below fixed mobile bar */
+      main{ padding-top: calc(var(--ezm-nav-h) + 8px); }
+      .flash-container{ margin-top: 6px; }
+    }
+
+    .ezm-burger, .ezm-close{
+      background:transparent;
+      border:none;
+      cursor:pointer;
+      padding:8px;
+      line-height:0;
+      font-size:22px;
+      color:#333;
+    }
+
+    /* Mobile logo image (your class is on the img) */
+    .ezm-logo{
+      height:32px;
+      max-height:32px;
+      width:auto;
+      display:block;
+      max-width:160px;
+    }
+    @media (max-width: 360px){
+      .ezm-logo{ height:28px; max-height:28px; }
+    }
+
+    .ezm-icons{ display:flex; align-items:center; gap:12px; }
+    .ezm-icon{ position:relative; display:inline-block; font-size:22px; color:#666; }
+    .ezm-icon:hover{ color:#072543; }
+
+    .ezm-badge{
+      position:absolute;
+      right:-6px;
+      top:-6px;
+      min-width:18px;
+      height:18px;
+      border-radius:999px;
+      background:var(--red);
+      color:#fff;
+      font-size:11px;
+      font-weight:700;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:2px solid #fff;
+    }
+
+    /* Mobile drawer + overlay (single definition only) */
+    .ezm-overlay{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.35);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .2s ease;
+      z-index:1099;
+    }
+    .ezm-drawer{
+      position:fixed;
+      top:0; left:0;
+      height:100dvh;
+      width:100vw;
+      background:#fff;
+      transform: translateX(calc(-100% - 32px)); /* hides + hides shadow */
+      transition: transform .24s ease;
+      z-index:1100;
+      display:flex;
+      flex-direction:column;
+      box-shadow:none;
+    }
+    body.ezm-open{ overflow:hidden; }
+    body.ezm-open .ezm-overlay{ opacity:1; pointer-events:auto; }
+    body.ezm-open .ezm-drawer{
+      transform: translateX(0) !important;
+      box-shadow: 8px 0 24px rgba(0,0,0,.15) !important;
+    }
+
+    .ezm-drawer-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 14px;
+      border-bottom:1px solid #eee;
+    }
+    .ezm-drawer-head .ezm-logo img{ height:24px; }
+
+    .ezm-search{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin:12px 12px 6px;
+      padding:10px 12px;
+      border-radius:999px;
+      background:#f3f4f6;
+    }
+    .ezm-search input{
+      border:none;
+      outline:none;
+      background:transparent;
+      width:100%;
+      font-size:16px;
+    }
+
+    .ezm-list{ display:flex; flex-direction:column; margin-top:6px; }
+    .ezm-list a{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:16px;
+      color:#111827;
+      text-decoration:none;
+      font-size:17px;
+      border-bottom:1px solid #f1f2f4;
+      background:#fff;
+    }
+    .ezm-list a i{ color:#9ca3af; }
+    .ezm-list a:hover{ background:#f9fafb; }
+
+    .ezm-quick{
+      margin-top:auto;
+      padding:12px 8px 16px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:6px 8px;
+    }
+    .ezm-quick a{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 8px;
+      text-decoration:none;
+      color:#1f2937;
+      font-size:16px;
+    }
+    .ezm-quick a i{ width:18px; text-align:center; color:#374151; }
+
+    /* ========= Carousel safety (keep arrows inside) ========= */
+    .pz-carousel-wrapper{ position:relative; padding: 0 56px; }
+    .pz-scrolling-wrapper{
+      display:flex;
+      gap:var(--pz-gap);
+      overflow-x:auto;     /* MUST be scrollable */
+      overflow-y:hidden;
+      scroll-behavior:smooth;
+      scroll-snap-type:x proximity;
+    }
+
+    .pz-scroll-btn{
+      position:absolute;
+      top:50%;
+      transform: translateY(-50%);
+      z-index:5;
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      border:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#fff;
+      box-shadow:0 4px 12px rgba(0,0,0,.15);
+      cursor:pointer;
+    }
+    .pz-scroll-btn.left{ left:8px; }
+    .pz-scroll-btn.right{ right:8px; }
+
+    /* ========= Disable pointer on logo links (your preference) ========= */
+    .logo a,
+    .ez-footer .logo a{
+      cursor: default !important;
+      pointer-events:none;
+    }
+
+    /* =========================================
+       DESKTOP: single source of truth for spacing
+       ========================================= */
+    
+      
+      /* HOME ONLY: remove gap */
+      body.home main{
+        padding-top:0;
+      }
+      /* Stop margin collapse from first section */
+      main > :first-child{
+        margin-top:0;
+      }
+    
+
+    /* =========================
+       Footer (your EZF footer)
+       ========================= */
+    .ez-footer { background:#07243a; color:#e6edf4; }
+    .ez-footer a { color:#e6edf4; text-decoration:none; }
+
+    .ezf-container { max-width:1200px; margin:0 auto; padding:38px 16px 28px; }
+
+    .ezf-top{
+      display:grid;
+      grid-template-columns: 280px 1fr 1fr 1fr;
+      gap:116px;
+      align-items:start;
+    }
+
+    .ezf-brand-col img{ height:46px; width:auto; display:block; margin-bottom:24px; }
+    .ezf-call-label{ margin:0 0 6px; font-size:18px; color:#b9c6d3; }
+    .ezf-phone{ font-size:28px; font-weight:700; color:var(--red); letter-spacing:.2px; }
+
+    .ezf-col h4{
+      margin:6px 0 12px;
+      font-size:20px;
+      color:var(--red);
+      font-weight:700;
+    }
+    .ezf-col ul{ list-style:none; margin:0; padding:0; }
+    .ezf-col li{ margin:10px 0; }
+    .ezf-col a:hover{ text-decoration:underline; text-underline-offset:3px; }
+
+    .ezf-divider{
+      height:1px;
+      background:rgba(255,255,255,.12);
+      width:260px;
+      margin:24px 0 10px 280px;
+    }
+
+    .ezf-bottom{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+    .ezf-address{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:15px;
+      color:#cfe0ee;
+      margin-left:280px;
+    }
+    .ezf-copy{
+      font-size:15px;
+      white-space:nowrap;
+      color:#cfe0ee;
+    }
+    .ezf-social{
+      margin-left:auto;
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+    .ezf-social a{ font-size:20px; line-height:1; text-decoration:none; }
+    .ezf-social a:hover{ color:#3B8BEB; }
+
+    /* Footer responsive */
+    @media (max-width: 1100px){
+      .ezf-top{ grid-template-columns: 1fr 1fr; gap:36px; }
+      .ezf-brand-col{ grid-column: span 2; }
+      .ezf-divider{ margin-left:0; width:220px; }
+      .ezf-address{ margin-left:0; }
+    }
+    @media (max-width: 768px){
+      .ezf-container{ padding:24px 20px 18px; }
+      .ezf-top{ grid-template-columns:1fr !important; gap:20px !important; }
+      .ezf-divider{
+        width:100%;
+        max-width:260px;
+        margin:20px 0 10px 0 !important;
+      }
+      .ezf-bottom{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+      }
+      .ezf-copy{ white-space:normal; font-size:.8rem; }
+      .ezf-social{ margin-left:0 !important; }
+    }
+
+    /* ==========================
+   DESKTOP TOP EATEN FIX ONLY
+   ========================== */
+
+/* DESKTOP: keep navbars above content, but DO NOT add fake space */
+@media (min-width: 901px){
+  .top-navbar{ position: relative; z-index: 10; }
+  
+
+  /* IMPORTANT: no desktop padding here */
+  main{
+    margin: 0;
+    padding-top: 0 !important;
+  }
+}
+
+  /* 3) Add spacing equal to both nav heights (safe, no layout change) */
+  body:not(.home) main{
+    padding-top: 160px !important;
+  }
+
+  /* 4) Home keeps your original "no gap" behavior */
+  body.home main{
+    padding-top: 0 !important;
+  }
+
+
+
+/* ==========================
+   DESKTOP: FINAL TOP ALIGN FIX
+   ========================== */
+@media (min-width: 901px){
+  main{
+    margin:0;
+    padding-top:0 !important;
+  }
+
+  /* Keep home page flush (your design intent) */
+  body.home main{
+    padding-top:0 !important;
+  }
+}
+
+/* =========================================
+   DESKTOP FINAL: sticky navbars + clean offset
+   ========================================= */
+@media (min-width: 901px){
+
+  /* 1) Top navbar stays at top */
+  .top-navbar{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  /* 2) Bottom navbar sticks under top navbar */
+  .main-navbar{
+    position: sticky;
+    top: 56px;              /* height of top navbar */
+    z-index: 99;
+  }
+
+  /* 3) Push page content down JUST ENOUGH */
+  main{
+    margin: 0;
+    padding-top: 24px;      /* small, clean offset */
+  }
+
+  /* 4) Home page stays flush (your design intent) */
+  body.home main{
+    padding-top: 0;
+  }
+}
+/* =========================================
+   DESKTOP FINAL: FIXED NAVBARS (NO SCROLL)
+   ========================================= */
+@media (min-width: 901px){
+
+  /* Top navbar: fixed at top */
+  .top-navbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+
+  /* Bottom navbar: fixed under top navbar */
+  .main-navbar{
+    position: fixed;
+    top: 26px;              /* height of top navbar */
+    left: 0;
+    right: 0;
+    z-index: 999;
+  }
+
+  @media (min-width: 901px){
+
+  /* Push page content BELOW both navbars */
+  main{
+    margin: 0;
+    padding-top: 116px;
+  }
+
+  /* Home page stays flush (your design intent) */
+  body.home main{
+    padding-top: 152px !important;
+  }
+}
+
+
+  /* Home page stays flush (your design intent) */
+ @media (min-width: 901px){
+  body.home main{
+    padding-top: 152px !important;  /* matches fixed nav stack */
+  }
+}
+
+}
+/* =========================================
+   DESKTOP: RESTORE BOTTOM NAVBAR HEIGHT
+   ========================================= */
+@media (min-width: 901px){
+
+  .main-navbar{
+    height: 130px;                /* restores visual height */
+    display: flex;
+    align-items: center;
+  }
+
+  .main-navbar ul li{
+    line-height: 90px;           /* vertically center menu text */
+  }
+
+  /* Keep search + icons vertically centered */
+  .nav-right{
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* =========================================
+   DESKTOP: REDUCE NAVBAR HEIGHTS (FIX EATING)
+   ========================================= */
+@media (min-width: 901px){
+
+  /* TOP NAVBAR (was too tall) */
+  .top-navbar{
+    height: 48px;
+    padding: 12px 30px;     /* tighter vertical padding */
+    display: flex;
+    align-items: center;
+  }
+
+  /* BOTTOM NAVBAR (was squashed / oversized) */
+  .main-navbar{
+    height: 64px;
+    display: flex;
+    align-items: center;
+    top: 48px;             /* sits directly under top navbar */
+  }
+
+  /* Menu items vertical centering */
+  .main-navbar ul li{
+    line-height: 64px;
+  }
+
+  /* Recalculate content offset EXACTLY */
+  main{
+    padding-top: 112px;    /* 48 + 64 = 112 */
+  }
+
+  /* Home page hero needs same offset now */
+  body.home main{
+    padding-top: 112px;
+  }
+}
+
+/* =========================================
+   DESKTOP: FINAL NAVBAR HEIGHT (LOGO SAFE)
+   ========================================= */
+@media (min-width: 901px){
+
+  /* TOP NAVBAR — slightly taller for logo */
+  .top-navbar{
+    height: 61px;              /* was 48px */
+    padding: 6px 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* BOTTOM NAVBAR */
+  .main-navbar{
+    height: 64px;
+    display: flex;
+    align-items: center;
+    top: 61px;                 /* updated to match top navbar */
+  }
+
+  /* Menu items vertical centering */
+  .main-navbar ul li{
+    line-height: 64px;
+  }
+
+  /* Push content down exactly by nav stack height */
+  main{
+    padding-top: 125px;        /* 56 + 64 */
+  }
+
+  /* Home page hero */
+  body.home main{
+    padding-top: 125px;
+  }
+}
+
+/* Desktop: edge-hero pages must start below the fixed nav stack */
+@media (min-width: 901px){
+  body.edge-hero{
+    padding-top: 120px !important; /* MUST match your fixed nav total */
+  }
+}
+
+/* =========================================================
+   FINAL OVERRIDE (DESKTOP) — keeps navbars stationary + removes gap
+   Paste at END. Do NOT delete other CSS.
+   ========================================================= */
+@media (min-width: 901px){
+
+  /* Keep your current working fixed/stationary navbars */
+  .top-navbar{
+    position: fixed !important;
+    top: 0 !important;
+    left: 0; right: 0;
+    z-index: 1000 !important;
+  }
+
+  .main-navbar{
+    position: fixed !important;
+    top: 61px !important;          /* matches your logo-safe top navbar height */
+    left: 0; right: 0;
+    height: 64px !important;       /* your bottom navbar height */
+    z-index: 999 !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .main-navbar ul li{
+    line-height: 64px !important;
+  }
+
+  /* Push content exactly under the fixed nav stack */
+  main{
+    padding-top: 125px !important;  /* 61 + 64 */
+    margin: 0 !important;
+  }
+
+  /* ✅ This closes the irritating gap under the bottom navbar */
+  main > :first-child{
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* Edge-hero category pages must also respect the same offset */
+  body.edge-hero main{
+    padding-top: 125px !important;
+  }
+
+  /* Home should not be eaten (keep it consistent) */
+  body.home main{
+    padding-top: 125px !important;
+  }
+}
+
+/* =========================================================
+   UNIVERSAL MOBILE MODE (covers iPhone landscape 926px etc.)
+   Forces the real mobile header behavior up to 1024px.
+   Paste at VERY END.
+   ========================================================= */
+@media (max-width: 1024px){
+
+  /* Use ONLY the mobile nav */
+  .top-navbar,
+  .main-navbar{ display:none !important; }
+
+  .ezm-nav{
+    display:flex !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 64px !important;
+    padding: 12px 14px !important;
+    background: #fff !important;
+    border-bottom: 1px solid #eee !important;
+    z-index: 2000 !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+  }
+
+  /* Kill ANY desktop padding offsets that create the big white gap */
+  html, body{
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  main{
+    margin: 0 !important;
+    padding-top: 63px !important;  /* 64px nav + small breathing room */
+  }
+
+  /* Some of your desktop rules force home/edge pages */
+  body.home main,
+  body.edge-hero main,
+  body:not(.home) main{
+    padding-top: 63px !important;
+  }
+
+  /* Prevent the first section from “pushing down” */
+  main > :first-child{
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+}
+
+/* =========================================================
+   MOBILE/TABLET (≤1024px): Fix Products header spacing
+   - Adds space ABOVE "Products"
+   - Removes the huge gap BETWEEN title/subtitle and the image/cards
+   Paste at VERY END of CSS
+   ========================================================= */
+@media (max-width: 1024px){
+
+  /* 1) Target common wrappers if they exist */
+  .pz-header,
+  .products-header,
+  .section-header{
+    margin-top: 26px !important;     /* ✅ space ABOVE Products heading */
+    margin-bottom: 10px !important;  /* ✅ kills huge gap below heading block */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* 2) Also target the heading itself (works even without wrapper classes) */
+  #bestsellers h1, #bestsellers h2,
+  #products h1,   #products h2,
+  .products-section h1, .products-section h2{
+    margin-top: 26px !important;     /* ✅ space above title */
+    margin-bottom: 6px !important;   /* ✅ tighter to subtitle */
+    line-height: 1.15 !important;
+  }
+
+  /* 3) Subtitle spacing (the line: "Discover our featured electronics.") */
+  #bestsellers p,
+  #products p,
+  .products-section p{
+    margin-top: 0 !important;
+    margin-bottom: 10px !important;  /* ✅ pulls image/cards UP closer */
+    line-height: 1.35 !important;
+  }
+
+  /* 4) If a hidden spacer is pushing content down, neutralize it */
+  .spacer, .gap, .empty-space{
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+/* ✅ FOOTER MOBILE: single-column stack, clean spacing */
+@media (max-width: 768px){
+
+  .ezf-container{
+    padding: 28px 20px 20px !important;
+  }
+
+  /* Force ONE column (no side-by-side) */
+  .ezf-top{
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 26px !important;
+  }
+
+  /* Each footer block full width */
+  .ezf-brand-col,
+  .ezf-col{
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Headings + links spacing (professional rhythm) */
+  .ezf-col h4{
+    margin: 0 0 12px !important;
+    font-size: 20px;
+  }
+
+  .ezf-col ul{
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .ezf-col li{
+    margin: 12px 0 !important;
+  }
+
+  /* Brand block spacing */
+  .ezf-brand-col img{
+    margin-bottom: 18px !important;
+  }
+  .ezf-call-label{ margin: 0 0 8px !important; }
+  .ezf-phone{ display: inline-block; margin: 0 !important; }
+
+  /* Divider should start from the left on mobile */
+  .ezf-divider{
+    width: 100% !important;
+    max-width: 320px !important;
+    margin: 22px 0 14px !important;
+  }
+
+  /* Bottom area: stack + nice gaps */
+  .ezf-bottom{
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .ezf-address{
+    margin-left: 0 !important;
+    font-size: 14px !important;
+    line-height: 1.35;
+  }
+
+  .ezf-copy{
+    white-space: normal !important;
+    font-size: 14px !important;
+  }
+
+  .ezf-social{
+    margin-left: 0 !important;
+    gap: 14px !important;
+  }
+}
+
+/* =========================================
+   NEWSLETTER — MOBILE (ALL MOBILE SCREENS)
+   ========================================= */
+@media (max-width: 1024px){
+
+  .signup-band{
+    margin-top: 22px !important;
+    padding-top: 18px !important;
+    padding-bottom: 18px !important;
+  }
+
+  .signup-inner{
+    gap: 16px !important;
+  }
+
+  .signup-form{
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  .signup-form input{
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+
+}
+/* =========================================================
+   EDGE-HERO (Category pages): stop hero being covered/eaten
+   Paste at VERY END of layout <style>
+   ========================================================= */
+
+/* Desktop fixed nav stack = 61 + 64 = 125px */
+@media (min-width: 901px){
+  body.edge-hero main{
+    padding-top: 125px !important;   /* same as your fixed nav offset */
+  }
+
+  /* Give hero a little breathing room under navbars */
+  body.edge-hero .ez-category-hero{
+    padding-top: 24px !important;
+  }
+}
+
+/* Mobile/tablet (including landscape up to 1024px) */
+@media (max-width: 1024px){
+  body.edge-hero main{
+    padding-top: 63px !important;    /* match your mobile nav offset */
+  }
+
+  body.edge-hero .ez-category-hero{
+    padding-top: 24px !important;
+    margin-top: 0 !important;
+  }
+}
+/* =========================================================
+   FORCE CATEGORY HERO BELOW MOBILE NAV (portrait + landscape)
+   Paste at VERY END
+   ========================================================= */
+
+@media (max-width: 1024px){
+
+  /* Your mobile header is fixed, so the page MUST start below it */
+  body.edge-hero main{
+    padding-top: calc(64px + env(safe-area-inset-top, 0px)) !important;
+    margin-top: 0 !important;
+  }
+
+  /* Ensure the hero itself doesn't sneak upward */
+  body.edge-hero .ez-white-page,
+  body.edge-hero .ez-white-page .ez-category-hero{
+    margin-top: 0 !important;
+    transform: none !important;
+  }
+
+  /* Extra safety: if any rule uses negative margin on the hero */
+  body.edge-hero .ez-category-hero{
+    padding-top: 24px !important;
+    
+  }
+}
+
+/* ================================
+   FIX: overlay was blocking drawer clicks
+   ================================ */
+@media (max-width: 1024px){
+
+  .ezm-nav{
+    z-index: 2000 !important;
+  }
+
+  /* keep overlay above page, but BELOW drawer */
+  .ezm-overlay{
+    z-index: 2050 !important;
+  }
+
+  /* drawer must be ABOVE the overlay */
+  .ezm-drawer{
+    z-index: 2100 !important;
+  }
+}
+
+/* ============================
+   MOBILE DRAWER GAP FIX
+   ============================ */
+@media (max-width: 1024px){
+
+  /* Stop pushing quick links to the bottom */
+  .ezm-quick{
+    margin-top: 16px !important;
+  }
+
+  /* Ensure list doesn't reserve phantom space */
+  .ezm-list{
+    flex: none !important;
+  }
+}
+
+@media (max-width: 1024px){
+  .ezm-drawer{
+    position: fixed;
+    top: 0;
+    bottom: 0;                 /* 🔑 key fix */
+    left: 0;
+    width: 100vw;
+
+    height: auto !important;   /* 🔑 remove forced vh height */
+    max-height: 100dvh;        /* modern mobile-safe height */
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+
+    padding-bottom: 12px;      /* small, intentional breathing room */
+  }
+}
+
+@media (max-width: 1024px){
+  .ezm-quick{
+    margin-top: auto;
+    padding-bottom: 8px !important; /* was larger */
+  }
+}
+
+@supports (padding: env(safe-area-inset-bottom)){
+  .ezm-drawer{
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* ===== Email hover tooltip (desktop) ===== */
+#profileWrapper{
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* Make sure nothing clips the tooltip */
+.nav-right{
+  overflow: visible !important;
+}
+
+.email-tooltip{
+  display: none;                 /* hidden by default */
+  position: absolute;
+  top: 42px;                     /* drops below the icon */
+  right: 0;
+  background: #111;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  z-index: 99999;                /* above navs/overlays */
+  box-shadow: 0 10px 24px rgba(0,0,0,.18);
+}
+
+/* CSS hover (no JS needed) */
+#profileWrapper:hover .email-tooltip{
+  display: block !important;
+}
+
+</style>
+{% block styles %}{% endblock %}
+</head>
+
+<body class="{{ body_class|default('') }}"
+
+
+      style="--page-bg: {{ surface_bg|default('#fff') }}; --page-text: {{ surface_text|default('#111') }};">
+
+  <!-- Mobile Nav (≤900px) -->
+  <nav class="ezm-nav">
+    <div class="ezm-overlay" aria-hidden="true"></div>
+
+    <button class="ezm-burger" aria-label="Open menu" aria-expanded="false" aria-controls="ezm-drawer">
+      <i class="fas fa-bars" aria-hidden="true"></i>
+    </button>
+
+
+    <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="ElectroZone" class="ezm-logo"/>
+
+    <div class="ezm-icons">
+      <a href="/login" class="ezm-icon nav-icon" aria-label="Account">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 12.5a3.5 3.5 0 1 0-3.5-3.5 3.5 3.5 0 0 0 3.5 3.5Z"/>
+          <path d="M6.5 18a5.5 5.5 0 0 1 11 0"/>
+        </svg>
+        {% if session.get('email') or session.get('user_id') %}
+          <span class="red-dot"></span>
+        {% endif %}
+      </a>
+
+      <a href="/cart" class="ezm-icon nav-icon" aria-label="Cart">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="9" cy="20" r="1.5"/>
+          <circle cx="17" cy="20" r="1.5"/>
+          <path d="M3 4h2l2 11a1.5 1.5 0 0 0 1.5 1.2h8.2a1.5 1.5 0 0 0 1.46-1.13L21 7H6.2"/>
+        </svg>
+        {% if total_cart_quantity is defined and total_cart_quantity > 0 %}
+          <span class="ezm-badge">{{ total_cart_quantity }}</span>
+        {% endif %}
+      </a>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <aside id="ezm-drawer" class="ezm-drawer" aria-hidden="true">
+    <div class="ezm-drawer-head">
+      <a href="/" class="ezm-logo">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="ElectroZone" />
+      </a>
+      <button class="ezm-close" aria-label="Close menu"><i class="fas fa-times"></i></button>
+    </div>
+
+    <form class="ezm-search" method="GET" action="{{ url_for('routes.search') }}">
+      <i class="fas fa-search"></i>
+      <input type="text" name="q" placeholder="Search" value="{{ request.args.get('q','') }}">
+    </form>
+
+    <nav class="ezm-list">
+      <a href="{{ url_for('routes.category_page', slug='tvs') }}">TVs <i class="fas fa-chevron-right"></i></a>
+      <a href="{{ url_for('routes.category_page', slug='audio') }}">Audio <i class="fas fa-chevron-right"></i></a>
+      <a href="{{ url_for('routes.category_page', slug='phones') }}">Phones <i class="fas fa-chevron-right"></i></a>
+      <a href="{{ url_for('routes.category_page', slug='projectors') }}">Projectors <i class="fas fa-chevron-right"></i></a>
+      <a href="{{ url_for('routes.category_page', slug='fridges') }}">Fridges <i class="fas fa-chevron-right"></i></a>
+      <a href="{{ url_for('routes.category_page', slug='microwaves') }}">Microwaves <i class="fas fa-chevron-right"></i></a>
+    </nav>
+
+
+    <div class="ezm-quick">
+      <a href="/cart"><i class="fas fa-shopping-cart"></i> Cart</a>
+      <a href="/login"><i class="fas fa-user"></i> Account</a>
+      <a href="{{ url_for('routes.gift_card') }}"><i class="fas fa-gift"></i> Gift Cards</a>
+      <a href="{{ url_for('routes.product_finder') }}"><i class="fas fa-magnifying-glass"></i> Product Finder</a>
+      <a href="{{ url_for('routes.community') }}"><i class="fas fa-users"></i> Community</a>
+      <a href="{{ url_for('routes.corporate_sales') }}"><i class="fas fa-briefcase"></i> Corporate Sales</a>
+    </div>
+  </aside>
+
+  <!-- Desktop Top Navbar -->
+  <nav class="top-navbar">
+    <div class="logo">
+      <a href="/"><img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="ElectroZone Logo" class="logo-img"></a>
+    </div>
+
+    <div class="top-right-links" style="margin-right:16px; padding-right:36px;">
+      <a href="{{ url_for('routes.gift_card') }}">Gift Cards</a>
+      <a href="{{ url_for('routes.product_finder') }}">Product Finder</a>
+      <a href="{{ url_for('routes.community') }}"><i class="fas fa-users"></i> Community</a>
+      <a href="{{ url_for('routes.corporate_sales') }}">Corporate Sales</a>
+      <a href="{{ url_for('routes.help') }}">Help</a>
+    </div>
+  </nav>
+
+  <!-- Desktop Bottom Navbar -->
+  <nav class="main-navbar" style="padding-right:36px;">
+    <div class="nav-left">
+      <ul>
+        <li><a href="{{ url_for('routes.category_page', slug='tvs') }}">TVs</a></li>
+        <li><a href="{{ url_for('routes.category_page', slug='audio') }}">Audio</a></li>
+        <li><a href="{{ url_for('routes.category_page', slug='phones') }}">Phones</a></li>
+        <li><a href="{{ url_for('routes.category_page', slug='projectors') }}">Projectors</a></li>
+        <li><a href="{{ url_for('routes.category_page', slug='fridges') }}">Fridges</a></li>
+        <li><a href="{{ url_for('routes.category_page', slug='microwaves') }}">Microwaves</a></li>
+      </ul>
+    </div>
+
+    <div class="nav-right">
+      <form class="search-form" method="GET" action="{{ url_for('routes.search') }}" style="margin-right:81px;">
+        <button type="submit"><i class="fas fa-search"></i></button>
+        <input type="text" name="q" placeholder="Search" value="{{ request.args.get('q','') }}">
+      </form>
+
+      <div class="user-icon-wrapper" id="profileWrapper">
+  <a href="/login" class="user-icon nav-icon" aria-label="Account">
+
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M12 12.5a3.5 3.5 0 1 0-3.5-3.5 3.5 3.5 0 0 0 3.5 3.5z"/>
+      <path d="M6.5 18a5.5 5.5 0 0 1 11 0"/>
+    </svg>
+
+    {% if session.get('email') %}
+      <span class="email-tooltip">{{ session['email'] }}</span>
+    {% endif %}
+
+  </a>
+
+  {% if session.get('email') or session.get('user_id') %}
+    <span class="red-dot"></span>
+  {% endif %}
+</div>
+
+
+      <a href="/cart" class="cart-link nav-icon" aria-label="Cart">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="9" cy="20" r="1.5"/>
+          <circle cx="17" cy="20" r="1.5"/>
+          <path d="M3 4h2l2 11a1.5 1.5 0 0 0 1.5 1.2h8.2a1.5 1.5 0 0 0 1.46-1.13L21 7H6.2"/>
+        </svg>
+        {% if total_cart_quantity is defined and total_cart_quantity > 0 %}
+          <span class="cart-count-badge">{{ total_cart_quantity }}</span>
+        {% endif %}
+      </a>
+    </div>
+  </nav>
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-container">
+      {% for category, message in messages %}
+        {% if category not in ['signup_success', 'signup_error'] %}
+          <div class="flash-message {{ 'flash-success' if category == 'success' else 'flash-danger' }}">
+            {{ message }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% endwith %}
+
+  <!-- Main content -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include 'partials/signup_band.html' %}
+
+  <!-- Footer (EZF) -->
+  <footer class="ez-footer">
+    <div class="ezf-container">
+      <div class="ezf-top">
+        <div class="ezf-brand-col">
+          <a class="ezf-brand" href="/">
+            <img src="{{ url_for('static', filename='images/logo1.jpg') }}" alt="ElectroZone">
+          </a>
+          <p class="ezf-call-label">Give us a call</p>
+          <a class="ezf-phone" href="tel:+61 41 671 0332">(61) 41 671 0332</a>
+        </div>
+
+        <div class="ezf-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="{{ url_for('routes.about_electrozone') }}">About ElectroZone</a></li>
+            <li><a href="{{ url_for('routes.our_values') }}">Our Values</a></li>
+            <li><a href="{{ url_for('routes.terms') }}">Terms of Service</a></li>
+            <li><a href="{{ url_for('routes.privacy') }}">Privacy Policy</a></li>
+          </ul>
+        </div>
+
+        <div class="ezf-col">
+          <h4>Shop by Category</h4>
+          <ul>
+            <li><a href="{{ url_for('routes.category_page', slug='tvs') }}">TVs</a></li>
+            <li><a href="{{ url_for('routes.category_page', slug='audio') }}">Audio</a></li>
+            <li><a href="{{ url_for('routes.category_page', slug='phones') }}">Phones</a></li>
+            <li><a href="{{ url_for('routes.category_page', slug='projectors') }}">Projectors</a></li>
+            <li><a href="{{ url_for('routes.category_page', slug='fridges') }}">Fridges</a></li>
+            <li><a href="{{ url_for('routes.category_page', slug='microwaves') }}">Microwaves</a></li>
+          </ul>
+        </div>
+
+        <div class="ezf-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="{{ url_for('routes.gift_card') }}">Gift Cards</a></li>
+            <li><a href="{{ url_for('routes.product_finder') }}">Product Finder</a></li>
+            <li><a href="{{ url_for('routes.community') }}">Community</a></li>
+            <li><a href="{{ url_for('routes.corporate_sales') }}">Corporate Sales</a></li>
+            <li><a href="{{ url_for('routes.help') }}">Help</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ezf-divider" aria-hidden="true"></div>
+
+      <div class="ezf-bottom">
+        <div class="ezf-address">
+          <i class="fa-solid fa-location-dot"></i>
+          600 N Washington Ave, Suite C203, Brisbane QLD 4000
+        </div>
+        <div class="ezf-copy">© 2025 ElectroZone. All rights reserved.</div>
+        <div class="ezf-social">
+          <a href="https://au.linkedin.com/" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="https://www.instagram.com/accounts/login/?hl=en" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.youtube.com/" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ JS (clean + non-duplicated) ============ -->
+  <script>
+    // Mobile drawer open/close
+    // Mobile drawer open/close + burger toggles to X
+(function(){
+  const body = document.body;
+  const burger = document.querySelector('.ezm-burger');
+  const burgerIcon = burger ? burger.querySelector('i') : null;
+  const drawer = document.getElementById('ezm-drawer');
+  const overlay = document.querySelector('.ezm-overlay');
+  const closeBtn = document.querySelector('.ezm-close');
+
+  function setBurgerOpenState(isOpen){
+    if(!burger || !burgerIcon) return;
+
+    burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    burger.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+
+    // swap icon: bars <-> times
+    burgerIcon.classList.toggle('fa-bars', !isOpen);
+    burgerIcon.classList.toggle('fa-times', isOpen);
+  }
+
+  function openNav(){
+    body.classList.add('ezm-open');
+    drawer?.setAttribute('aria-hidden','false');
+    setBurgerOpenState(true);
+  }
+
+  function closeNav(){
+    body.classList.remove('ezm-open');
+    drawer?.setAttribute('aria-hidden','true');
+    setBurgerOpenState(false);
+  }
+
+  function toggleNav(){
+    if(body.classList.contains('ezm-open')) closeNav();
+    else openNav();
+  }
+
+  burger?.addEventListener('click', toggleNav);
+  closeBtn?.addEventListener('click', closeNav);
+  overlay?.addEventListener('click', closeNav);
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeNav(); });
+
+  // close when clicking a drawer link
+  drawer?.addEventListener('click', (e)=>{
+    const a = e.target.closest('a');
+    if(a) closeNav();
+  });
+
+  // make sure initial state is correct
+  setBurgerOpenState(false);
+})();
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.pz-carousel-wrapper').forEach(wrapper => {
+    const lane  = wrapper.querySelector('.pz-scrolling-wrapper');
+    const left  = wrapper.querySelector('.pz-scroll-btn.left');
+    const right = wrapper.querySelector('.pz-scroll-btn.right');
+    if(!lane) return;
+
+    // Force scrollable (in case CSS was overridden)
+    lane.style.overflowX = 'auto';
+    lane.style.overflowY = 'hidden';
+
+    const gapPx = () => parseFloat(getComputedStyle(lane).gap || '24') || 24;
+
+    const step = () => {
+      const card = lane.querySelector('.pz-product-card') || lane.firstElementChild;
+      const w = card ? card.getBoundingClientRect().width : 320;
+      return w + gapPx();
+    };
+
+    left?.addEventListener('click', (e) => {
+      e.preventDefault();
+      lane.scrollBy({ left: -step(), behavior: 'smooth' });
+    });
+
+    right?.addEventListener('click', (e) => {
+      e.preventDefault();
+      lane.scrollBy({ left: step(), behavior: 'smooth' });
+    });
+  });
+});
+
+
+  </script>
+
+</body>
+</html>

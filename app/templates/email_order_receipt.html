@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ElectroZone Receipt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#f3f4f6;padding:24px 0;">
+    <tr>
+      <td align="center">
+        <table role="presentation" cellpadding="0" cellspacing="0" width="640" style="max-width:640px;background:#ffffff;border-radius:8px;overflow:hidden;">
+          
+          <!-- HEADER BAR WITH LOGO -->
+          <tr>
+            
+            <td style="padding:10px 28px;background:#0A2A5A;color:#ffffff;">
+  <div style="display:flex;align-items:center;gap:12px;">
+
+    <!-- Larger ElectroZone Logo -->
+    <img src="https://files.catbox.moe/r9lgoj.png"
+         alt="ElectroZone Logo"
+         style="height:120px;width:auto;display:block;">
+
+    <!-- Brand Name -->
+    <div style="font-size:26px;font-weight:600;"></div>
+  </div>
+
+  <!-- Order Receipt Title -->
+  <div style="font-size:32px;font-weight:700;margin-top:26px;">
+    Order receipt
+  </div>
+</td>
+
+
+</tr>
+          <!-- END HEADER BAR -->
+
+          <!-- Title / intro -->
+          <tr>
+            <td style="padding:24px 28px 8px 28px;color:#111827;">
+              <h1 style="margin:0 0 8px 0;font-size:24px;font-weight:700;">Thank you for your purchase!</h1>
+              <p style="margin:0;font-size:14px;line-height:1.5;color:#4b5563;">
+                Your payment has been processed successfully. Below is a summary of your order.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Order meta -->
+          <tr>
+            <td style="padding:12px 28px 4px 28px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td style="font-size:12px;font-weight:600;color:#6b7280;padding-bottom:4px;">ORDER ID</td>
+                </tr>
+                <tr>
+                  <td style="padding-bottom:12px;">
+                    <span style="display:inline-block;padding:6px 12px;border-radius:999px;border:1px dashed #2a6ac9;font-size:13px;font-weight:600;color:#2a6ac9;">
+                      {{ order_id }}
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-size:12px;font-weight:600;color:#6b7280;padding-bottom:2px;">Date</td>
+                </tr>
+                <tr>
+                  <td style="font-size:13px;color:#111827;padding-bottom:8px;">
+                    {{ est_delivery_date }}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Items table -->
+          <tr>
+            <td style="padding:12px 28px 4px 28px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;font-size:13px;color:#111827;">
+                <tr>
+                  <th align="left"   style="padding:8px 0 6px 0;border-bottom:1px solid #e5e7eb;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#6b7280;">Item</th>
+                  <th align="right"  style="padding:8px 0 6px 0;border-bottom:1px solid #e5e7eb;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#6b7280;width:50px;">Qty</th>
+                  <th align="right"  style="padding:8px 0 6px 0;border-bottom:1px solid #e5e7eb;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#6b7280;width:90px;">Price</th>
+                  <th align="right"  style="padding:8px 0 6px 0;border-bottom:1px solid #e5e7eb;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#6b7280;width:100px;">Subtotal</th>
+                </tr>
+
+                {% for item in order_items %}
+                <tr>
+                  <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;">
+                    {{ item.name }}
+                  </td>
+                  <td align="right" style="padding:10px 0;border-bottom:1px solid #f3f4f6;white-space:nowrap;">
+                    {{ item.qty }}
+                  </td>
+                  <td align="right" style="padding:10px 0;border-bottom:1px solid #f3f4f6;white-space:nowrap;">
+                    ${{ '%.2f'|format(item.price) }}
+                  </td>
+                  <td align="right" style="padding:10px 0;border-bottom:1px solid #f3f4f6;white-space:nowrap;">
+                    ${{ '%.2f'|format(item.subtotal) }}
+                  </td>
+                </tr>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+
+          <!-- Totals -->
+          <tr>
+            <td style="padding:12px 28px 4px 28px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="font-size:13px;color:#111827;">
+                <tr>
+                  <td style="padding:4px 0;color:#4b5563;">
+                    Items <span style="font-weight:600;">{{ order_items|length }} item{% if order_items|length != 1 %}s{% endif %}</span>
+                  </td>
+                  <td align="right" style="padding:4px 0;"></td>
+                </tr>
+                <tr>
+                  <td style="padding:4px 0;font-weight:600;">Total</td>
+                  <td align="right" style="padding:4px 0;font-weight:700;font-size:14px;">
+                    ${{ '%.2f'|format(order_total) }}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding:20px 28px 24px 28px;font-size:13px;color:#4b5563;line-height:1.5;">
+              If you have any questions, just reply to this email and our team will be happy to help.
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:12px 28px 20px 28px;font-size:11px;color:#9ca3af;text-align:center;border-top:1px solid #e5e7eb;">
+              &copy; 2025 ElectroZone. All rights reserved.
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

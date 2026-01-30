@@ -1,0 +1,650 @@
+
+:root{--red:#B23850;--blue:steelblue;--cream:#E7E3D4;--soft:#f7f9fc;--ink:#121826;--muted:#5b6473;--border:#e6eaf0;}
+.czq-wrap{max-width:1150px;margin:0 auto;padding:0 20px;}
+.czq-hero{background:linear-gradient(140deg, rgba(59,139,235,.14), rgba(178,56,80,.10)); padding:44px 0 24px;}
+.czq-hero .czq-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:22px;align-items:stretch;}
+.czq-hero-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:28px;box-shadow:0 10px 30px rgba(18,24,38,.06);}
+.czq-kicker{display:inline-block;font-weight:700;color:var(--blue);letter-spacing:.3px;font-size:13px;margin-bottom:10px;}
+.czq-hero-card h1{margin:0 0 10px;font-size:40px;line-height:1.05;color:var(--ink);}
+.czq-hero-card p{margin:0;color:var(--muted);font-size:16px;line-height:1.6;}
+.czq-badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.czq-badge{background:rgba(59,139,235,.10);border:1px solid rgba(59,139,235,.20);color:#1a3f7a;padding:8px 10px;border-radius:999px;font-size:13px;font-weight:600;}
+.czq-image-box{height:100%;min-height:220px;border-radius:18px;border:1px dashed rgba(18,24,38,.25);background:linear-gradient(180deg,#ffffff, #f2f5fb);display:flex;align-items:center;justify-content:center}
+.czq-image-text{display:flex;flex-direction:column;gap:6px;align-items:center;color:rgba(18,24,38,.65);text-align:center}
+.czq-image-text strong{color:rgba(18,24,38,.8)}
+.czq-section{padding:30px 0 60px;background:#fff;}
+.czq-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.czq-panel{border:1px solid var(--border);border-radius:18px;background:#fff;padding:22px;box-shadow:0 10px 30px rgba(18,24,38,.05);}
+.czq-panel h2{margin:0 0 12px;color:var(--ink);font-size:22px}
+.czq-list{list-style:none;padding:0;margin:0;display:grid;gap:10px;color:var(--muted)}
+.czq-list li{display:flex;gap:10px;align-items:flex-start}
+.czq-list li span{color:var(--red);font-weight:900;line-height:1}
+.czq-note{margin-top:14px;padding:12px 14px;border-radius:14px;background:rgba(178,56,80,.08);border:1px solid rgba(178,56,80,.18);color:#5b2a35}
+.czq-steps{margin-top:16px;display:grid;gap:12px}
+.czq-step{display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid var(--border);border-radius:14px;background:var(--soft)}
+.czq-step-num{width:34px;height:34px;border-radius:10px;background:rgba(178,56,80,.12);display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--red)}
+.czq-step h3{margin:0 0 4px;font-size:15px;color:var(--ink)}
+.czq-step p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+.czq-form-inner{margin-top:8px}
+.czq-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.czq-field{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.czq-field label{font-weight:700;color:var(--ink);font-size:13px}
+.czq-field input,.czq-field select,.czq-field textarea{border:1px solid var(--border);border-radius:12px;padding:11px 12px;font-size:14px;outline:none}
+.czq-field input:focus,.czq-field select:focus,.czq-field textarea:focus{border-color:rgba(59,139,235,.55);box-shadow:0 0 0 4px rgba(59,139,235,.14)}
+.czq-submit{margin-top:14px;width:100%;border:none;border-radius:14px;padding:12px 14px;background:var(--red);color:#fff;font-weight:800;font-size:15px;cursor:pointer}
+.czq-submit:hover{filter:brightness(.96)}
+.czq-small{margin:10px 0 0;color:var(--muted);font-size:13px;text-align:center}
+.czq-small a{color:var(--blue);font-weight:800;text-decoration:none}
+
+@media (max-width: 900px){
+  .czq-hero .czq-wrap{grid-template-columns:1fr}
+  .czq-grid{grid-template-columns:1fr}
+  .czq-row{grid-template-columns:1fr}
+  .czq-hero-card h1{font-size:34px}
+}
+
+/* Desktop-only: smaller + right aligned */
+@media (min-width: 992px) {
+  .rq-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 14px;
+  }
+
+  .rq-btn-submit {
+    width: auto !important;
+    min-width: 220px;
+    padding: 10px 18px;
+    font-size: 15px;
+    border-radius: 999px;
+  }
+}
+
+/* =========================================
+   Request Quote – widen layout (desktop)
+   Match Contact Sales / Contact Support
+   ========================================= */
+@media (min-width: 992px){
+
+  /* Increase page container width */
+  .czq-wrap,
+  .rq-wrap,
+  .quote-wrap,
+  .container{
+    max-width: 1600px;     /* wider than 1150 */
+    width: 100%;
+    margin: 0 auto;
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  /* If your hero has its own wrap inside */
+  .czq-hero .czq-wrap,
+  .rq-hero .rq-wrap{
+    max-width: 1600px;
+  }
+}
+/* ================================
+   Request Quote – Hero Image Fix
+   ================================ */
+
+.czq-image-box {
+  border: none !important;        /* removes dotted border */
+  background: none;
+  padding: 0;
+  border-radius: 20px;
+  overflow: hidden;
+
+  /* Match height of other pages */
+  max-height: 340px;
+  height: 340px;
+}
+
+.czq-hero-img {
+  width: 100%;
+  height: 100%;
+  max-height: 340px;
+
+  object-fit: cover;              /* clean crop, no stretching */
+  display: block;
+}
+
+/* ================================
+   Request Quote – Hero Image
+   ================================ */
+
+.czq-image-box {
+  width: 100%;
+  height: 300px;             /* MATCHES support */
+  border: none !important;   /* removes dotted border */
+  border-radius: 18px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.czq-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   QUOTE — FIX iPad + landscape + hero balance
+   Paste at BOTTOM of cz_quote.css
+========================= */
+
+.czq-hero { padding: 26px 0 !important; }
+.czq-wrap { max-width: 1200px; margin: 0 auto; }
+
+/* Side-by-side baseline */
+.czq-wrap {
+  display: flex;
+  align-items: stretch;
+  gap: 26px;
+}
+
+.czq-hero-card { flex: 1 1 58%; min-width: 0; }
+.czq-image     { flex: 1 1 42%; min-width: 0; display: flex; }
+
+.czq-image-box {
+  width: 100%;
+  height: 100%;
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.czq-hero-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* ✅ iPad portrait + mobile landscape: FORCE side-by-side */
+@media (min-width: 700px) and (max-width: 1024px) {
+  .czq-wrap { flex-direction: row !important; }
+  .czq-image-box { min-height: 320px !important; }
+}
+
+/* ✅ Small phones only: stack */
+@media (max-width: 699px) {
+  .czq-wrap { flex-direction: column !important; }
+  .czq-image-box { min-height: 220px !important; }
+}
+
+/* Keep “Send Request” consistent even if inline styles change */
+.rq-btn-submit{
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(0,0,0,.10);
+}
+
+
+/* =========================================================
+   REQUEST QUOTE — FORCE SIDE-BY-SIDE ON LANDSCAPE + iPAD
+   Paste at VERY BOTTOM of cz_quote.css
+========================================================= */
+
+/* Keep hero proportional (trim height a bit) */
+.czq-hero { padding: 26px 0 !important; }
+
+/* Base layout */
+.czq-hero .czq-wrap{
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex !important;
+  align-items: stretch !important;
+  gap: 24px !important;
+}
+
+/* Left + Right columns */
+.czq-hero .czq-hero-card{ flex: 1 1 58% !important; min-width: 0 !important; }
+.czq-hero .czq-image{     flex: 1 1 42% !important; min-width: 0 !important; display: flex !important; }
+
+/* Image fills its column nicely */
+.czq-hero .czq-image-box{
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 22px !important;
+  overflow: hidden !important;
+  min-height: 320px; /* default column height */
+}
+.czq-hero .czq-hero-img{
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  object-fit: cover !important;
+}
+
+/* ✅ ALL LANDSCAPE (phones) — keep side-by-side */
+@media (orientation: landscape) and (max-width: 1024px){
+  .czq-hero .czq-wrap{ flex-direction: row !important; }
+  .czq-hero .czq-image-box{ min-height: 240px !important; }
+}
+
+/* ✅ iPads/tablets (portrait too) — keep side-by-side */
+@media (min-width: 768px) and (max-width: 1024px){
+  .czq-hero .czq-wrap{ flex-direction: row !important; }
+  .czq-hero .czq-image-box{ min-height: 300px !important; }
+}
+
+/* ✅ ONLY small portrait phones stack */
+@media (max-width: 699px) and (orientation: portrait){
+  .czq-hero .czq-wrap{ flex-direction: column !important; }
+  .czq-hero .czq-image-box{ min-height: 220px !important; }
+}
+
+/* Button stays looking professional everywhere (even if inline styles exist) */
+.rq-btn-submit{
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(0,0,0,.10);
+}
+
+/* =========================================================
+   REQUEST QUOTE — DESKTOP ONLY WIDTH + SPACING
+   Paste at VERY BOTTOM of cz_quote.css
+========================================================= */
+@media (min-width: 1100px){
+
+  /* widen the whole page content area */
+  .czq-wrap{
+    max-width: 1400px !important;   /* was too small */
+    padding-left: 44px !important;
+    padding-right: 44px !important;
+  }
+
+  /* hero: more space between text card and image */
+  .czq-hero .czq-wrap{
+    gap: 40px !important;
+    align-items: stretch !important;
+  }
+
+  /* make both hero blocks feel less cramped */
+  .czq-hero-card{
+    padding: 40px 44px !important;
+  }
+
+  .czq-image-box{
+    min-height: 360px !important;   /* keeps hero proportional */
+  }
+
+  /* main section grid: more breathing room */
+  .czq-grid{
+    gap: 40px !important;
+  }
+
+  .czq-panel{
+    padding: 34px 36px !important;
+  }
+}
+
+/* =========================================================
+   REQUEST QUOTE — DESKTOP FULL-PAGE UNIFORM STRETCH
+   Paste at VERY BOTTOM of cz_quote.css
+========================================================= */
+@media (min-width: 1100px){
+
+  /* 1) GLOBAL: make every wrapper on this page wider */
+  .czq-wrap{
+    max-width: 1550px !important;   /* main stretch */
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 52px !important;  /* breathing room */
+    padding-right: 52px !important;
+  }
+
+  /* 2) HERO: keep side-by-side, add height + spacing */
+  .czq-hero{
+    padding-top: 34px !important;
+    padding-bottom: 34px !important;
+  }
+
+  .czq-hero .czq-wrap{
+    display: grid !important;
+    grid-template-columns: 1.15fr 0.85fr !important; /* text bigger than image */
+    gap: 46px !important;
+    align-items: stretch !important;
+  }
+
+  .czq-hero-card{
+    padding: 44px 48px !important;
+  }
+
+  .czq-image-box{
+    height: 100% !important;
+    min-height: 420px !important;   /* banner “taller” like you want */
+  }
+
+  .czq-hero-img{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+
+  /* 3) BELOW HERO: stretch BOTH panels (left + form) uniformly */
+  .czq-section .czq-wrap.czq-grid{
+    max-width: 1550px !important;   /* force same width as hero */
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important; /* equal stretch */
+    gap: 46px !important;
+    align-items: start !important;
+  }
+
+  .czq-panel{
+    width: 100% !important;
+    padding: 38px 40px !important;
+  }
+
+  /* 4) FORM: make inputs actually use the wider space */
+  .czq-form-inner{
+    width: 100% !important;
+  }
+
+  .czq-row{
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 18px 22px !important;
+  }
+
+  .czq-field input,
+  .czq-field select,
+  .czq-field textarea{
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 5) Submit button area: align nicely with the stretched form */
+  .rq-form-actions{
+    width: 100% !important;
+    display: flex !important;
+    justify-content: flex-start !important;
+    margin-top: 14px !important;
+  }
+}
+
+
+/* =========================================================
+   REQUEST QUOTE — FIX HERO HEIGHT + IMAGE GAP + BUTTON SIZE
+   Paste at the VERY BOTTOM of cz_quote.css
+========================================================= */
+
+/* 1) Reduce the height of the TOP banner section */
+.czq-hero{
+  padding: 34px 0 !important;     /* was too tall */
+}
+
+/* Keep the hero row compact */
+.czq-hero .czq-wrap{
+  align-items: center !important;  /* stops stretching vertically */
+  gap: 22px !important;
+}
+
+/* Reduce the left card height (too much padding makes it tall) */
+.czq-hero-card{
+  padding: 18px 20px !important;
+}
+
+/* 2) Reduce IMAGE CONTAINER height so there are no top/bottom gaps */
+.czq-image-box{
+  height: 260px !important;        /* reduce wrapper height */
+  border-radius: 18px !important;
+  overflow: hidden !important;
+  display: block !important;
+}
+
+/* Make the image FILL the wrapper (kills empty gaps) */
+.czq-hero-img{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;    /* fills box, crops cleanly */
+  display: block !important;
+}
+
+/* 3) Reduce blue button size */
+.rq-form-actions{
+  margin-top: 12px !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+}
+
+.rq-btn-submit{
+  width: auto !important;
+  min-width: 150px !important;
+  padding: 9px 16px !important;
+  font-size: 14px !important;
+  border-radius: 999px !important;
+}
+/* =========================================================
+   REQUEST QUOTE — MAKE HERO UNIFORM (TEXT + IMAGE SAME HEIGHT)
+   Paste at VERY BOTTOM of cz_quote.css
+========================================================= */
+
+/* Keep hero section compact and consistent */
+.czq-hero{
+  padding: 34px 0 !important;
+}
+
+/* Make both hero columns stop stretching tall */
+.czq-hero .czq-wrap{
+  align-items: center !important;
+  gap: 22px !important;
+}
+
+/* Compact left card (already reduced, keep it consistent) */
+.czq-hero-card{
+  padding: 18px 20px !important;
+}
+
+/* ---------- RIGHT SIDE IMAGE CARD: FIX HEIGHT + REMOVE WHITE GAP ---------- */
+
+/* If your right side wrapper is adding height/padding, neutralize it */
+.czq-image{
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Force the image card to be a compact, fixed height like other pages */
+.czq-image-box{
+  width: 100% !important;
+  height: 160px !important;          /* ✅ reduce overall image card height */
+  border-radius: 18px !important;
+  overflow: hidden !important;
+  background: #fff !important;
+  padding: 0 !important;             /* ✅ kills internal padding that causes gaps */
+  display: block !important;
+}
+
+/* Make the image fill the card completely (no blank space) */
+.czq-image-box img,
+.czq-hero-img{
+  width: 100% !important;
+  height: 80% !important;
+  object-fit: cover !important;      /* ✅ crops nicely, fills the box */
+  display: block !important;         /* ✅ removes inline-image baseline gaps */
+  margin: 0 !important;
+}
+
+/* =========================================================
+   REQUEST QUOTE — FORCE UNIFORM HERO HEIGHT (TEXT + IMAGE)
+   Paste at VERY BOTTOM of cz_quote.css
+========================================================= */
+
+/* 1) Reduce overall hero height (top section) */
+.czq-hero{
+  padding: 34px 0 !important;
+}
+
+/* 2) Make the two columns behave like equal-height cards */
+.czq-hero .czq-wrap{
+  display: grid !important;
+  grid-template-columns: 1.1fr .9fr !important;
+  gap: 22px !important;
+  align-items: stretch !important; /* key: stretch both sides equally */
+}
+
+/* 3) Pick a clean “Contact Sales style” hero height */
+:root{
+  --czq-hero-h: 315px;
+}
+
+/* Left text card matches height */
+.czq-hero-card{
+  min-height: var(--czq-hero-h) !important;
+  padding: 18px 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+/* 4) RIGHT side wrappers must NOT add extra height */
+.czq-image{
+  height: var(--czq-hero-h) !important;
+  min-height: 0 !important;
+  display: block !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 5) Image card height MUST match and clip cleanly */
+.czq-image-box{
+  height: var(--czq-hero-h) !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+  background: #fff !important;
+  display: block !important;
+}
+
+/* 6) Force the image to fill the box (removes the white gap) */
+.czq-image-box > img,
+img.czq-hero-img{
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+/* 7) If any old rule is forcing an aspect ratio or auto height, kill it */
+.czq-image-box,
+.czq-image-box *{
+  box-sizing: border-box !important;
+}
+
+/* Keep mobile stacking intact */
+@media (max-width: 980px){
+  .czq-hero .czq-wrap{
+    grid-template-columns: 1fr !important;
+  }
+  .czq-image,
+  .czq-image-box{
+    height: 240px !important;
+  }
+}
+
+/* =========================================================
+   REQUEST QUOTE — iPAD + MOBILE LANDSCAPE: image beside text
+   (Desktop untouched)
+   ========================================================= */
+
+/* ✅ Mobile landscape (phones in landscape) */
+@media (orientation: landscape) and (max-width: 980px){
+
+  /* Force hero back to 2 columns */
+  .czq-hero .czq-wrap{
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    gap: 18px !important;
+  }
+
+  .czq-hero-card{
+    flex: 0 0 56% !important;
+    min-width: 0 !important;
+  }
+
+  .czq-image{
+    flex: 0 0 44% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: stretch !important;
+  }
+
+  /* Match a clean “banner” height */
+  .czq-image-box{
+    width: 100% !important;
+    height: 260px !important;     /* adjust if you want slightly taller */
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    background: #fff !important;
+  }
+
+  .czq-hero-img{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+
+  /* Optional: keep badges from stretching awkwardly */
+  .czq-badges{
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+}
+
+
+/* ✅ iPads / Tablets (portrait + landscape) */
+@media (min-width: 768px) and (max-width: 1024px){
+
+  /* Force hero back to 2 columns */
+  .czq-hero .czq-wrap{
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    gap: 22px !important;
+  }
+
+  .czq-hero-card{
+    flex: 0 0 56% !important;
+    min-width: 0 !important;
+  }
+
+  .czq-image{
+    flex: 0 0 44% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: stretch !important;
+    justify-content: flex-end !important;
+  }
+
+  .czq-image-box{
+    width: 100% !important;
+    height: 300px !important;     /* iPad can handle a bit taller */
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    background: #fff !important;
+  }
+
+  .czq-hero-img{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+}

@@ -1,0 +1,31 @@
+{# expects: items=list of products, heading=str, carousel_id=str #}
+<div class="ezc" id="{{ carousel_id }}">
+  <div class="ezc-head">
+    <h2 class="ezc-title">{{ heading }}</h2>
+  </div>
+
+  <button class="ezc-btn ezc-prev" aria-label="Previous">&#10094;</button>
+
+  <div class="ezc-track">
+    {# 4 cards per slide #}
+    {% for group in items|batch(4, None) %}
+      <div class="ezc-slide">
+        {% for p in group %}
+          {% if p %}
+          <a class="ez-card" href="#" aria-label="{{ p.name }}">
+            <img class="ez-card-img"
+                 src="{{ url_for('static', filename=p.image_path) }}"
+                 alt="{{ p.name }}" loading="lazy">
+            <div class="ez-card-body">
+              <h3 class="ez-card-title">{{ p.name }}</h3>
+              <div class="ez-card-price">${{ '%.2f'|format(p.price) }}</div>
+            </div>
+          </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <button class="ezc-btn ezc-next" aria-label="Next">&#10095;</button>
+</div>

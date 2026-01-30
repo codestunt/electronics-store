@@ -1,0 +1,173 @@
+/* login_cart.css */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap');
+
+:root {
+  --red: #B23850;
+  --gray: #f4f4f4;
+  --dark-gray: #333;
+  --light-border: #ddd;
+}
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  color: var(--dark-gray);
+}
+
+/* 🔐 Login Page */
+.login-container {
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.login-box, .signup-box {
+  flex: 1;
+  background-color: #fff;
+  padding: 30px;
+  border: 1px solid var(--light-border);
+  border-radius: 8px;
+}
+
+.login-box h2, .signup-box h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.login-box label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid var(--light-border);
+  border-radius: 4px;
+}
+
+.login-box .btn-login {
+  background-color: var(--red);
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.login-box .btn-login:hover {
+  background-color: #a43043;
+}
+
+.signup-box {
+  background-color: var(--gray);
+}
+
+.signup-box ul {
+  padding-left: 20px;
+}
+
+.signup-box li {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.signup-box .btn-signup {
+  background-color: var(--red);
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.signup-box .btn-signup:hover {
+  background-color: #a43043;
+}
+
+.message {
+  text-align: center;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.success-message {
+  color: green;
+}
+
+.error-message {
+  color: red;
+}
+
+/* 🛒 Cart Page */
+.cart-container {
+  max-width: 1000px;
+  margin: 80px auto;
+  padding: 20px;
+}
+
+.cart-container h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--light-border);
+  padding-bottom: 10px;
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+.cart-table th,
+.cart-table td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid var(--light-border);
+}
+
+.cart-table th {
+  background-color: var(--gray);
+  font-weight: 600;
+}
+
+.cart-summary {
+  text-align: right;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.btn-checkout,
+.btn-continue {
+  background-color: var(--red);
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 4px;
+  margin-left: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-checkout:hover,
+.btn-continue:hover {
+  background-color: #a43043;
+}
+
+.cart-actions {
+  text-align: right;
+}
+

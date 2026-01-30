@@ -1,0 +1,470 @@
+{% extends "layout.html" %}
+{% set page_title = "Help & Support" %}
+{% set body_class = "edge-hero help-page" %}
+
+
+
+{% block content %}
+<section class="help-hero">
+  <h1>Need Assistance?</h1>
+  <p>Find quick answers, explore FAQs, or get in touch with our support team.</p>
+  <!-- help.html -->
+<a href="{{ url_for('routes.contact_support') }}" class="help-btn">
+  Contact Support
+</a>
+
+
+</section>
+
+<section class="help-categories">
+  <div class="help-grid">
+    <div class="help-card">
+      <h3>Orders</h3>
+      <p>Track, modify, or cancel your orders.</p>
+    </div>
+    <div class="help-card">
+      <h3>Shipping</h3>
+      <p>Delivery times, costs, and tracking information.</p>
+    </div>
+    <div class="help-card">
+      <h3>Payments</h3>
+      <p>Billing details, accepted payment methods, refunds.</p>
+    </div>
+    <div class="help-card">
+      <h3>Returns & Warranty</h3>
+      <p>Product warranties, return policies, and exchanges.</p>
+    </div>
+  </div>
+</section>
+
+<section class="help-faq">
+  <h2 class="faq-heading">Frequently Asked Questions</h2>
+
+  <div class="faq-accordion">
+    <!-- Keep only the first one open by default -->
+    <details class="faq-item" open>
+      <summary class="faq-q">How can I track my order?</summary>
+      <div class="faq-a">
+        You can track your order from your <strong>Dashboard → Orders</strong> section
+        or from your confirmation email’s tracking link.
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q">How do I return an item?</summary>
+      <div class="faq-a">
+        Go to <strong>Returns</strong> under your account to start a return. Items should be in original condition.
+        Our team will email you a prepaid label and next steps.
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q">What are your lead times for bulk orders?</summary>
+      <div class="faq-a">
+        For in-stock items, we typically dispatch within <strong>3–5 business days</strong>.
+        Large or mixed-brand projects may take <strong>1–2 weeks</strong> for consolidation.
+        Your quote will include the ETA and any phased delivery options.
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q">Can you install and configure devices?</summary>
+      <div class="faq-a">
+        Yes. We offer national installation through certified partners:
+        mounting, cabling, conference-room setup, POS deployment, asset tagging,
+        and on-site configuration. Email <a href="mailto:support@electrozone.com">support@electrozone.com</a>
+        with your site list and timeline and we’ll schedule you in.
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q">Do you offer credit terms?</summary>
+      <div class="faq-a">
+        We offer <strong>Net-30</strong> terms for approved corporate customers.
+        Apply with your business details and trade references. We also accept cards
+        and bank transfer for upfront orders.
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q">Where do I report an issue?</summary>
+      <div class="faq-a">
+        Please email <a href="mailto:support@electrozone.com">support@electrozone.com</a> with your order number,
+        a short description, and photos/videos if applicable. For urgent matters you can also call
+        <a href="tel:+61123456789">(61) 1234-567-89</a>. We’ll respond promptly.
+      </div>
+    </details>
+  </div>
+</section>
+
+
+<style>
+
+/* --- HERO (now includes Contact Support button) --- */
+.help-hero {
+  text-align: center;
+  padding: 80px 20px 70px;
+  background-color: steelblue;
+  color: #fff;
+}
+.help-hero h1 {
+  font-size: 2.6rem;
+  margin-bottom: 10px;
+}
+.help-hero p {
+  font-size: 1.1rem;
+  margin-bottom: 28px;
+  opacity: 0.95;
+}
+.help-hero .help-btn {
+  background: #fff;
+  color: steelblue;
+  padding: 12px 28px;
+  border-radius: 40px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+.help-hero .help-btn:hover {
+  background: #f4f8ff;
+}
+
+/* --- CATEGORY GRID --- */
+.help-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 40px 20px;
+  background: #f9fafc;
+}
+.help-card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  text-align: center;
+  transition: 0.3s;
+}
+.help-card:hover {
+  transform: translateY(-3px);
+}
+
+/* --- FAQ SECTION --- */
+.help-faq {
+  padding: 60px 20px;
+  background: #fff;
+}
+.help-faq h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* --- FAQ Section (Refined Style) --- */
+.help-faq {
+  background: #f9fafc;
+  padding: 70px 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.faq-heading {
+  text-align: center;
+  font-size: 2rem;
+  color: #222;
+  font-weight: 700;
+  margin-bottom: 50px;
+  position: relative;
+}
+
+.faq-heading::after {
+  content: "";
+  display: block;
+  width: 70px;
+  height: 3px;
+  background: steelblue;
+  margin: 12px auto 0;
+  border-radius: 2px;
+}
+
+/* Accordion Styling */
+.accordion {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+
+.accordion-item {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.accordion-header {
+  margin: 0;
+}
+
+.accordion-button {
+  width: 100%;
+  text-align: left;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  padding: 18px 24px;
+  background: #fff;
+  border: none;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.accordion-button:hover {
+  background-color: #f3f7ff;
+  color: steelblue;
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+}
+
+.accordion-button::after {
+  content: "＋";
+  float: right;
+  font-weight: bold;
+  transition: transform 0.2s ease;
+}
+
+.accordion-button[aria-expanded="true"]::after {
+  content: "−";
+  transform: rotate(180deg);
+  color: steelblue;
+}
+
+.accordion-body {
+  padding: 18px 26px;
+  background-color: #fff;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* --- FAQ Section --- */
+.help-faq{
+  background:#f9fafc;
+  padding:70px 20px;
+  border-top:1px solid #e5e7eb;
+}
+.faq-heading{
+  text-align:center; font-size:2rem; font-weight:700; color:#222; margin-bottom:50px;
+  position:relative;
+}
+.faq-heading::after{
+  content:""; display:block; width:70px; height:3px; background:steelblue;
+  margin:12px auto 0; border-radius:2px;
+}
+
+/* --- Native details/summary accordion --- */
+.faq-accordion{ max-width: 900px; margin: 0 auto; }
+
+.faq-item{
+  background:#fff; border:1px solid #e6e8ee; border-radius:12px;
+  box-shadow:0 6px 18px rgba(17,24,39,.06);
+  margin-bottom:14px; overflow:hidden;
+}
+
+/* button row */
+.faq-q{
+  list-style:none; cursor:pointer;
+  padding:22px 24px; font-weight:800; font-size:1.15rem; color:#1f2937;
+  display:flex; align-items:center;
+}
+.faq-q::-webkit-details-marker{ display:none; } /* hide native marker */
+
+/* + / − icon */
+.faq-q::after{
+  content:"+"; margin-left:auto; font-weight:900; color:#374151;
+}
+.faq-item[open] .faq-q::after{
+  content:"–"; color:steelblue;
+}
+
+/* answer body */
+.faq-a{
+  padding:18px 26px 24px; color:#4b5563; line-height:1.6; border-top:1px solid #eef0f5;
+}
+
+/* hover/active states */
+.faq-q:hover{ background:#f8fbff; }
+.faq-item[open] .faq-q{ background:#f3f7ff; color:steelblue; }
+
+.help-hero {
+  text-align: center;
+  padding: 120px 20px 110px;  /* ⬅ increased height */
+  background-color: steelblue;
+  color: #fff;
+}
+/* === Help hero: push text toward the bottom === */
+.help-hero{
+  min-height: 320px;              /* keeps banner tall */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;      /* ⬅ pushes content down */
+  padding: 30px 20px 90px;       /* bottom padding controls how low */
+}
+/* === Help hero button: fix oversized width (safe) === */
+.help-hero .help-btn{
+  display: inline-block;      /* stop full-width stretching */
+  width: auto;               /* let content define width */
+  min-width: 120px;          /* reasonable, consistent size */
+  max-width: 220px;          /* prevents over-expansion */
+  padding: 14px 36px;        /* keeps it nicely pill-shaped */
+}
+
+/* =========================================================
+   HELP PAGE ONLY — remove the big white gap above hero
+   Works even if layout.html adds padding/margin/spacers
+   ========================================================= */
+
+/* Kill any top spacing that layout applies to main on this page only */
+body.edge-hero main{
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* If layout uses a nav spacer element, hide it on this page */
+body.edge-hero .header-spacer,
+body.edge-hero .nav-spacer,
+body.edge-hero .navbar-spacer{
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Ensure the hero starts flush at the top of main */
+body.edge-hero main > .help-hero{
+  margin-top: 0 !important;
+}
+
+/* =========================================================
+   HELP PAGE — Mobile hero fix (portrait vs landscape)
+   Page-scoped: only when body has .edge-hero
+   ========================================================= */
+
+/* Base: make hero start cleanly under nav without being clipped */
+body.edge-hero main > .help-hero{
+  margin-top: 0 !important;
+  padding-top: 26px !important;   /* prevents “eaten” heading in portrait */
+}
+
+/* Portrait phones: keep hero tall but ensure top is visible */
+@media (max-width: 520px) and (orientation: portrait){
+  body.edge-hero main > .help-hero{
+    min-height: 360px !important;
+    padding-top: 34px !important;  /* pushes content down from navbar */
+    padding-bottom: 70px !important;
+  }
+
+  /* prevent oversized heading from pushing up */
+  body.edge-hero .help-hero h1{
+    font-size: 2.1rem !important;
+    line-height: 1.05 !important;
+    margin-top: 0 !important;
+  }
+}
+
+/* Landscape phones: remove any extra gap above the hero */
+@media (max-width: 1024px) and (orientation: landscape){
+  body.edge-hero main{
+    padding-top: 60px !important;
+    margin-top: 0px !important;
+  }
+
+  body.edge-hero main > .help-hero{
+    padding-top: 10px !important;  /* tight under nav, no white band */
+    min-height: 260px !important;
+    padding-bottom: 50px !important;
+  }
+
+  body.edge-hero .help-hero h1{
+    font-size: 2.0rem !important;
+    line-height: 1.05 !important;
+  }
+}
+/* =========================================================
+   HELP — Fix the “900–1000px” landscape gap (tablet range)
+   Page-scoped: edge-hero only
+   ========================================================= */
+@media (min-width: 900px) and (max-width: 1024px) and (orientation: landscape){
+  body.edge-hero main > .help-hero{
+    margin-top: -122px !important;   /* same pull-up that fixed Galaxy Note */
+  }
+}
+/* =========================================================
+   HELP PAGE — HARD OVERRIDE (removes the white gap above hero)
+   Put this at the VERY BOTTOM of help.html <style>
+   ========================================================= */
+
+/* 1) Kill top spacing on all likely layout wrappers */
+main,
+.main-content,
+.page-content,
+.content,
+.content-wrapper,
+.container,
+.wrapper{
+  margin-top: -120px !important;
+  padding-top: 0 !important;
+}
+
+/* 2) If your layout inserts a spacer div, nuke common ones */
+.nav-spacer,
+.header-spacer,
+.navbar-spacer,
+.top-spacer,
+.spacer{
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 3) Ensure hero starts flush */
+.help-hero{
+  margin-top: -60px !important;
+}
+
+/* 4) If margin-collapsing from headings is causing weird push, neutralize */
+.help-hero h1{
+  margin-top: 0 !important;
+}
+
+/* HELP page ONLY (mobile/tablet): remove the big top gap */
+@media (max-width: 1024px){
+  body.edge-hero.help-page{
+    padding-top: 0 !important;
+  }
+
+  /* optional: keep a small breathing space under the navbar */
+  body.edge-hero.help-page main{
+    padding-top: 10px !important;
+  }
+}
+/* ✅ HELP page — LANDSCAPE ONLY: prevent hero being cut under the fixed navbar */
+@media (max-width: 1024px) and (orientation: landscape){
+  body.edge-hero.help-page{
+    padding-top: 64px !important;   /* space for your fixed navbar */
+  }
+
+  body.edge-hero.help-page main{
+    padding-top: 0 !important;
+  }
+
+  /* ensure hero starts cleanly */
+  body.edge-hero.help-page .help-hero{
+    margin-top: 0 !important;
+  }
+}
+
+
+</style>
+{% endblock %}
+

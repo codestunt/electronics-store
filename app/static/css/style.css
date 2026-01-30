@@ -1,0 +1,3367 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap');
+
+
+html, body { overflow-x: hidden; }
+
+.form-submit-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.form-submit-btn {
+  background-color: #B23850;
+  color: white;
+  font-weight: bold;
+  padding: 8px 22px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.form-submit-btn:hover {
+  background-color: #962c42;
+}
+
+
+/* Login Page */
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  min-height: 80vh;
+  background-color: #ffffff;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 700px;
+  padding: 20px 30px;
+  background-color: #fdfdfd;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.login-box h2 {
+  font-size: 28px;
+  color: #3B8BEB;
+  margin-bottom: 24px;
+}
+
+.login-box form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.login-box label {
+  text-align: left;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #555;
+}
+
+.login-box input {
+  padding: 8px;
+  margin-bottom: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fffbe6;
+  font-size: 14px;
+}
+
+.login-box button {
+  background-color: #B23850;
+  color: white;
+  font-weight: bold;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.login-box button:hover {
+  background-color: #962c42;
+}
+
+.login-box .forgot {
+  margin-top: 10px;
+}
+
+.login-box .forgot a {
+  font-size: 13px;
+  color: #6c63ff;
+  text-decoration: none;
+}
+
+.new-user-box {
+  margin-top: 30px;
+  padding: 15px;
+  background-color: #f4f7fa;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.new-user-box ul {
+  padding-left: 20px;
+  margin: 10px 0;
+}
+
+.signup-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #3B8BEB;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+
+/* Color Palette */
+:root {
+  --red: #B23850;
+  --blue: #3B8BEB;
+  --cream: #E7E3D4;
+  --light-blue: #C4DBF6;
+  --gray-blue: #8590AA;
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Push content below both fixed navbars */
+body, html {
+  padding-top: 130px; /* top-navbar (90px) + main-navbar (40px) */
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 300;
+  background-color: #fff;
+}
+
+/* 🔝 Top Navbar */
+.top-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px 10px 60px;
+  z-index: 9999; /* ⬆️ Ensures it’s always on top */
+  box-shadow: none;
+  border-bottom: 1px solid #ccc;
+}
+
+.logo-img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  margin-left: 30px;
+}
+
+.logo1-img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  margin-left: 10px;
+  margin-top: 60px;
+}
+.top-navbar .top-links a {
+  color: var(--gray-blue);
+  font-size: 20px;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.top-navbar .top-links a:hover {
+  color: var(--red);  /* match SHOP NOW button */
+}
+
+/* 📌 Bottom Category Navbar */
+.main-navbar {
+  position: fixed;
+  top: 60px; /* aligns directly under top-navbar now that height is 60px */
+  left: 0;
+  right: 0;
+  height: 40px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  padding-left: 60px;
+  z-index: 9998; /* just under top-navbar */
+  border-top: none;
+  border-bottom: 1px solid #ccc;
+  box-shadow: none;
+  margin: 0;
+}
+
+.main-navbar ul {
+  display: flex;
+  gap: 2px;
+  list-style: none;
+  margin-left: -30px;
+  padding: 0;
+}
+
+.main-navbar a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 300;
+  font-size: 16px;
+}
+
+.main-navbar a:hover {
+  color: var(--red); /* same as SHOP NOW button background */
+  text-decoration: none; /* remove underline */
+}
+
+/* 🎥 Video Section */
+.video-section {
+  position: relative;
+  width: 100%;
+  height: 112vh;
+  overflow: hidden;
+  padding: 0;
+  margin-top: -160px; /* Pulls video under both navbars */
+  z-index: 1; /* ✅ sits behind navbars */
+}
+
+.top-links {
+      display: flex;
+      align-items: left;
+      gap: 18px;
+      font-size: 22px;
+      color: gray;
+    }
+
+
+.bg-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0; /* ✅ ensures it stays behind everything */
+}
+
+.video-overlay {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  color: white;
+  max-width: 600px;
+  z-index: 2;
+}
+
+.video-overlay h1 {
+  font-size: 48px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.video-overlay p {
+  font-size: 18px;
+  margin: 20px 0;
+}
+
+.shop-btn {
+  background-color: var(--red);
+  color: white;
+  padding: 10px 25px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.shop-btn.btn-danger {
+  background-color: var(--red) !important;
+  border: none;
+}
+
+.user-icon {
+  position: relative;
+}
+
+.red-dot {
+  position: absolute;
+  top: -5px;
+  right: 1px;
+  height: 5px;
+  width: 5px;
+  background-color: rgb(195, 6, 6);
+  border-radius: 50%;
+}
+
+
+.user-icon-wrapper {
+  position: relative;
+}
+
+.email-tooltip {
+  position: absolute;
+  top: 35px;
+  left: -30px;
+  background-color: #fff;
+  color: #333;
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  white-space: nowrap;
+  display: none;
+  z-index: 9999;
+}
+
+/* 🔄 Responsive Adjustments */
+@media (max-width: 992px) {
+  .main-navbar ul {
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+  }
+
+  .video-overlay {
+    top: 20%;
+    left: 5%;
+    max-width: 90%;
+  }
+
+  .video-overlay h1 {
+    font-size: 32px;
+  }
+
+  .video-overlay p {
+    font-size: 16px;
+  }
+
+  .shop-btn {
+    padding: 8px 20px;
+    font-size: 14px;
+  }
+
+  .top-navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .top-navbar .top-links {
+    margin-top: 10px;
+  }
+}
+
+
+/* signin.css */
+
+/* signin.css */
+
+.signin-container {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
+  background-color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.signin-row {
+  display: flex;
+  gap: 60px;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 30px;
+}
+
+.signin-col-left {
+  flex: 1;
+}
+
+.signin-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
+.signin-col-left label {
+  font-size: 14px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.signin-col-left input[type="email"],
+.signin-input-group input {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 15px;
+  height: 48px;
+  box-sizing: border-box;
+}
+
+.signin-input-group {
+  position: relative;
+}
+
+.signin-eye-icon {
+  position: absolute;
+  right: 14px;
+  top: -20px;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+
+.signin-btn-red {
+  background-color: #e34c1c;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  min-width: 180px;
+}
+
+.signin-btn-red:hover {
+  background-color: #b83d16;
+}
+
+.signin-forgot {
+  margin-top: 15px;
+}
+
+.signin-col-right {
+  flex: 1;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  padding: 40px;
+}
+
+.signin-subtitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.signin-desc {
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+.signin-list {
+  padding-left: 20px;
+  margin-bottom: 30px;
+}
+
+.signin-list li {
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+@media (max-width: 576px) {
+  .video-overlay h1 {
+    font-size: 24px;
+  }
+
+  .video-overlay p {
+    font-size: 14px;
+  }
+
+  .shop-btn {
+    font-size: 13px;
+    padding: 7px 18px;
+  }
+}
+
+/* Form Section */
+.container {
+  max-width: 1140px;
+  margin: auto;
+  padding: 2rem;
+}
+
+/* Headings */
+h2, h4 {
+  font-weight: 600;
+  color: #333;
+}
+
+h2.text-center {
+  margin-bottom: 1.5rem;
+}
+
+/* Labels */
+.form-label {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+/* Inputs */
+.form-control {
+  font-size: 0.95rem;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #3B8BEB;
+  box-shadow: 0 0 0 0.2rem rgba(59, 139, 235, 0.25);
+}
+
+/* Button */
+.btn-danger {
+  background-color: #B23850;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #912b3f;
+}
+
+/* Eye icon styling */
+.input-group-text {
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  border-left: none;
+  cursor: pointer;
+}
+
+/* Customer Panel */
+.bg-light {
+  background-color: #f9f9f9 !important;
+  border-left: 3px solid #C4DBF6;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+/* Alert */
+.alert {
+  font-size: 0.9rem;
+  padding: 0.6rem 1rem;
+}
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: #888;
+}
+
+.signup-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  min-height: 80vh;
+  background-color: #ffffff;
+}
+
+.signup-box {
+  width: 100%;
+  max-width: 700px;
+  padding: 20px 30px;
+  background-color: #fdfdfd;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.signup-box h2 {
+  font-size: 28px;
+  color: #3B8BEB;
+  margin-bottom: 24px;
+}
+
+.signup-box form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.signup-box label {
+  text-align: left;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #555;
+}
+
+.signup-box input {
+  padding: 10px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fffbe6;
+  font-size: 14px;
+}
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: #888;
+}
+
+.form-submit-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.form-submit-btn {
+  background-color: #B23850;
+  color: white;
+  font-weight: bold;
+  padding: 8px 22px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.form-submit-btn:hover {
+  background-color: #962c42;
+}
+
+
+.cart-title {
+  font-size: 2rem;
+  color: #3B8BEB;
+  font-weight: 600;
+}
+
+.cart-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.cart-table td {
+  vertical-align: middle;
+  padding: 16px 12px;
+}
+
+.cart-img {
+  width: 80px;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: left;
+  gap: 18px;
+  font-size: 22px;
+  color: gray;
+}
+
+.btn-outline-danger {
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+  background-color: #B23850;
+  color: #fff;
+  border-color: #B23850;
+}
+
+.text-danger {
+  color: #B23850 !important;
+}
+
+.btn-danger {
+  background-color: #B23850;
+  border: none;
+  font-weight: bold;
+}
+
+.btn-danger:hover {
+  background-color: #962c42;
+}
+
+.btn-outline-primary {
+  font-weight: bold;
+  border-color: #3B8BEB;
+  color: #3B8BEB;
+}
+
+.btn-outline-primary:hover {
+  background-color: #3B8BEB;
+  color: white;
+}
+
+.empty-cart-box {
+  max-width: 600px;
+  padding: 60px 40px;
+  background-color: #fdfdfd;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-left: auto;
+  margin-right: 60px; /* Push to the right side */
+  text-align: left;
+}
+
+.empty-cart-box h2 {
+  font-size: 28px;
+  color: #3B8BEB;
+  margin-bottom: 15px;
+}
+
+.empty-cart-text {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+.browse-btn {
+  font-weight: bold;
+  color: #3B8BEB;
+  text-decoration: none;
+  border: 1px solid #3B8BEB;
+  padding: 10px 18px;
+  border-radius: 5px;
+  display: inline-block;
+  transition: 0.3s ease;
+}
+
+.browse-btn:hover {
+  background-color: #3B8BEB;
+  color: white;
+}
+
+
+/* redsignup.css */
+
+/* Container */
+.redsignup-container {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
+  background-color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.redsignup-row {
+  display: flex;
+  gap: 60px;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 30px;
+}
+
+/* Left Column - Sign Up */
+.redsignup-col-left {
+  flex: 1;
+}
+
+.redsignup-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
+.redsignup-col-left label {
+  font-size: 14px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.redsignup-col-left input[type="email"],
+.redsignup-col-left input[type="password"],
+.redsignup-col-left input[type="text"] {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 14px; /* Reduced gap between inputs */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 15px;
+}
+
+.redsignup-input-group {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.redsignup-input-group button {
+  background: none;
+  border: none;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  cursor: pointer;
+  padding: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.redsignup-btn-red {
+  background-color: #e34c1c; /* Updated color */
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  width: auto; /* Match Already Registered button size */
+  min-width: 180px;
+}
+
+.redsignup-btn-red:hover {
+  background-color: #b83d16;
+}
+
+.redsignup-login-link {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.redsignup-login-link a {
+  text-decoration: none; /* Remove underline */
+}
+
+.redsignup-col-right {
+  flex: 1;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  padding: 40px;
+}
+
+.redsignup-subtitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.redsignup-desc {
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+.redsignup-list {
+  padding-left: 20px;
+  margin-bottom: 30px;
+}
+
+.redsignup-list li {
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+:root {
+  --red: #B23850;
+  --custom-blue: #173c69; /* ✅ Make sure this is defined */
+}
+
+
+
+/* ✅ Base flash style */
+.flash-banner {
+  padding: 16px 24px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 25px;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* 🔴 Success */
+.flash-banner.success {
+  background-color: #28a745; /* ✅ Bootstrap Green */
+}
+
+/* ❌ Error */
+.flash-banner.error {
+  background-color: #dc3545;
+}
+
+/* 👻 Fade-out animation */
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.flash-banner.fade-out {
+  animation: fadeOut 4s ease forwards;
+}
+
+
+/* 🔥 Bestsellers styling */
+.scroll-section {
+  overflow-x: auto;
+  padding: 10px;
+}
+.scrolling-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 24px;
+}
+.product-card {
+  flex: 0 0 auto;
+  width: 240px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  position: relative;
+}
+.product-card {
+  height: 480px; /* Adjust height as needed */
+  padding: 1rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: center;
+  overflow: hidden;
+}
+
+.badge {
+  display: block;
+  width: 100%;               /* 👈 Make it full width */
+  text-align: center;        /* 👈 Center text */
+  color: white;
+  font-weight: bold;
+  font-size: 0.75rem;
+  padding: 6px 0;            /* 👈 Remove horizontal padding */
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  z-index: 2;
+}
+
+.red-badge,
+.blue-badge {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 12px 12px 0 0;
+  height: 48px; /* 🔼 Increase from original (maybe 32px) */
+  line-height: 48px; /* 🔼 Matches height to vertically center text */
+  font-size: 14px;
+  padding: 0 10px;
+}
+
+.red-badge {
+  background-color: var(--red);
+}
+.blue-badge {
+  background-color: var(--custom-blue);
+}
+.stars {
+  color: #f39c12;
+  font-size: 14px;
+}
+
+/* ===== ElectroZone Footer ===== */
+:root {
+  /* already in your project, shown here for reference */
+  --red: #B23850;
+  --blue: #3B8BEB;
+  --cream: #E7E3D4;
+  --light-blue: #C4DBF6;
+  --gray-blue: #8590AA;
+}
+
+/* Container */
+.ez-footer {
+  margin-top: 0px;
+  background: #072543;
+  color: #e9eef6;
+  position: relative;
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+ 
+}
+
+/* Wavy top */
+.ez-footer-wave {
+  display: none;
+  width: 100%;
+  height: 110px;
+  margin-top: 0px;   /* tweak between -4px and -16px to taste */
+}
+.ez-footer-wave path {
+  fill: #0d2b50;
+}
+
+/* Inner content */
+.ez-footer-inner {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1.2fr 2.8fr; /* callout + columns */
+  gap: 28px;
+  padding: 28px 24px 14px 24px;
+}
+
+.ez-callout .ez-callout-title {
+  opacity: .9;
+  margin: 0 0 4px 0;
+}
+.ez-phone {
+  display: inline-block;
+  font-size: 28px;
+  font-weight: 700;
+  text-decoration: none;
+  color: #c5032a;
+  margin-bottom: 14px;
+}
+.ez-cta {
+  display: inline-block;
+  background: #fff;
+  color: #08233f;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+.ez-cta:hover { opacity: .9; }
+
+/* Columns */
+.ez-columns {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
+  gap: 22px;
+}
+.ez-col h4 {
+  color: #c5032a; /* accent on titles */
+  margin: 0 0 10px 0;
+  font-size: 16px;
+}
+.ez-col ul { list-style: none; padding: 0; margin: 0; }
+.ez-col li { margin: 6px 0; }
+.ez-col a {
+  color: #d6e3f3;
+  text-decoration: none;
+  font-size: 14px;
+}
+.ez-col a:hover { text-decoration: underline; }
+
+/* Bottom bar */
+.ez-bottom {
+  background: #072543;
+  padding: 12px 0;
+  margin-top: 6px;
+}
+.ez-bottom-inner {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px 8px 24px;
+}
+.ez-address { font-size: 13px; opacity: .9; }
+.ez-address i { margin-right: 6px; }
+.ez-copy { font-size: 13px; text-align: center; opacity: .9; }
+.ez-social a {
+  margin-left: 12px;
+  font-size: 18px;
+  color: #e9eef6;
+}
+.ez-social a:hover { color: #C4DBF6; }
+
+/* Responsive */
+@media (max-width: 992px) {
+  .ez-footer-inner {
+    grid-template-columns: 1fr;
+  }
+  .ez-columns {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ez-bottom-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .ez-social a { margin: 0 8px; }
+}
+@media (max-width: 540px) {
+  .ez-columns { grid-template-columns: 1fr; }
+  .ez-phone { font-size: 24px; }
+}
+
+/* ===== Sign In — Screenshot Match ===== */
+
+/* Page container */
+.signin-container{
+  background:#fff;
+  padding: 20px 0 64px;
+}
+
+/* Two columns on desktop, single on mobile */
+.signin-row{
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0,1.05fr) minmax(0,.95fr);
+  gap: 48px;
+  padding: 0 16px;
+}
+
+/* Title centered, bold, large */
+.signin-title{
+  text-align:center;
+  font-weight: 900;
+  font-size: 44px;
+  line-height: 1.1;
+  margin: 8px 0 18px;
+  color:#111;    /* solid black like the shot */
+}
+
+/* Labels: uppercase, compact, gray */
+.signin-container label{
+  display:block;
+  margin: 14px 0 6px;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .4px;
+  color:#656b76;             /* soft gray */
+  text-transform: uppercase; /* EMAIL ADDRESS */
+}
+
+/* Inputs: white, slim gray border, slight radius */
+.signin-container input[type="email"],
+.signin-container input[type="password"]{
+  width:100%;
+  height:52px;
+  border: 1.5px solid #cfd4db;   /* slim gray border */
+  border-radius: 8px;
+  padding: 0 14px;
+  font-size: 16px;
+  background:#fff;
+  outline: none;
+}
+.signin-container input:focus{
+  border-color:#aeb6c2;
+  box-shadow: none;              /* keep it clean */
+}
+
+/* Password eye inside the input */
+.signin-input-group{ position: relative; }
+.signin-eye-icon{
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color:#6b7280;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* Orange button (exact vibe of screenshot) */
+.signin-btn-red{
+  width: 164px;                 /* narrow like your shot */
+  height: 48px;
+  margin: 16px auto 0;          /* centered */
+  display: block;
+  border: none;
+  border-radius: 6px;
+  background: #E05A1F;          /* orange */
+  color: #fff;
+  font-weight: 800;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Forgot link centered & gray */
+.signin-forgot{
+  text-align: center;
+  margin-top: 14px;
+}
+.signin-forgot a{
+  color:#6b7280;
+  text-decoration: none;
+}
+.signin-forgot a:hover{ text-decoration: underline; }
+
+/* Right column “New Customer?” card */
+.signin-new-customer{
+  background: #f3f4f6;          /* light gray card */
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 22px 18px 24px;
+  text-align: center;
+}
+.signin-subtitle{
+  font-size: 32px;              /* “New Customer?” big and bold */
+  font-weight: 900;
+  margin: 2px 0 10px;
+  color:#111;
+}
+.signin-desc{
+  margin: 0 0 8px;
+  color:#374151;
+}
+
+/* Bullets: left aligned inside centered card */
+.signin-list{
+  max-width: 86%;
+  margin: 8px auto 16px;
+  text-align: left;
+  color:#111;
+}
+.signin-list li{ margin: 8px 0; }
+
+/* Orange “Create Account” button inside the card */
+.signin-new-customer .signin-btn-red{
+  width: 70%;
+  min-width: 240px;
+  height: 50px;
+  margin: 8px auto 0;
+  font-size: 18px;
+  font-weight: 800;
+  background:#E05A1F;
+  border-radius: 6px;
+}
+
+/* --- Mobile: stack columns and keep the same look --- */
+@media (max-width: 900px){
+  .signin-row{
+    grid-template-columns: 1fr;
+    gap: 26px;
+    max-width: 600px;
+    padding: 0 14px;
+  }
+  .signin-title{ font-size: 40px; }
+  .signin-new-customer{ padding: 18px 16px 20px; }
+  .signin-subtitle{ font-size: 28px; }
+  .signin-new-customer .signin-btn-red{
+    width: 90%;
+    min-width: 0;
+  }
+}
+
+/* Very small handsets */
+@media (max-width: 360px){
+  .signin-title{ font-size: 34px; }
+  .signin-container input{ height: 50px; }
+}
+
+
+/* ===== tokens (scoped, safe) ===== */
+:root{
+  --rs-brand:#E05A1F;
+  --rs-ink:#111;
+  --rs-muted:#666;
+  --rs-border:#222;
+  --rs-soft:#f5f5f5;
+}
+
+/* ===== wrapper ===== */
+.redsignup-container{
+  max-width:960px;
+  margin:0 auto;
+  padding:24px 16px 40px;
+}
+.redsignup-row{
+  display:grid;
+  grid-template-columns:1fr;   /* mobile first */
+  gap:24px;
+}
+
+/* ===== left column (form) ===== */
+.redsignup-title{
+  font-size:44px;
+  font-weight:800;
+  line-height:1.05;
+  margin:0 0 12px;
+  color:var(--rs-ink);
+}
+
+/* labels like the screenshot */
+.redsignup-col-left label{
+  display:block;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:var(--rs-ink);
+  margin:14px 0 8px;
+}
+
+/* big inputs w/ thick border */
+.redsignup-col-left input[type="text"],
+.redsignup-col-left input[type="email"],
+.redsignup-col-left input[type="password"]{
+  width:100%;
+  padding:16px 14px;
+  font-size:18px;
+  border:2px solid var(--rs-border);
+  border-radius:8px;
+  background:#fff;
+  outline:none;
+}
+
+/* password eye */
+.redsignup-input-group{ position:relative; }
+.redsignup-input-group button{
+  position:absolute; right:10px; top:50%; transform:translateY(-50%);
+  border:none; background:transparent; color:var(--rs-muted);
+  font-size:20px; cursor:pointer;
+}
+
+/* primary button */
+.redsignup-btn-red{
+  width:100%;
+  margin:18px 0 10px;
+  padding:16px 18px;
+  border:none; border-radius:10px;
+  background:var(--rs-brand); color:#fff;
+  font-weight:800; font-size:20px;
+  box-shadow:0 4px 10px rgba(224,90,31,.25);
+  cursor:pointer;
+}
+.redsignup-btn-red:hover{ filter:brightness(.95); }
+
+/* link under button */
+.redsignup-login-link{ text-align:center; margin-top:10px; color:#222; }
+.redsignup-login-link a{ color:#0a58ca; text-decoration:underline; }
+
+/* ===== right column (info panel) ===== */
+.redsignup-col-right{
+  background:var(--rs-soft);
+  border-radius:12px;
+  padding:24px;
+}
+.redsignup-subtitle{
+  font-size:28px; font-weight:800; margin:0 0 6px;
+}
+.redsignup-desc{ margin:0 0 10px; color:#333; }
+.redsignup-list{ margin:0 0 14px 18px; }
+.redsignup-list li{ margin:6px 0; }
+
+/* ===== desktop: 2 columns ===== */
+@media (min-width: 992px){
+  .redsignup-row{ grid-template-columns:1fr 1fr; align-items:start; }
+}
+
+/* tiny screens polish */
+@media (max-width:380px){
+  .redsignup-title{ font-size:38px; }
+}
+
+/* ===== Mobile-only polish for Sign In ===== */
+@media (max-width: 900px){
+  .signin-title{
+    font-size: 30px;          /* was visually too big */
+    font-weight: 700;         /* down from ultra-bold */
+    line-height: 1.2;
+    margin: 6px 0 14px;
+    letter-spacing: .2px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* “New Customer?” card heading */
+  .signin-new-customer .signin-subtitle{
+    font-size: 24px;
+    font-weight: 700;
+    margin: 6px 0 10px;
+    line-height: 1.25;
+  }
+
+  /* Labels + fields */
+  .signin-col-left label{
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;           /* subtle grey */
+    letter-spacing: .3px;
+  }
+  .signin-col-left input,
+  .signin-input-group input{
+    height: 48px;
+    font-size: 16px;
+    border-radius: 8px;
+  }
+  .signin-input-group .signin-eye-icon{
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* Button */
+  .signin-btn-red{
+    height: 48px;
+    font-size: 17px;
+    font-weight: 700;         /* strong but not heavy */
+    border-radius: 10px;
+  }
+
+  /* Card spacing */
+  .signin-new-customer{
+    padding: 16px 14px;
+  }
+}
+
+/* ===== Mobile-only polish for Create Account ===== */
+@media (max-width: 900px){
+  .redsignup-title{
+    font-size: 30px;          /* scale down big header */
+    font-weight: 700;         /* lighter than ultra-bold */
+    line-height: 1.2;
+    margin: 6px 0 14px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .redsignup-subtitle{
+    font-size: 24px;
+    font-weight: 700;
+    margin: 6px 0 10px;
+  }
+
+  /* Labels + inputs */
+  .redsignup-col-left label{
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    letter-spacing: .3px;
+  }
+  .redsignup-col-left input,
+  .redsignup-input-group input{
+    height: 48px;
+    font-size: 16px;
+    border-radius: 8px;
+  }
+
+  /* Toggle eye button target size */
+  .redsignup-input-group button{
+    width: 42px; height: 42px;
+  }
+
+  /* Primary CTA */
+  .redsignup-btn-red{
+    height: 48px;
+    font-size: 17px;
+    font-weight: 700;
+    border-radius: 10px;
+  }
+
+  /* Right column list spacing */
+  .redsignup-list{ margin-top: 8px; }
+  .redsignup-list li{ margin: 6px 0; }
+}
+
+/* Mobile footer: 2 columns per row, keep bottom bar unchanged */
+@media (max-width: 900px){
+  /* make the columns container fill the width and use grid */
+  .ez-footer .ez-columns{
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;   /* two columns */
+    gap: 18px 24px;                   /* row/column spacing */
+    width: 100%;
+  }
+
+  /* small safety so nothing forces overflow */
+  .ez-footer .ez-columns .ez-col{ min-width: 0; }
+
+  /* give the inner container mobile padding so there’s no right-side gap */
+  .ez-footer .ez-footer-inner{
+    padding-left: 16px;
+    padding-right: 16px;
+    box-sizing: border-box;
+  }
+
+  /* optional: tighten the callout spacing above the grid on mobile */
+  .ez-footer .ez-callout{ margin-bottom: 16px; }
+}
+
+/* desktop & tablet remain exactly as they are because we only changed ≤900px */
+
+/* Mobile footer refinements */
+@media (max-width: 900px){
+  /* Center the callout block and its phone number */
+  .ez-footer .ez-callout{
+    width: 100%;
+    text-align: center;
+    margin: 0 auto 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .ez-footer .ez-callout .ez-callout-title{ margin: 0 0 6px; }
+  .ez-footer .ez-callout .ez-phone{
+    display: block;
+    line-height: 1.2;
+  }
+
+  /* More breathing room between the two columns per row */
+  .ez-footer .ez-columns{
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 96px;       /* increase horizontal space between columns */
+    row-gap: 42px;          /* vertical space between the two rows */
+  }
+}
+
+
+/* Category pages */
+.ez-category-hero{background:linear-gradient(180deg,rgba(178,56,80,.08),transparent 70%);padding:48px 16px 24px}
+.ez-category-hero-inner{max-width:1200px;margin:0 auto}
+.ez-category-title{font-size:40px;font-weight:800}
+.ez-category-subtitle{margin-top:8px;font-size:18px;color:#555}
+.ez-grid{max-width:1200px;margin:24px auto 80px;padding:0 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+.ez-card{background:#fff;border:1px solid #eee;border-radius:14px;overflow:hidden}
+.ez-card-imgwrap{aspect-ratio:4/3;background:#f7f7f7}
+.ez-card-body{padding:12px 14px 16px}
+.ez-card-title{font-size:16px;margin:6px 0 2px;font-weight:700}
+.ez-card-price{font-size:15px;color:#333}
+@media (max-width:600px){.ez-category-title{font-size:30px}.ez-category-subtitle{font-size:16px}}
+
+/* Make sure the top header sits above everything */
+.top-navbar{
+  position: fixed;        /* you already use a fixed header */
+  top: 0; left: 0; right: 0;
+  z-index: 6000;          /* higher than hero overlays */
+}
+
+/* Bottom category bar should be under the top header but above content */
+.main-navbar{
+  position: relative;     /* keep your current layout */
+  z-index: 5000;
+}
+
+/* Keep hero overlay beneath the navbars so it can’t “steal” clicks */
+.video-section{ position: relative; z-index: 0; }
+.bg-video{ z-index: 0; }
+.video-overlay{
+  position: absolute; inset: 0;
+  z-index: 1000;          /* << lower than the navbars */
+}
+
+/* 🔒 Lock the person/cart to the RIGHT of the top navbar */
+.icon-wrapper-adjusted{
+  position: absolute;      /* position inside the .top-navbar */
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);  /* vertical centering in the header */
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  z-index: 6500;           /* above everything */
+}
+
+/* If you previously pushed them left on small screens, neutralize it */
+@media (max-width: 992px){
+  .icon-wrapper-adjusted{ right: 16px; }
+}
+
+/* ===== Two-bar desktop layout ===== */
+@media (min-width: 901px){
+  :root{
+    --top-nav-h: 80px;   /* adjust if your header is taller/shorter */
+    --cat-nav-h: 50px;   /* category bar height */
+  }
+
+  .top-navbar{
+    position: fixed; top: 0; left: 0; right: 0;
+    height: var(--top-nav-h);
+    background: #fff;
+    z-index: 6000;
+  }
+
+  .main-navbar{
+    position: fixed; top: var(--top-nav-h); left: 0; right: 0;
+    height: var(--cat-nav-h);
+    background: #fff;
+    z-index: 5500;
+    border-top: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
+    display: flex; align-items: center;
+  }
+
+  .main-navbar ul{ height: 100%; align-items: center; }
+  .main-navbar ul li{ line-height: 1; } /* override old 100px line-height */
+
+  /* push page content below the two fixed bars */
+  html, body{ padding-top: calc(var(--top-nav-h) + var(--cat-nav-h)); }
+}
+
+/* Keep hero overlay beneath both navbars */
+.video-section{ position: relative; z-index: 0; }
+.video-overlay{ position: absolute; inset: 0; z-index: 1000; } /* navbars have higher z-index */
+
+/* Pin icons to the right inside the fixed top navbar */
+.icon-wrapper-adjusted{
+  position: absolute; right: 24px; top: 50%;
+  transform: translateY(-50%);
+  display: flex; gap: 14px; align-items: center;
+  z-index: 6500;
+}
+
+
+
+/* ===== Two fixed bars (desktop) ===== */
+@media (min-width: 901px){
+  :root{
+    --top-nav-h: 80px;
+    --cat-nav-h: 52px; /* bottom bar height */
+  }
+
+  .top-navbar{
+    position: fixed; top: 0; left: 0; right: 0;
+    height: var(--top-nav-h);
+    background:#fff; z-index: 6000;
+    display:flex; align-items:center;
+    padding: 0 24px;
+  }
+
+  /* push the top-right links to the edge with a small margin */
+  .top-right-links{
+    margin-left: auto;          /* push to the right */
+    padding-right: 16px;        /* reasonable gap from the edge */
+    gap: 12px;
+  }
+
+  .main-navbar{
+    position: fixed; top: var(--top-nav-h); left: 0; right: 0;
+    height: var(--cat-nav-h);
+    background:#fff; z-index: 5500;
+    border-top: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+  }
+
+  .main-navbar .nav-left ul{
+    display:flex; align-items:center; gap: 32px;
+    margin:0; padding:0; list-style:none;
+  }
+}
+
+/* Content starts below the two bars */
+html, body{ padding-top: calc(var(--top-nav-h,80px) + var(--cat-nav-h,52px)); }
+
+/* Search pill sits nicely at the right of the category bar */
+.search-form{
+  margin: 0;                 /* remove old margin-right hacks */
+  height: 40px;
+  display:flex; align-items:center;
+  background:#f3f3f3; border-radius:999px; padding: 8px 12px;
+}
+
+/* Right side area of bottom navbar */
+.nav-right{
+  display:flex; align-items:center; gap: 16px;
+}
+
+/* Icons beside the search (no absolute positioning anymore) */
+.icon-wrapper-adjusted{
+  position: static; right:auto; top:auto; transform:none;
+  display:flex; align-items:center; gap: 16px; margin-left: 0;
+}
+
+/* Icon visuals */
+.icon-wrapper i{ font-size: 22px; color: gray; transition: color .2s; }
+.icon-wrapper i:hover{ color: var(--red); }
+
+/* Cart badge anchored to the cart icon */
+.cart-link{ position: relative; display:inline-block; }
+.cart-count-badge{
+  position:absolute; top:-6px; right:-10px;
+  background:#B23850; color:#fff; min-width:18px; height:18px;
+  border-radius:999px; font-size:11px; font-weight:700; line-height:18px;
+  padding:0 5px; border:2px solid #fff;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
+
+/* Keep hero overlay below navbars */
+.video-section{ position: relative; z-index: 0; }
+.video-overlay{ position: absolute; inset: 0; z-index: 1000; }
+
+/* Mobile rules you already have continue to hide desktop bars ≤900px */
+
+/* Push top-right links to the edge with a small gap */
+.top-right-links{
+  margin-left: auto;
+  padding-right: 16px;
+  gap: 12px;
+}
+
+/* Bottom/category bar right-side layout */
+.nav-right{ display:flex; align-items:center; gap:16px;}
+
+/* Icons right of the search (no negative margins) */
+.icon-wrapper-adjusted{
+  margin: 0;                 /* remove margin-left:60px */
+  display:flex; align-items:center; gap:16px;
+}
+.user-icon, .cart-link i{ margin: 0 !important; }   /* kill inline negative margins */
+
+/* Cart badge anchored to the icon’s top-right */
+.cart-link{ position:relative; display:inline-block; }
+.cart-count-badge{
+  left: auto; right: -10px; top: -6px;              /* anchor to top-right */
+}
+
+/* Consistent page gutters & tighter category spacing */
+:root{
+  --container-x: 28px;     /* left/right padding for both bars */
+  --cat-gap: 22px;         /* spacing between category items */
+}
+
+/* Top bar: align to same left/right margins as the logo */
+.top-navbar{ padding: 10px var(--container-x) !important; }
+.top-right-links{
+  margin-left: auto !important;
+  padding-right: var(--container-x) !important;
+  gap: 10px !important;
+}
+
+/* Bottom bar: same left/right margins as top */
+.main-navbar{
+  padding: 0 var(--container-x) !important;
+}
+
+/* Category items: remove giant line-height and tighten gaps */
+.main-navbar ul li{ line-height: 1 !important; margin-right: 0 !important; }
+.main-navbar .nav-left ul{ gap: var(--cat-gap) !important; }
+
+/* Right side of bottom bar */
+.nav-right{ display:flex; align-items:center; gap:14px; }
+
+/* Search: nudge a bit to the right; remove old huge right margin */
+/* Icons: pull slightly left from edge; remove any old left margin hack */
+.icon-wrapper-adjusted{ margin: 0 6px 0 0 !important; gap:14px; }
+.user-icon, .cart-link i{ margin: 0 !important; }
+
+/* Cart badge pinned to icon corner */
+.cart-link{ position:relative; display:inline-block; }
+.cart-count-badge{ top:-6px; right:-10px; left:auto !important; }
+/* ===== Consistent gutters + offsets ===== */
+:root{
+  --gutter-left: 28px;     /* page left padding */
+  --gutter-right: 28px;    /* page right padding */
+  --logo-offset: 40px;    /* width occupied by the logo area */
+  --icons-block: 84px;     /* approx width of (person + cart) */
+  --cat-gap: 20px;         /* tighter spacing between category items */
+}
+
+/* Top bar – keep as-is but ensure gutters are applied */
+.top-navbar{ padding: 10px var(--gutter-right) 10px var(--gutter-left) !important; }
+.top-right-links{ margin-left:auto; padding-right: var(--gutter-right) !important; }
+
+/* Bottom (category) bar
+   1) push LEFT so "TVs" lines up under the logo
+   2) same right gutter as the top bar
+*/
+.main-navbar{
+  padding: 0 var(--gutter-right) 0 calc(var(--gutter-left) + var(--logo-offset)) !important;
+}
+.main-navbar .nav-left ul{ gap: var(--cat-gap) !important; }
+.main-navbar ul li{ line-height: 1 !important; }  /* remove tall 100px line-height */
+
+/* Right side of category bar */
+.nav-right{ display:flex; align-items:center; gap:14px; }
+
+/* Search: make its RIGHT edge align with the top bar’s right gutter.
+   We do that by leaving room on the right for the icons block + the gutter. */
+
+/* Icons slightly in from the right margin (match the top bar gutter) */
+.icon-wrapper-adjusted{
+  margin-right: var(--gutter-right) !important;
+  display:flex; align-items:center; gap:14px;
+}
+
+/* Remove any old margin hacks on the icons */
+.user-icon, .cart-link i{ margin: 0 !important; }
+
+/* Cart badge pinned to icon corner */
+.cart-link{ position:relative; display:inline-block; }
+.cart-count-badge{ top:-6px; right:-10px; left:auto !important; }
+
+/* 1) Push BOTH search + icons LEFT (more space at the right edge) */
+.main-navbar{
+  padding-right: 36px !important;   /* ↑ increase to move the whole block LEFT */
+}
+
+/* 2) Move ONLY the search pill
+   - margin-left  : space between categories and the search (left side)
+   - margin-right : gap between search and the icons (right side)
+*/
+.main-navbar .nav-right{
+  margin: 0 18px 0 8px !important;  /* tweak these numbers */
+}
+
+/* 3) Move ONLY the icons block (person + cart)
+   - increase margin-right to push icons LEFT from the right edge
+*/
+.main-navbar .nav-right .icon-wrapper-adjusted{
+  margin-right: 24px !important;    /* tweak up/down to position icons */
+}
+
+/* ===== Put hero text at the bottom of the video (desktop) ===== */
+@media (min-width: 901px){
+  /* make sure the hero/video section is a positioning context */
+  .ez-hero-bg-section,
+  .volt-section-hero,
+  main > section:first-of-type{
+    position: relative;
+  }
+
+  /* the text wrapper — add your actual wrapper if it differs */
+  .ez-hero-bg-section .hero-content,
+  .ez-hero-bg-section .hero-text,
+  .volt-section-hero .hero-content,
+  .volt-section-hero .hero-text,
+  main > section:first-of-type .hero-content,
+  main > section:first-of-type .hero-text{
+    position: absolute !important;
+    left: 5%;
+    right: auto;
+    bottom: 6%;                 /* ↓ move closer/further from bottom */
+    transform: none !important; /* cancel any previous translate */
+    top: auto !important;       /* cancel any previous top offset */
+    z-index: 2;                 /* above the video */
+    max-width: 56rem;           /* keep lines readable */
+    text-shadow: 0 2px 12px rgba(0,0,0,.35); /* improve contrast on bright frames */
+  }
+}
+
+/* Carousel shell */
+.ezc{ position:relative; margin: 24px auto; max-width: 1200px; }
+.ezc-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.ezc-title{ font-size:24px; margin:0; }
+
+/* Track & slides */
+.ezc-track{ display:flex; overflow:hidden; scroll-behavior:smooth; }
+.ezc-slide{ flex: 0 0 100%; display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:24px; }
+
+/* Prev/Next */
+.ezc-btn{ position:absolute; top:50%; transform:translateY(-50%);
+  width:40px; height:40px; border:none; border-radius:999px; background:#fff;
+  box-shadow:0 2px 10px rgba(0,0,0,.15); cursor:pointer; z-index:5; }
+.ezc-prev{ left:-12px; }
+.ezc-next{ right:-12px; }
+
+@media (max-width: 900px){
+  .ezc-slide{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .ezc-prev{ left:4px; } .ezc-next{ right:4px; }
+}
+
+.cat-hero{
+  width:100%;
+  min-height: 220px;              /* not too tall */
+  background-size: cover;
+  background-position: center;
+  display:flex;
+  align-items:center;
+}
+.cat-hero-inner{
+  padding: 48px 5%;
+  color:#fff;
+  text-shadow: 0 2px 10px rgba(0,0,0,.45);
+}
+.cat-hero-title{
+  margin:0 0 6px;
+  font-size: 36px;
+  font-weight: 800;
+}
+.cat-hero-sub{
+  margin:0;
+  font-size: 16px;
+  opacity:.95;
+}
+@media (max-width: 900px){
+  .cat-hero{ min-height: 160px; }
+  .cat-hero-title{ font-size: 28px; }
+}
+
+/* Category hero — same background color across all pages */
+.ez-category-hero {
+  position: relative;
+  min-height: 320px;
+  display: grid;
+  place-items: center start;
+  padding: 56px 24px;
+}
+
+/* Keep text readable */
+.ez-category-title,
+.ez-category-subtitle {
+  color: #111111; /* black text */
+  text-shadow: none;
+}
+
+/* GLOBAL – affects all pages */
+@media (max-width: 1024px) and (orientation: landscape) {
+  main {
+    padding-top: var(--nav-h);
+  }
+
+  section {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .video-section,
+  .hero,
+  .page-hero {
+    min-height: calc(100vh - var(--nav-h));
+    overflow: hidden;
+  }
+}
+
+/* =========================================================
+   EDGE HERO — IMG METHOD: FIX "HALF IMAGE" ON SOME LANDSCAPES
+   Paste at VERY END of style.css
+   ========================================================= */
+
+/* 1) Kill any cropping from container rules */
+body.edge-hero .ez-img-hero{
+  overflow: visible !important;     /* IMPORTANT: no cropping */
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  background: #fff !important;
+}
+
+/* 2) Make the hero image ALWAYS fit in the visible viewport space */
+@media (max-width: 1024px){
+  /* keep your existing mobile header offset */
+  body.edge-hero main{
+    padding-top: 63px !important;
+  }
+
+  body.edge-hero .ez-img-hero .ez-hero-img{
+    display:block !important;
+    width: 100% !important;
+
+    /* Fit image into available screen height (works across landscape variants) */
+    height: calc(100svh - 63px) !important;   /* modern mobile viewport */
+    height: calc(100vh  - 63px) !important;   /* fallback */
+
+    object-fit: contain !important;           /* NO crop */
+    object-position: center top !important;
+    background: #fff !important;
+  }
+
+  /* put text BELOW the image on mobile so it never overlaps/cuts */
+  body.edge-hero .ez-category-hero-inner{
+    position: static !important;
+    padding: 16px 20px 24px !important;
+  }
+}
+
+/* 3) Landscape gets a slightly tighter height so it doesn't look huge */
+@media (max-width: 1024px) and (orientation: landscape){
+  body.edge-hero .ez-img-hero .ez-hero-img{
+    height: calc(100svh - 63px) !important;
+    height: calc(100vh  - 63px) !important;
+  }
+}
+
+/* =========================================================
+   LANDSCAPE ONLY: FORCE HERO VIDEO FULL-WIDTH (fix right blank space)
+   iPhone landscape etc.
+   ========================================================= */
+@media (max-width: 1024px) and (orientation: landscape) {
+
+  :root{ --ezm-nav-h: 64px; }
+
+  /* If a parent container is limiting width, force full-bleed */
+  .video-section{
+    width: 100vw !important;
+    max-width: 100vw !important;
+
+    /* escape any centered container */
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+
+    position: relative !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    height: calc(100vh - var(--ezm-nav-h)) !important;
+  }
+
+  /* Make the actual <video> fill the full-bleed section */
+  .video-section video,
+  .video-section .bg-video{
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+
+    object-fit: cover !important;
+    object-position: 50% 50% !important;
+    display: block !important;
+  }
+
+  /* Keep overlay inside and readable */
+  .video-section .video-overlay{
+    position: absolute !important;
+    left: 18px !important;
+    right: 18px !important;
+    bottom: 16px !important;
+    top: auto !important;
+    z-index: 5 !important;
+    max-width: 560px !important;
+  }
+
+  /* Push Products down a bit + add breathing room below hero */
+  #bestsellers{
+    margin-top: 18px !important;
+    padding-top: 18px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+/* =========================================================
+   LANDSCAPE ONLY: Fix hero video showing white / not stretching
+   (does NOT affect portrait)
+   ========================================================= */
+@media (max-width: 1024px) and (orientation: landscape){
+
+  /* Make sure hero area is full width */
+  .video-section{
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background: #000 !important; /* prevents white box if video fails */
+  }
+
+  /* Force the VIDEO to actually render and fill the hero */
+  .video-section .bg-video{
+    position: absolute !important;
+    top: 0 !important; left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    object-fit: cover !important;
+    object-position: 50% 50% !important;
+
+    z-index: 0 !important;
+  }
+
+  /* Keep overlay always above the video */
+  .video-section .video-overlay{
+    position: absolute !important;
+    z-index: 2 !important;
+  }
+
+  /* If you use the gradient ::after, keep it between video and text */
+  .video-section::after{
+    z-index: 1 !important;
+  }
+
+  /* ✅ Add breathing space before Products header (landscape only) */
+  #bestsellers{
+    margin-top: 22px !important;
+    padding-top: 14px !important;
+    padding-bottom: 10px !important;
+  }
+
+  /* ✅ Reduce the big empty space under the Products header */
+  .pz-header{
+    margin-bottom: 10px !important;
+    padding-bottom: 0 !important;
+  }
+}
+/* ===== LAST RULES IN FILE (LANDSCAPE FIX) ===== */
+@media (max-width: 1024px) and (orientation: landscape){
+
+  /* If some CSS turned your hero into a flex row, kill it */
+  .video-section{
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+
+    /* force full-bleed breakout even inside a container */
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+
+    height: 62vh !important;
+    min-height: 260px !important;
+  }
+
+  /* Force the VIDEO to fill the hero area */
+  .video-section > video.bg-video{
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    max-width: none !important;
+  }
+
+  /* Keep overlay visible above the video */
+  .video-section .video-overlay{
+    position: absolute !important;
+    left: 24px !important;
+    right: 24px !important;
+    bottom: 18px !important;
+    top: auto !important;
+    z-index: 5 !important;
+  }
+}
+
+/* =========================================
+   GLOBAL: remove the "gap under navbar"
+   (applies to ALL pages)
+   ========================================= */
+
+/* Desktop: main should start immediately after navbars */
+main{
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* If the first thing inside main is a section/div with top margin */
+main > :first-child{
+  margin-top: 0 !important;
+}
+
+/* Safety: navbars should not add bottom spacing */
+.top-navbar,
+.main-navbar{
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* If flash messages exist, keep them tight (no huge cushion) */
+.flash-container{
+  margin: 0 auto !important;      /* kills your 16px top margin */
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+/* =========================================
+   LEGAL PAGES (Terms + Privacy) — polished
+   Scoped to .legal-container so nothing else breaks
+   ========================================= */
+
+.legal-container{
+  max-width: 980px;
+  margin: 40px auto 90px;
+  padding: 0 18px; /* outer gutter */
+  color: #111;
+}
+
+/* Card wrapper look */
+.legal-container{
+  background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
+  border: 1px solid rgba(120,120,120,.18);     /* faded gray border */
+  border-top: 3px solid rgba(59,139,235,.55);  /* subtle brand accent */
+  border-radius: 16px;
+  box-shadow: 0 10px 26px rgba(17,24,39,.08);
+  padding: 54px 56px 64px;
+}
+
+/* Title */
+.legal-title{
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  margin: 0 0 8px;
+  line-height: 1.08;
+}
+
+/* Last updated pill */
+.legal-updated{
+  display: inline-block;
+  font-size: 14px;
+  color: #4b5563;
+  background: rgba(120,120,120,.08);
+  border: 1px solid rgba(120,120,120,.18);
+  padding: 8px 12px;
+  border-radius: 999px;
+  margin: 6px 0 26px;
+}
+
+/* Intro spa*
+
+/* ================================
+   LEGAL PAGES (Privacy + Terms)
+   Uses your existing classes:
+   .legal-container .legal-title .legal-updated
+   ================================ */
+
+.legal-container{
+  max-width: 1180px;
+  margin: 42px auto 90px;
+  padding: 64px 70px 78px;          /* ✅ more height + pushes headers down */
+  background: #ffffff;
+
+  /* ✅ nice faded gray border */
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  border-radius: 18px;
+
+  /* ✅ subtle professional shadow */
+  box-shadow: 0 10px 28px rgba(17, 24, 39, 0.06);
+
+  /* ✅ gives the whole card more presence/height */
+  min-height: 520px;
+}
+
+/* Big title with breathing room from top */
+.legal-title{
+  font-size: 52px;
+  line-height: 1.05;
+  font-weight: 300;                 /* matches your Source Sans Pro light vibe */
+  letter-spacing: 0.2px;
+  margin: 0 0 18px;
+  color: #111827;
+}
+
+/* “Last updated” pill */
+.legal-updated{
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  color: #374151;
+  background: #f6f7f9;
+  border: 1px solid rgba(17, 24, 39, 0.10);
+  margin: 0 0 28px;
+}
+
+/* Section headings: spaced + slightly separated */
+.legal-container h2{
+  font-size: 28px;
+  font-weight: 400;
+  color: #111827;
+
+  margin: 26px 0 10px;
+  padding-top: 14px;
+
+  border-top: 1px solid rgba(17, 24, 39, 0.08);  /* subtle divider */
+}
+
+/* First section shouldn’t have a divider line */
+.legal-container h2:first-of-type{
+  border-top: none;
+  padding-top: 0;
+  margin-top: 10px;
+}
+
+/* Body text: loosened so it doesn’t feel cramped */
+.legal-container p{
+  font-size: 17px;
+  line-height: 1.75;                /* ✅ loosened */
+  color: #374151;
+  margin: 0 0 14px;
+  max-width: 92ch;                  /* keeps lines readable */
+}
+
+/* Responsive */
+@media (max-width: 900px){
+  .legal-container{
+    margin: 26px 14px 70px;
+    padding: 44px 18px 52px;        /* still roomy on mobile */
+    min-height: auto;
+  }
+  .legal-title{
+    font-size: 36px;
+  }
+  .legal-container h2{
+    font-size: 22px;
+  }
+  .legal-container p{
+    font-size: 16px;
+  }
+}
+/* --- LEGAL HEADER REFINEMENT --- */
+
+/* 1) Drop the main title lower from the top */
+.legal-title{
+  margin-top: 22px;          /* pushes title down */
+  margin-bottom: 14px;
+}
+
+/* --- Legal "Last updated" pill: ultra-subtle --- */
+.legal-updated{
+  font-size: 12px;          /* smaller text */
+  padding: 4px 10px;        /* tighter pill */
+  border-radius: 999px;
+  background: #f6f7f9;      /* softer grey */
+  color: #6b7280;           /* muted text */
+  opacity: 0.7;             /* de-emphasised */
+  margin-top: 6px;
+  margin-bottom: 34px;
+}
+
+/* =========================================
+   NEWSLETTER — MOBILE (ALL MOBILE SCREENS)
+   ========================================= */
+/* =========================================
+   NEWSLETTER — MOBILE (ALL MOBILE SCREENS)
+   ========================================= */
+@media (max-width: 1024px){
+
+  .signup-band{
+    margin-top: 22px !important;
+    padding-top: 18px !important;
+    padding-bottom: 18px !important;
+  }
+
+  .signup-inner{
+    gap: 16px !important;
+  }
+
+  .signup-form{
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  .signup-form input{
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+
+}
+/* =========================================================
+   SIGNUP / NEWSLETTER BAND — FIX for Galaxy Note size
+   (mobile + small tablet only)
+   ========================================================= */
+@media (max-width: 1024px){
+
+  .signup-band{
+    padding: 18px 16px !important;
+  }
+
+  .signup-inner{
+    max-width: 100% !important;
+  }
+
+  /* keep the form neat and aligned */
+  .signup-form{
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  .signup-form input{
+    flex: 1 !important;
+    min-width: 0 !important;
+    height: 44px !important;
+  }
+
+  .signup-form button,
+  .signup-form .btn{
+    height: 44px !important;
+    padding: 0 18px !important;
+    border-radius: 12px !important;
+    white-space: nowrap !important;
+  }
+}
+
+
+/* =========================================================
+   EDGE HERO — IMG METHOD (FINAL, NO CROP, ALL DEVICES)
+   ========================================================= */
+
+.ez-img-hero{
+  position: relative;
+  overflow: hidden;
+  background: #ffffff; /* clean fallback */
+}
+
+/* The actual image */
+.ez-hero-img{
+  display: block;
+  width: 100%;
+  height: auto;
+
+  /* THE KEY: never crop */
+  object-fit: contain;
+  object-position: center top;
+}
+
+/* Text overlay */
+.ez-category-hero-inner{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 24px;
+  padding: 0 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Desktop spacing under fixed nav */
+@media (min-width: 901px){
+  body.edge-hero .ez-img-hero{
+    padding-top: 125px; /* matches your fixed nav stack */
+  }
+}
+
+/* Mobile + tablet (portrait + landscape) */
+@media (max-width: 1024px){
+  body.edge-hero .ez-img-hero{
+    padding-top: calc(var(--ezm-nav-h, 64px) + 12px);
+  }
+
+  .ez-category-hero-inner{
+    position: static;
+    padding: 16px 20px 24px;
+  }
+}
+/* =========================================================
+   EDGE HERO — IMG METHOD (NO CROP, ALL MOBILE SIZES)
+   Paste at VERY END of style.css
+   ========================================================= */
+
+body.edge-hero .ez-category-hero{
+  background-image: none !important;
+  background: #fff !important;
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+/* Desktop/tablet layout */
+body.edge-hero .ez-category-hero.ez-img-hero{
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  align-items: center !important;
+  gap: 18px !important;
+  padding: 28px 24px !important;
+}
+
+body.edge-hero .ez-hero-media{
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: visible !important;
+}
+
+body.edge-hero .ez-hero-img{
+  width: 100% !important;
+  max-width: 560px !important;
+  height: auto !important;
+  display: block !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+}
+
+/* Mobile/tablet: stack + stable hero image height */
+@media (max-width: 1024px){
+  body.edge-hero .ez-category-hero.ez-img-hero{
+    grid-template-columns: 1fr !important;
+    padding: 16px 16px 20px !important;
+  }
+
+  body.edge-hero .ez-hero-media{ order: -1 !important; }
+
+  /* Stable sizing across landscape/portrait phones */
+  body.edge-hero .ez-hero-img{
+    width: 100% !important;
+    height: clamp(180px, 40vh, 320px) !important;
+    object-fit: contain !important;
+  }
+}
+
+/* ≤900px is where your site was breaking (915 works because it avoids this) */
+@media (max-width: 900px){
+  body.edge-hero .ez-category-hero,
+  body.edge-hero .ez-category-hero.ez-img-hero{
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  body.edge-hero .ez-hero-img{
+    height: clamp(180px, 42vh, 320px) !important;
+    object-fit: contain !important;
+  }
+}
+/* =========================================================
+   EDGE HERO — FIX THE <900px BREAKPOINT (915/926 already ok)
+   Paste at VERY END of style.css
+   ========================================================= */
+
+@media (max-width: 900px){
+
+  /* Stop ANY clipping coming from hero/container */
+  body.edge-hero .ez-category-hero,
+  body.edge-hero .ez-white-page,
+  body.edge-hero .ez-white-page section{
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Force a clean stacked layout */
+  body.edge-hero .ez-category-hero{
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    padding: 16px 16px 18px !important;
+  }
+
+  /* Make sure the image wrapper doesn't crop */
+  body.edge-hero .ez-hero-media{
+    order: -1 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  /* This kills the “half image” problem (usually position/height rules) */
+  body.edge-hero .ez-hero-img{
+    position: static !important;
+    top: auto !important;
+    bottom: auto !important;
+
+    width: 100% !important;
+    max-width: 520px !important;
+
+    height: auto !important;
+    max-height: none !important;
+
+    display: block !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+  }
+}
+/* =========================================================
+   EDGE HERO — IMG METHOD (FINAL OVERRIDE)
+   Paste at VERY END of style.css
+   ========================================================= */
+
+/* A) Stop the GLOBAL html/body padding from breaking mobile viewport math
+   (We set html padding to 0 globally; we offset with main instead) */
+html{
+  padding-top: 0 !important;
+}
+
+/* Keep your site-wide spacing on body, but NOT for edge-hero pages */
+body.edge-hero{
+  padding-top: 140px !important;
+}
+
+/* Push content below the two fixed navbars using MAIN (not html/body) */
+body.edge-hero main{
+  padding-top: 100px !important; /* 60px top navbar + 40px main navbar */
+}
+
+/* B) Build a clean hero layout that NEVER crops */
+body.edge-hero .ez-category-hero.ez-img-hero{
+  background: #fff !important;
+  background-image: none !important;
+
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  align-items: center !important;
+  gap: 18px !important;
+
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+
+  padding: 24px 16px !important;
+}
+
+/* Image wrapper must never clip */
+body.edge-hero .ez-hero-media{
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* The image must NEVER be height-locked (this is what causes “half image”) */
+body.edge-hero .ez-hero-img{
+  display: block !important;
+  width: 100% !important;
+  max-width: 560px !important;
+
+  height: auto !important;
+  max-height: none !important;
+
+  object-fit: contain !important;
+  object-position: center top !important;
+}
+
+/* C) Mobile: stack + keep image fully visible in BOTH portrait and landscape */
+@media (max-width: 900px){
+  body.edge-hero .ez-category-hero.ez-img-hero{
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    padding: 14px 14px 18px !important;
+  }
+
+  /* show image first */
+  body.edge-hero .ez-hero-media{ order: -1 !important; }
+
+  /* keep image visible without cropping */
+  body.edge-hero .ez-hero-img{
+    max-width: 520px !important;
+  }
+}
+/* =========================================
+   MOBILE: HIDE CATEGORY HERO TITLE + SUBTITLE
+   (works even if body.edge-hero is missing)
+   ========================================= */
+@media (max-width: 900px){
+
+  /* Your category hero text classes */
+  .ez-category-title,
+  .ez-category-subtitle,
+
+  /* If you used these on some category templates */
+  .cat-hero-title,
+  .cat-hero-sub,
+
+  /* If text is inside this wrapper */
+  .ez-category-hero-inner,
+
+  /* Safety: if your hero uses a "hero-content/text" wrapper */
+  .hero-content,
+  .hero-text{
+    display: none !important;
+  }
+
+}
+/* CATEGORY PAGES: hide hero title/subtitle on all mobile */
+@media (max-width: 900px){
+  .ez-white-page .ez-category-title,
+  .ez-white-page .ez-category-subtitle{
+    display: none !important;
+  }
+}
+/* FORCE-HIDE category hero text on ALL mobile (portrait + landscape) */
+@media (max-width: 1024px){
+  .ez-category-hero .ez-category-hero-inner,
+  .ez-category-hero h1.ez-category-title,
+  .ez-category-hero p.ez-category-subtitle{
+    display: none !important;
+  }
+}
+/* PROBE: if you don't see a thick red border on mobile, this CSS file is NOT loading */
+@media (max-width: 1024px){
+  body{ outline: 12px solid red !important; }
+}
+
+/* =========================================================
+   CATEGORY HERO — FORCE consistent mobile LANDSCAPE layout
+   Text LEFT + Image RIGHT (for all mobile landscape sizes)
+   ========================================================= */
+@media (max-width: 1024px) and (orientation: landscape){
+
+  /* ✅ Use the selector that matches your hero wrapper.
+     Keep ALL lines for now — harmless if a selector doesn't exist. */
+  .category-hero,
+  .cat-hero,
+  .grid-hero,
+  .ez-category-hero,
+  .ez-hero,
+  .ez-hero-bg-section,
+  .hero-category{
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 24px !important;
+    flex-wrap: nowrap !important;
+    text-align: left !important;
+  }
+
+  /* ✅ Text block (left) */
+  .category-hero .hero-copy,
+  .cat-hero .hero-copy,
+  .grid-hero .hero-copy,
+  .ez-category-hero .hero-copy,
+  .ez-hero-bg-section .hero-copy,
+  .hero-category .hero-copy,
+  .category-hero .hero-text,
+  .cat-hero .hero-text,
+  .grid-hero .hero-text,
+  .ez-hero-bg-section .hero-text{
+    flex: 0 0 42% !important;
+    max-width: 42% !important;
+    text-align: left !important;
+    margin: 0 !important;
+  }
+
+  /* ✅ Image block (right) */
+  .category-hero .hero-media,
+  .cat-hero .hero-media,
+  .grid-hero .hero-media,
+  .ez-category-hero .hero-media,
+  .ez-hero-bg-section .hero-media,
+  .hero-category .hero-media,
+  .category-hero img,
+  .cat-hero img,
+  .grid-hero img,
+  .ez-hero-bg-section img,
+  .hero-category img{
+    flex: 1 1 auto !important;
+    max-width: 58% !important;
+    margin-left: auto !important;
+  }
+
+  /* ✅ Prevent “image forces wrap / shifts layout” */
+  .category-hero img,
+  .cat-hero img,
+  .grid-hero img,
+  .ez-hero-bg-section img,
+  .hero-category img{
+    width: 100% !important;
+    height: auto !important;
+    max-height: 70vh !important;
+    object-fit: contain !important;
+    display: block !important;
+  }
+}
+
+/* =====================================================
+   CATEGORY HERO — MOBILE LANDSCAPE CONSISTENCY FIX
+   Text LEFT, Image RIGHT (ALL devices)
+   ===================================================== */
+@media (max-width: 1024px) and (orientation: landscape){
+
+  .cat-hero{
+    display: grid !important;
+    grid-template-columns: 1fr 1.2fr !important;
+    align-items: center !important;
+    gap: 32px !important;
+    text-align: left !important;
+  }
+
+  /* TEXT BLOCK — force left positioning */
+  .cat-hero h1,
+  .cat-hero h2,
+  .cat-hero p{
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* IMAGE — keep it on the right */
+  .cat-hero img{
+    justify-self: end !important;
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+}
+/* =====================================================
+   CATEGORY HERO — MOBILE LANDSCAPE CONSISTENCY FIX
+   Text LEFT, Image RIGHT (ALL devices)
+   ===================================================== */
+@media (max-width: 1024px) and (orientation: landscape){
+
+  .cat-hero{
+    display: grid !important;
+    grid-template-columns: 1fr 1.2fr !important;
+    align-items: center !important;
+    gap: 32px !important;
+    text-align: left !important;
+  }
+
+  /* TEXT BLOCK — force left positioning */
+  .cat-hero h1,
+  .cat-hero h2,
+  .cat-hero p{
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* IMAGE — keep it on the right */
+  .cat-hero img{
+    justify-self: end !important;
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+}
+/* =====================================================
+   CATEGORY HERO — MOBILE LANDSCAPE CONSISTENCY (ALL)
+   Text LEFT, Image RIGHT (works for CSS-hero + <img> hero)
+   ===================================================== */
+@media (max-width: 1024px) and (orientation: landscape){
+
+  /* 1) Force a 2-column layout */
+  .cat-hero,
+  .cat-hero.no-zoom{
+    display: grid !important;
+    grid-template-columns: 1fr 1.25fr !important; /* text | image */
+    align-items: center !important;
+    column-gap: 36px !important;
+    text-align: left !important;
+  }
+
+  /* 2) Make ALL non-image children sit in the LEFT column */
+  .cat-hero > *:not(img),
+  .cat-hero.no-zoom > *:not(img){
+    grid-column: 1 !important;
+    align-self: center !important;   /* prevents “halfway down” look */
+    justify-self: start !important;
+    z-index: 2 !important;
+  }
+
+  /* 3) If the hero uses a real <img>, force it to the RIGHT column */
+  .cat-hero > img,
+  .cat-hero.no-zoom > img{
+    grid-column: 2 !important;
+    justify-self: end !important;
+    align-self: center !important;
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+    z-index: 1 !important;
+  }
+
+  /* 4) If the hero uses a pseudo-element / CSS image (your --hero-url setup),
+        shove that “image layer” to the RIGHT and keep it contained */
+  .cat-hero::before,
+  .cat-hero::after,
+  .cat-hero.no-zoom::before,
+  .cat-hero.no-zoom::after{
+    background-position: right center !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+  }
+
+  /* 5) Stop the text block from drifting into the image area */
+  .cat-hero h1, .cat-hero h2, .cat-hero p,
+  .cat-hero.no-zoom h1, .cat-hero.no-zoom h2, .cat-hero.no-zoom p{
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    max-width: 520px !important;
+  }
+}
+
+/* =========================================================
+   iPad / Tablet (portrait-ish): stop hero text overlapping hero image
+   Targets ~810px width (your screenshots)
+   Paste at VERY END of your CSS
+   ========================================================= */
+@media (min-width: 768px) and (max-width: 1024px) {
+
+  /* If your hero is the "cat-hero" version */
+  .cat-hero {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: center !important;
+    padding-top: 48px !important;
+    padding-bottom: 28px !important;
+  }
+
+  .cat-hero-inner {
+    padding: 24px 5% 18px !important;  /* extra bottom padding */
+  }
+
+  .cat-hero-title {
+    margin: 0 0 10px !important;
+    line-height: 1.15 !important;
+  }
+
+  .cat-hero-sub {
+    margin: 0 0 18px !important;       /* creates the gap above image */
+    line-height: 1.4 !important;
+  }
+
+  .cat-hero img {
+    display: block !important;
+    margin-top: 10px !important;
+    max-width: 420px !important;       /* keeps image from swallowing the text */
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+
+  /* If your hero is the "ez-category-hero" version */
+  .ez-category-hero .ez-category-hero-inner {
+    position: static !important;        /* kills any overlay positioning */
+    padding: 28px 5% 18px !important;
+    text-align: center !important;
+  }
+
+  .ez-category-hero .ez-category-title {
+    margin: 0 0 10px !important;
+    line-height: 1.15 !important;
+  }
+
+  .ez-category-hero .ez-category-subtitle {
+    margin: 0 0 18px !important;
+    line-height: 1.4 !important;
+  }
+
+  /* If an image exists inside ez hero, give it breathing room */
+  .ez-category-hero img,
+  .ez-img-hero .ez-hero-img {
+    display: block !important;
+    margin: 10px auto 0 !important;
+    max-width: 420px !important;
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+}
+/* =========================================================
+   FIX 1: iPad / Tablet — category hero text overlapping image
+   Targets both naming styles you’ve used: .cat-hero and .ez-category-hero
+   ========================================================= */
+@media (min-width: 600px) and (max-width: 1024px){
+
+  /* Make hero layout stack cleanly */
+  .cat-hero,
+  .ez-category-hero{
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: center !important;
+    padding-top: 48px !important;
+    padding-bottom: 28px !important;
+  }
+
+  /* Ensure text is NOT sitting on top of the image */
+  .cat-hero-inner,
+  .ez-category-hero-inner{
+    position: static !important;
+    margin: 0 auto 18px !important;
+    padding: 0 24px !important;
+    max-width: 720px !important;
+  }
+
+  .cat-hero-title,
+  .ez-category-title{
+    margin: 0 0 10px !important;
+    line-height: 1.15 !important;
+  }
+
+  .cat-hero-sub,
+  .ez-category-subtitle{
+    margin: 0 !important;
+    padding-bottom: 10px !important;
+  }
+
+  /* Image spacing so it starts BELOW the text */
+  .cat-hero img,
+  .ez-hero-img{
+    margin-top: 18px !important;
+    max-width: 520px !important;
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+}
+
+/* =========================================================
+   FIX 2: Mobile LANDSCAPE — make Products header consistent
+   (iPhone landscape + Galaxy Note landscape etc.)
+   ========================================================= */
+@media (max-width: 1024px) and (orientation: landscape){
+
+  /* Standardise the Products section spacing */
+  #bestsellers,
+  .scroll-section{
+    margin-top: 0 !important;
+    padding-top: 18px !important;
+    padding-bottom: 10px !important;
+  }
+
+  /* Standardise the "Products" heading block (your pages differ) */
+  .pz-header,
+  .products-header,
+  #bestsellers .pz-header,
+  #bestsellers .products-header{
+    margin: 0 auto 14px !important;
+    padding: 0 !important;
+    text-align: center !important;
+  }
+
+  /* If your Products title is a plain H2 */
+  #bestsellers h2,
+  .pz-header h2,
+  .products-header h2{
+    margin: 0 0 6px !important;
+    line-height: 1.1 !important;
+  }
+
+  #bestsellers p,
+  .pz-header p,
+  .products-header p{
+    margin: 0 !important;
+  }
+
+  /* Prevent product images/cards from forcing huge vertical space */
+  .product-card img,
+  .pz-product-card img{
+    max-height: 190px !important;
+    object-fit: contain !important;
+  }
+}
+
+/* =========================================================
+   CATEGORY HERO — MOBILE/TABLET SPACING FIX
+   Adds space between text and image (portrait + landscape)
+   ========================================================= */
+@media (max-width: 1024px){
+
+  /* If hero uses flex or grid */
+  .ez-category-hero,
+  .ez-white-page .ez-category-hero{
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 60px !important;        /* ✅ KEY spacing */
+  }
+
+  /* Text block spacing */
+  .ez-category-hero h1{
+    margin-bottom: 10px !important;
+  }
+
+  .ez-category-hero p{
+    margin-bottom: 16px !important;
+  }
+
+  /* Image spacing + safety */
+  .ez-category-hero img{
+    margin-top: 12px !important;
+    max-width: 100%;
+    height: auto;
+  }
+}
+/* =========================================================
+   FOOTER: LANDSCAPE (Phones + iPads) => 3 columns across
+   - Keeps portrait rules unchanged
+   - Does NOT touch bottom bar (address/copyright/social)
+   ========================================================= */
+@media (orientation: landscape) and (max-width: 1366px){
+
+  /* force the TOP footer area back to a 3-column grid */
+  .ez-footer .ezf-top{
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 28px !important;
+    align-items: start !important;
+  }
+
+  /* brand/call block spans full width ABOVE the 3 columns */
+  .ez-footer .ezf-brand-col{
+    grid-column: 1 / -1 !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* remove desktop-only left offsets that cause weird centering in landscape */
+  .ez-footer .ezf-divider{
+    margin-left: 0 !important;
+    width: 100% !important;
+    max-width: 420px !important;
+  }
+
+  .ez-footer .ezf-address{
+    margin-left: 0 !important;
+  }
+}
+/* =========================================================
+   FOOTER — LANDSCAPE (MOBILE + iPAD)
+   Make footer match the “ticked” layout:
+   - Top footer = evenly spaced across the width
+   - Bottom strip = address | copyright | socials spread evenly
+   Portrait stays untouched.
+   ========================================================= */
+@media (max-width: 1024px) and (orientation: landscape){
+
+  /* Container breathing room */
+  .ezf-container{
+    padding: 28px 26px 18px !important;
+  }
+
+  /* TOP footer: spread across like desktop/ticked screenshot */
+  .ezf-top{
+    display: grid !important;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr !important; /* Brand + 3 columns */
+    gap: 32px !important;
+    align-items: start !important;
+  }
+
+  /* Keep brand from forcing weird spans */
+  .ezf-brand-col{
+    grid-column: auto !important;
+  }
+
+  /* Slightly tighter typography for short landscape heights */
+  .ezf-brand-col img{
+    height: 42px !important;
+    margin-bottom: 14px !important;
+  }
+  .ezf-call-label{
+    font-size: 16px !important;
+    margin: 0 0 6px !important;
+  }
+  .ezf-phone{
+    font-size: 24px !important;
+  }
+
+  .ezf-col h4{
+    margin: 0 0 10px !important;
+    font-size: 18px !important;
+  }
+  .ezf-col li{
+    margin: 8px 0 !important;
+  }
+
+  /* Divider full width (no weird left offset) */
+  .ezf-divider{
+    width: 100% !important;
+    margin: 18px 0 12px !important;
+  }
+
+  /* BOTTOM strip: evenly spread like the ticked screenshot */
+  .ezf-bottom{
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 18px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  /* Address on left (don’t shift right) */
+  .ezf-address{
+    margin-left: 0 !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Copyright centered */
+  .ezf-copy{
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+  }
+
+  /* Socials right (keep your icons exactly as-is, just position them properly) */
+  .ezf-social{
+    margin-left: 0 !important;
+    flex: 0 0 auto !important;
+    justify-content: flex-end !important;
+    gap: 5px !important;
+  }
+
+  .ezf-social a{
+    margin: 0 !important;   /* remove any residual spacing */
+  }
+}
+/* ===== Email hover tooltip (desktop) ===== */
+#profileWrapper{
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* Make sure nothing clips the tooltip */
+.nav-right{
+  overflow: visible !important;
+}
+
+.email-tooltip{
+  display: none;                 /* hidden by default */
+  position: absolute;
+  top: -22px;                     /* drops below the icon */
+  right: 0;
+  
+  color: #fff;
+  padding: 0px 0px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  z-index: 99999;                /* above navs/overlays */
+  box-shadow: 0 10px 24px rgba(0,0,0,.18);
+}
+
+/* CSS hover (no JS needed) */
+#profileWrapper:hover .email-tooltip{
+  display: block !important;
+}
+
+/* ===== Clean email hover label (professional style) ===== */
+#profileWrapper{
+  position: relative !important;
+  overflow: visible !important;
+}
+
+.email-tooltip{
+  display: none;
+  position: absolute;
+  top: -30px;              /* sits just below the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  
+  background: transparent; /* remove ugly black box */
+  color: #000;             /* black text */
+  
+  font-size: 12px;         /* smaller, professional */
+  font-weight: 500;
+  
+  padding: 0;              /* no bubble look */
+  border-radius: 0;
+  box-shadow: none;
+  white-space: nowrap;
+  z-index: 9999;
+}
+
+/* Show on hover */
+#profileWrapper:hover .email-tooltip{
+  display: block;
+}
+/* Profile email tooltip cleanup */
+.profile-email,
+.profile-email * {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+.profile-email {
+  position: absolute;
+  top: 100%;              /* attach under icon */
+  margin-top: 4px;        /* small controlled gap */
+  left: 50%;
+  transform: translateX(-50%);
+  
+  font-size: 12px;
+  color: #000;
+  white-space: nowrap;
+  padding: 0;
+  border: none;
+}
+
+/* =========================================================
+   PROFILE EMAIL TOOLTIP — FINAL (style.css)
+   Small, black text, no background, sits right under icon
+   ========================================================= */
+
+/* Make sure tooltip can overflow and not get clipped */
+#profileWrapper{
+  position: relative !important;
+  overflow: visible !important;
+}
+
+.main-navbar,
+.top-navbar,
+.nav-right{
+  overflow: visible !important;
+}
+
+/* Tooltip text (no bubble) */
+#profileWrapper .email-tooltip{
+  display: none !important;
+
+  position: absolute !important;
+  top: 100% !important;          /* directly under the icon */
+  margin-top: -3px !important;    /* small gap (moves it upward vs your 4px) */
+  left: 0% !important;
+  transform: translateX(-50%) !important;
+
+  background: transparent !important;
+  color:hsl(0, 7%, 17%) !important;
+
+  font-size: 13px !important;    /* smaller */
+  font-weight: 700 !important;
+
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+
+  white-space: nowrap !important;
+  z-index: 99999 !important;
+}
+
+/* Show on hover */
+#profileWrapper:hover .email-tooltip{
+  display: block !important;
+}

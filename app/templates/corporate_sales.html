@@ -1,0 +1,1435 @@
+{% extends "layout.html" %}
+{% set page_title = 'Corporate Sales' %}
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cz_sales.css') }}?v=1001">
+
+
+<section id="czHero"
+         class="cz-hero"
+         style="--cz-hero-img: url('{{ url_for('static', filename='images/banners/matrix.jpg') }}');">
+
+  <div class="cz-hero-inner">
+    <h1>Empowering Businesses with ElectroZone</h1>
+    <p>Exclusive bulk pricing, tailored tech bundles, and reliable delivery — built for teams, offices, and retail partners.</p>
+    <div class="cz-cta-row">
+      <a href="{{ url_for('routes.request_quote') }}" class="cz-btn cz-btn--primary">Request a Quote</a>
+      <a href="{{ url_for('routes.contact_sales') }}" class="cz-btn cz-btn--ghost">Contact Sales</a>
+
+    </div>
+  </div>
+</section>
+
+<section class="cz-wrap">
+  <!-- WHY PARTNER -->
+  <section class="cz-features">
+    <h2 class="cz-title">Why Partner With ElectroZone</h2>
+    <div class="cz-grid cz-grid--features">
+      <article class="cz-card">
+        <div class="cz-ico">💼</div>
+        <h3>Bulk Discounts</h3>
+        <p>Preferential pricing on volume orders across TVs, Audio, Phones, and Projectors.</p>
+      </article>
+      <article class="cz-card">
+        <div class="cz-ico">🤝</div>
+        <h3>Dedicated Manager</h3>
+        <p>One point of contact from quote to delivery — quick answers, zero friction.</p>
+      </article>
+      <article class="cz-card">
+        <div class="cz-ico">🛡️</div>
+        <h3>Extended Warranty</h3>
+        <p>Flexible coverage and advance-replacement options to keep teams moving.</p>
+      </article>
+      <article class="cz-card">
+        <div class="cz-ico">🚚</div>
+        <h3>Reliable Logistics</h3>
+        <p>Fast, tracked delivery Australia-wide, with timed drops for offices or sites.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- SOLUTIONS -->
+  <section class="cz-solutions">
+    <h2 class="cz-title">Solutions We Offer</h2>
+    <div class="cz-grid cz-grid--solutions">
+      <article class="cz-solution">
+        <h3>Office Fit-Out Bundles</h3>
+        <ul>
+          <li>Conference displays & projectors</li>
+          <li>Speakerphones & sound bars</li>
+          <li>Install-ready cabling kits</li>
+        </ul>
+      </article>
+      <article class="cz-solution">
+        <h3>Employee Programs</h3>
+        <ul>
+          <li>Staff purchase benefits</li>
+          <li>Gift cards & rewards</li>
+          <li>Seasonal bundles</li>
+        </ul>
+      </article>
+      <article class="cz-solution">
+        <h3>Retail & Hospitality</h3>
+        <ul>
+          <li>POS screens & accessories</li>
+          <li>Ambient audio systems</li>
+          <li>Warranty & swap pools</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- TRUST / LOGOS -->
+  <section class="cz-trusted">
+    
+      <blockquote>
+        “ElectroZone delivered 120+ displays on time across 6 sites — flawless coordination.”
+        <cite>— Operations Lead, National Retailer</cite>
+      </blockquote>
+  </section>
+<style>
+/* ===============================
+   Corporate Sales – cz-* (scoped)
+   =============================== */
+
+/* Theme */
+:root{
+  --cz-blue:#0F5298;
+  --cz-blue-2:#3b6d96;
+  --cz-soft:#f5f7fb;
+  --cz-border:#e5e7eb;
+  --cz-text:#111;
+  --cz-muted:#6b7280;
+}
+
+
+/* HERO */
+.cz-hero{
+  position:relative;
+  color:#fff;
+  background-image:
+    linear-gradient(to bottom, rgba(15,82,152,.55), rgba(15,82,152,.35)),
+    var(--cz-hero-img);
+  background-size:cover;
+  background-position:center 58%;
+  background-repeat:no-repeat;
+  padding: 160px 0 140px;
+  text-align:left;
+}
+.cz-hero-inner{ max-width:1200px; margin:0 auto; padding:0 24px; }
+.cz-hero h1{ font-size:46px; font-weight:800; margin:0 0 10px; }
+.cz-hero p{  font-size:18px; opacity:.98; max-width:780px; margin:0 0 16px; }
+.cz-cta-row{ display:flex; gap:12px; flex-wrap:wrap; }
+
+/* WRAPPER */
+.cz-wrap{ max-width:1220px; margin:0 auto; padding:36px 24px 28px; }
+
+/* TITLES */
+.cz-title{ font-size:28px; font-weight:800; color:var(--cz-text); text-align:center; margin:0 0 18px; }
+
+/* GRID */
+.cz-grid{ display:grid; gap:18px; }
+.cz-grid--features{ grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); }
+.cz-grid--solutions{ grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); }
+
+/* CARDS */
+.cz-card{
+  background:#fff; border:1px solid var(--cz-border); border-radius:14px;
+  padding:18px; text-align:left; transition:box-shadow .2s ease;
+}
+.cz-card:hover{ box-shadow:0 10px 24px rgba(0,0,0,.06); }
+.cz-ico{ font-size:24px; line-height:1; }
+
+/* SOLUTIONS */
+.cz-solution{
+  background:#fff; border:1px solid var(--cz-border); border-radius:14px; padding:18px;
+}
+.cz-solution h3{ margin:2px 0 8px; font-size:18px; }
+.cz-solution ul{ margin:0; padding-left:18px; color:#374151; }
+
+/* TRUST */
+.cz-trusted{ margin-top:28px; }
+.cz-logos{
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(120px,1fr));
+  gap:14px; align-items:center; max-width:900px; margin:0 auto 10px;
+}
+.cz-logos img{ width:100%; height:44px; object-fit:contain; filter:grayscale(100%); opacity:.8; }
+.cz-testis blockquote{ max-width:860px; margin:8px auto 0; color:#374151; font-style:italic; }
+.cz-testis cite{ display:block; font-style:normal; color:#6b7280; margin-top:6px; }
+
+/* FORM */
+.cz-form{ margin-top:30px; }
+.cz-form-grid{
+  background:var(--cz-soft); border:1px solid var(--cz-border); border-radius:14px;
+  padding:22px; max-width:900px; margin:10px auto 0; display:grid; gap:14px;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+}
+.cz-field{ display:flex; flex-direction:column; gap:6px; }
+.cz-field span{ font-size:13px; font-weight:700; color:#374151; }
+.cz-field input, .cz-field select, .cz-field textarea{
+  border:1px solid var(--cz-border); border-radius:10px; background:#fff;
+  padding:12px 12px; font-size:15px; outline:none;
+}
+.cz-field input:focus, .cz-field select:focus, .cz-field textarea:focus{
+  border-color:var(--cz-blue); box-shadow:0 0 0 3px rgba(15,82,152,.12);
+}
+.cz-field--full{ grid-column:1/-1; }
+.cz-actions{ grid-column:1/-1; display:flex; align-items:center; gap:14px; justify-content:flex-start; }
+.cz-help{ margin:0; color:#6b7280; }
+.cz-help a{ color:var(--cz-blue); text-decoration:none; }
+.cz-help a:hover{ text-decoration:underline; }
+
+/* FAQ */
+.cz-faq{ max-width:900px; margin:26px auto 0; }
+.cz-acc{ border:1px solid var(--cz-border); border-radius:12px; background:#fff; padding:12px 14px; margin:10px 0; }
+.cz-acc summary{ cursor:pointer; font-weight:700; }
+.cz-acc[open]{ box-shadow:0 8px 20px rgba(0,0,0,.05); }
+
+/* CTA FOOTER */
+.cz-cta{
+  background:var(--cz-blue); color:#fff; text-align:center; padding:56px 20px; margin-top:24px;
+}
+.cz-cta-inner{ max-width:980px; margin:0 auto; }
+.cz-cta h2{ margin:0 0 6px; font-size:28px; font-weight:800; }
+.cz-cta p{ margin:0 0 16px; opacity:.95; }
+
+/* BUTTONS */
+.cz-btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:12px 20px; border-radius:999px; font-weight:800; text-decoration:none; cursor:pointer;
+  transition:all .15s ease-in-out; border:2px solid transparent;
+}
+.cz-btn--primary{ background:var(--cz-blue); color:#fff; }
+.cz-btn--primary:hover{ background:#0d4783; }
+.cz-btn--ghost{ background:transparent; color:#fff; border-color:#fff; }
+.cz-btn--ghost:hover{ background:#fff; color:var(--cz-blue); }
+.cz-btn--light{ background:#fff; color:var(--cz-blue); }
+.cz-btn--light:hover{ background:#eef4fb; }
+
+/* RESPONSIVE */
+@media (max-width: 980px){
+  .cz-hero{ padding:140px 0 120px; background-position:center 62%; }
+  .cz-hero h1{ font-size:38px; }
+}
+@media (max-width: 720px){
+  .cz-hero{ padding:120px 0 110px; }
+  .cz-form-grid{ grid-template-columns:1fr; }
+}
+
+/* ===== Corporate Sales: remove empty category/bottom bar + main offset (page-scoped) ===== */
+/* Scope to this page only by checking that #czHero is present */
+body:has(#czHero) .category-nav,
+body:has(#czHero) .bottom-navbar--spacer,
+body:has(#czHero) .navbar-spacer,
+body:has(#czHero) .header-spacer,
+body:has(#czHero) .promo-strip,
+body:has(#czHero) .utility-strip {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+/* Some layouts add top padding to <main> to make room for that bar — remove it here */
+body:has(#czHero) main {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Make sure the hero itself isn’t adding any top gap */
+#czHero { margin-top: 0 !important; }
+
+/* ===== Corporate Sales — requested tweaks (page-scoped overrides) ===== */
+
+/* Brand color */
+:root { --brand-red: #B23850; }
+
+/* 1) Primary CTA button: blue → brand red */
+.cz-btn--primary{
+  background: var(--brand-red) !important;
+  border-color: var(--brand-red) !important;
+  color:#fff !important;
+}
+.cz-btn--primary:hover{
+  background: #9e3046 !important;   /* slightly darker for hover */
+  border-color:#9e3046 !important;
+}
+
+/* (Optional) Outline CTA can stay light; if you also want it red, uncomment:
+.cz-btn--ghost{
+  color: var(--brand-red) !important;
+  border-color: var(--brand-red) !important;
+}
+.cz-btn--ghost:hover{
+  background: var(--brand-red) !important;
+  color:#fff !important;
+}
+*/
+
+/* 2) Remove hero shading/overlay — show the image as-is */
+.cz-hero{
+  background-image: var(--cz-hero-img) !important; /* kill the linear-gradient overlay */
+}
+
+/* 3) Move hero text to far bottom-left, keeping the image clear */
+.cz-hero{
+  display: flex;                 /* place inner block at the bottom edge */
+  align-items: flex-end;         /* bottom of the banner */
+  justify-content: flex-start;   /* left side */
+  text-align: left;
+}
+.cz-hero-inner{
+  margin: 0;                     /* flush to left */
+  padding: 0 24px 22px 24px;     /* a little breathing room from edges */
+  max-width: 820px;              /* avoid super-long lines */
+}
+@media (max-width: 980px){
+  .cz-hero-inner{ padding: 0 18px 18px 18px; }
+}
+/* ===== Corporate Sales — text right at the bottom + shade restored ===== */
+
+/* 1) Restore the elegant blue shade over the image */
+.cz-hero{
+  position: relative;
+  background-image:
+    linear-gradient(to bottom, rgba(15,82,152,.55), rgba(15,82,152,.35)),
+    var(--cz-hero-img) !important;
+  background-size: cover;
+  background-position: center 60%;
+  background-repeat: no-repeat;
+}
+
+/* 2) Anchor all hero text/CTAs at the absolute bottom-left of the banner */
+.cz-hero-inner{
+  position: absolute;
+  left: 24px;
+  bottom: 16px;      /* adjust to taste (8–24px) */
+  right: auto;
+  margin: 0;
+  padding: 0;        /* no extra space so it hugs the bottom */
+  max-width: 820px;  /* avoids super long lines */
+  text-align: left;
+}
+
+/* Tighter vertical rhythm so nothing floats upward */
+.cz-hero h1{ margin: 0 0 10px; }
+.cz-hero p{  margin: 0 0 14px; }
+.cz-cta-row{ margin-top: 8px; }
+
+/* Mobile: keep it bottom-left with a bit more breathing room */
+@media (max-width: 980px){
+  .cz-hero-inner{ left: 18px; bottom: 14px; }
+}
+@media (max-width: 720px){
+  .cz-hero-inner{ left: 16px; bottom: 12px; max-width: 92vw; }
+}
+/* ===== Corporate Sales – increased banner height + shade restored ===== */
+
+.cz-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;         /* keep text anchored at bottom */
+  justify-content: flex-start;   /* align to left */
+  color: #fff;
+  background-image:
+    linear-gradient(to bottom, rgba(15,82,152,.55), rgba(15,82,152,.35)), /* restored elegant shade */
+    var(--cz-hero-img);
+  background-size: cover;
+  background-position: center 58%;
+  background-repeat: no-repeat;
+
+  /* Increased height for more breathing space */
+  min-height: 570px;             /* was ~450–500px before */
+  text-align: left;
+}
+
+/* Place text exactly at bottom-left with breathing room */
+.cz-hero-inner {
+  position: absolute;
+  left: 40px;
+  bottom: 40px;                  /* visually anchored to bottom-left */
+  margin: 0;
+  padding: 0;
+  max-width: 820px;
+  text-align: left;
+}
+
+/* Slight spacing adjustments for mobile devices */
+@media (max-width: 980px) {
+  .cz-hero {
+    min-height: 560px;           /* slightly smaller but still tall enough */
+    background-position: center 60%;
+  }
+  .cz-hero-inner {
+    left: 24px;
+    bottom: 28px;
+  }
+}
+
+@media (max-width: 720px) {
+  .cz-hero {
+    min-height: 500px;
+  }
+  .cz-hero-inner {
+    left: 18px;
+    bottom: 20px;
+    max-width: 90vw;
+  }
+}
+/* ===== Corporate Sales — center sections and use full width evenly ===== */
+
+/* 1) Make the main content container fluid and centered */
+.cz-wrap,
+.cz-trusted,
+.cz-form,
+.cz-faq {
+  /* wider but still responsive; keeps a nice gutter on both sides */
+  width: min(1400px, 100% - 48px);
+  max-width: none;
+  margin-inline: auto;        /* centers horizontally */
+  padding-inline: 0;          /* we already have outer gutter above */
+}
+
+/* 2) Distribute cards evenly across full width */
+.cz-grid { 
+  display: grid;
+  gap: 20px;
+  justify-items: stretch;
+  align-items: stretch;
+}
+
+/* Use evenly filling columns for both sections */
+.cz-grid--features,
+.cz-grid--solutions {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* fills the whole row evenly */
+}
+
+/* Ensure cards stretch to equal height for clean rows */
+.cz-card,
+.cz-solution {
+  height: 100%;
+}
+
+/* 3) Logos section: make it span and center nicely as well */
+.cz-logos{
+  width: 100%;
+  max-width: none;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* more columns on wide screens */
+  justify-items: center;
+  gap: 18px;
+}
+
+/* 4) Keep the section titles centered (already are, but ensure no drift) */
+.cz-title{ text-align:center; }
+
+/* ===== Corporate Sales — Elegant Centered Layout & Polished Styling ===== */
+
+/* 1) Give the main content comfortable breathing room */
+.cz-wrap,
+.cz-trusted,
+.cz-form,
+.cz-faq {
+  width: min(1200px, 100% - 100px);   /* pull back from full edge */
+  margin-inline: auto;                /* center everything */
+  padding-inline: 20px;
+}
+
+/* 2) Balanced spacing between sections */
+.cz-features,
+.cz-solutions,
+.cz-trusted,
+.cz-form,
+.cz-faq {
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+/* 3) Modernized grid alignment — evenly spaced with a bit of air */
+.cz-grid {
+  display: grid;
+  gap: 28px;
+  justify-content: center;
+  align-items: stretch;
+}
+.cz-grid--features {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+.cz-grid--solutions {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* 4) Add elegant padding + subtle hover motion to cards */
+.cz-card, .cz-solution {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: left;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+.cz-card:hover, .cz-solution:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+/* 5) Typography – modern and refined */
+.cz-title {
+  font-family: "Source Sans Pro", "Segoe UI", Roboto, sans-serif;
+  font-weight: 800;
+  font-size: 32px;
+  letter-spacing: -0.5px;
+  color: #0F5298;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.cz-card h3, .cz-solution h3 {
+  font-family: "Source Sans Pro", "Segoe UI", Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 10px;
+}
+
+.cz-card p, .cz-solution ul {
+  font-family: "Open Sans", "Segoe UI", Roboto, sans-serif;
+  font-size: 15px;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* 6) Trusted Section refinement */
+.cz-trusted {
+  text-align: center;
+}
+.cz-logos {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin: 24px auto;
+  max-width: 900px;
+}
+.cz-logos img {
+  height: 44px;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+.cz-logos img:hover {
+  opacity: 1;
+}
+.cz-testis blockquote {
+  font-style: italic;
+  color: #374151;
+  font-size: 16px;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* 7) Responsive refinements */
+@media (max-width: 980px) {
+  .cz-wrap {
+    width: min(95%, 100%);
+    padding-inline: 18px;
+  }
+  .cz-title { font-size: 28px; }
+}
+
+/* ===== Corporate Sales – Adjust section title spacing & color ===== */
+
+/* Give titles more breathing room and set to steel blue */
+.cz-title {
+  color: #4682B4;             /* Steel blue */
+  margin-top: 40px;           /* adds subtle top space */
+  margin-bottom: 0px;        /* drops text a bit lower from section content */
+  letter-spacing: -0.4px;
+  font-weight: 800;
+  font-family: "Source Sans Pro", "Segoe UI", Roboto, sans-serif;
+  text-align: center;
+  position: relative;
+}
+
+/* Optional: smoother rhythm between stacked titles */
+.cz-features + .cz-solutions .cz-title,
+.cz-solutions + .cz-trusted .cz-title {
+  margin-top: 104px;           /* slightly more gap when following another section */
+}
+
+/* If you ever want to underline later, keep this handy */
+.cz-title::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 3px;
+  margin: 10px auto 0;
+  background: transparent; /* placeholder for possible red accent */
+  border-radius: 2px;
+}
+
+/* ===== Corporate Sales Form – wider & balanced layout ===== */
+
+.cz-form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.cz-form-grid {
+  max-width: 1100px;              /* was 900px — gives more breathing width */
+  width: 100%;
+  background: #f7f8fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 28px 32px;             /* a bit more horizontal comfort */
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+}
+
+/* Fields and buttons stay polished */
+.cz-field input,
+.cz-field select,
+.cz-field textarea {
+  border: 1px solid #d8dbe1;
+  border-radius: 10px;
+  background: #fff;
+  padding: 13px 14px;
+  font-size: 15px;
+  color: #111;
+  transition: all 0.2s ease;
+}
+
+.cz-field input:focus,
+.cz-field select:focus,
+.cz-field textarea:focus {
+  border-color: #B23850;          /* brand red */
+  box-shadow: 0 0 0 3px rgba(178,56,80,0.15);
+}
+
+/* Full-width rows and buttons aligned cleanly */
+.cz-field--full { grid-column: 1 / -1; }
+.cz-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+}
+
+/* Button tweak */
+.cz-btn--primary {
+  background: #B23850;
+  color: #fff;
+  border: none;
+  height: 56px;
+  padding: 0 34px;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease;
+}
+.cz-btn--primary:hover {
+  background: #9f2f46;
+  transform: translateY(-1px);
+}
+
+/* Responsive adjustment */
+@media (max-width: 980px) {
+  .cz-form-grid {
+    max-width: 95%;
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Corporate Sales – Centered form, tighter height, proper heading ===== */
+
+/* Center the entire form section (title + form card) */
+#cz-form {
+  width: min(1200px, 100% - 96px);  /* comfortable side gutters */
+  margin: 32px auto 0;              /* center horizontally */
+}
+
+/* Heading directly above the form, centered and tight */
+#cz-form .cz-title{
+  text-align: center;
+  margin: 0 auto 14px;              /* pull it closer to the card */
+  color: #4682B4;                   /* steel blue to match sections */
+  font-weight: 800;
+}
+
+/* The form card itself – keep width, reduce HEIGHT visually */
+.cz-form-grid{
+  max-width: 1100px;                /* keep the nice wider width you liked */
+  margin: 0 auto;                   /* center the card */
+  padding: 18px 22px;               /* was ~28/32 – trimmed */
+  gap: 12px;                        /* tighter row spacing */
+  border-radius: 14px;              /* subtle rounding */
+  box-shadow: 0 3px 14px rgba(0,0,0,.035);
+}
+
+/* Compact field heights a touch */
+.cz-field input,
+.cz-field select{
+  height: 46px;                     /* was ~48–52 on some browsers */
+  padding: 10px 12px;
+}
+
+/* Shorter textarea so the card isn’t tall */
+.cz-field textarea{
+  min-height: 120px;                /* was rows=4 but rendered tall – trim it */
+  padding: 12px;
+  resize: vertical;                 /* allow expand if needed */
+}
+
+/* Actions row — keep tight */
+.cz-actions{
+  margin-top: 4px;                  /* less air below the textarea */
+  gap: 12px;
+}
+
+/* Primary CTA stays brandy and compact */
+.cz-btn--primary{
+  height: 52px;                     /* was 56px */
+  padding: 0 28px;
+  border-radius: 999px;
+}
+
+/* Tablet & down: keep it tight but readable */
+@media (max-width: 980px){
+  #cz-form { width: min(95%, 100%); }
+  .cz-form-grid{ padding: 16px 18px; gap: 10px; }
+  .cz-field textarea{ min-height: 110px; }
+}
+
+/* ===== Fix: center the form title + card together and tighten height ===== */
+
+/* Make the form section a vertical stack and center its children */
+.cz-form{
+  display: flex !important;
+  flex-direction: column !important;   /* title above, form below */
+  align-items: center !important;       /* center both */
+  justify-content: flex-start;
+  gap: 10px;                            /* subtle space between title and card */
+  width: 100%;
+}
+
+/* Properly center the heading and keep it aligned with the card width */
+#cz-form .cz-title{
+  width: 100%;
+  max-width: 1100px;                    /* match the card width */
+  margin: 0 auto 12px !important;       /* sit just above the form */
+  text-align: center !important;
+  line-height: 1.15;
+  
+}
+
+/* Keep the card centered and reduce vertical bulk a bit */
+.cz-form-grid{
+  max-width: 1100px;                    /* keep current width */
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px 22px;                   /* a touch tighter */
+  gap: 12px;
+  border-radius: 14px;
+}
+
+/* Compact fields */
+.cz-field input, .cz-field select{ height: 46px; padding: 10px 12px; }
+.cz-field textarea{ min-height: 120px; padding: 12px; }
+
+/* Actions row tight */
+.cz-actions{ margin-top: 4px; gap: 12px; }
+
+@media (max-width: 980px){
+  #cz-form .cz-title{ max-width: 95%; }
+  .cz-form-grid{ max-width: 95%; padding: 14px 16px; gap: 10px; }
+}
+
+/* ============================
+   MOBILE POLISH (≤ 580px only)
+   ============================ */
+@media (max-width: 580px){
+
+  /* 1) Section headings left-aligned */
+  .cz-title{
+    text-align: left !important;
+    margin-left: 16px !important;
+    margin-right: 16px !important;
+    margin-top: 24px !important;
+    margin-bottom: 18px !important;
+  }
+
+  /* 2) Form container centered but with compact side gutters */
+  #cz-form{
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 12px !important;
+  }
+
+  /* 3) Form card: single column, tighter paddings, smaller gaps */
+  .cz-form-grid{
+    max-width: none !important;
+    width: 100% !important;
+    grid-template-columns: 1fr !important;
+    padding: 12px 14px !important;
+    gap: 10px !important;
+    border-radius: 12px !important;
+  }
+
+  /* 4) Inputs: consistent, compact height on phones */
+  .cz-field input,
+  .cz-field select{
+    height: 42px !important;
+    padding: 10px 12px !important;
+    font-size: 16px; /* prevents iOS zoom */
+  }
+
+  /* 5) Textarea shorter but expandable */
+  .cz-field textarea{
+    min-height: 100px !important;
+    padding: 10px 12px !important;
+    resize: vertical;
+    font-size: 16px;
+  }
+
+  /* 6) Actions row: left-aligned, tighter; wrap email nicely */
+  .cz-actions{
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px !important;
+    margin-top: 6px !important;
+  }
+
+  /* 7) Smaller submit button */
+  .cz-btn--primary{
+    height: 44px !important;
+    padding: 0 18px !important;
+    font-size: 14px !important;
+    border-radius: 999px !important;
+  }
+
+  /* 8) Email helper text size */
+  .cz-help{
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+  }
+}
+
+.cz-form{
+  margin-top: -20px;
+}
+
+.cz-trusted{
+  margin-top: 160px;
+  color: gray;
+  font-size: large;
+}
+
+/* HERO TEXT RESPONSIVE ADJUSTMENT */
+.cz-hero-inner h1 {
+  font-size: 3rem;        /* desktop default */
+  line-height: 1.2;
+}
+
+.cz-hero-inner p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ↓↓↓ Scale down on tablets and phones ↓↓↓ */
+@media (max-width: 992px) {
+  .cz-hero-inner h1 {
+    font-size: 2.2rem;
+  }
+  .cz-hero-inner p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .cz-hero-inner h1 {
+    font-size: 1.7rem;
+  }
+  .cz-hero-inner p {
+    font-size: 0.95rem;
+  }
+  .cz-cta-row a {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cz-hero-inner h1 {
+    font-size: 1.4rem;
+  }
+  .cz-hero-inner p {
+    font-size: 0.85rem;
+  }
+  .cz-cta-row a {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+}
+
+/* === HERO IMAGE: zoom-out & clarity === */
+/* Gradient stays cover; photo uses an explicit width (smaller than cover) */
+:root{
+  /* Tweak this width to zoom in/out:
+     - bigger number = more zoom-in
+     - smaller number = more zoom-out
+  */
+  --cz-hero-img-width: max(200px, 35vw);
+}
+
+.cz-hero{
+  /* 1st layer (gradient) stays cover, 2nd layer (photo) uses our width */
+  background-size: cover, var(--cz-hero-img-width) auto !important;
+  /* adjust the focal point if you want to slide the image around */
+  background-position: center, 30% 95% !important;  /* X Y of the photo */
+}
+
+/* Wider screens: keep the image from getting too big */
+@media (min-width: 1600px){
+  :root{ --cz-hero-img-width: 1300px; }
+}
+
+/* Tablets/phones: allow a touch more width so it still fills nicely */
+@media (max-width: 980px){
+  :root{ --cz-hero-img-width: 105vw; }
+}
+
+/* === HERO IMAGE: zoom-out, keep full image, align right === */
+:root{
+  /* Width controls the “zoom”. Smaller = zoomed out, larger = zoomed in.   */
+  /* We also cap by viewport height so the sphere fits vertically too.      */
+  --cz-hero-img-width: min(50vh, 52vw);
+
+  /* Where to place the image (X from right, Y from top).                    */
+  --cz-hero-img-x: calc(100% - 80px);  /* keep ~80px away from the edge */
+  --cz-hero-img-y: 58%;
+}
+
+.cz-hero{
+  /* 1st layer = gradient (cover), 2nd layer = photo (explicit width) */
+  background-size: cover, var(--cz-hero-img-width) auto !important;
+  background-position: center, var(--cz-hero-img-x) var(--cz-hero-img-y) !important;
+  background-repeat: no-repeat, no-repeat !important;
+}
+
+/* Wide desktops: keep a pleasant max size */
+@media (min-width: 1600px){
+  :root{ --cz-hero-img-width: 900px; } /* adjust to taste */
+}
+
+/* Large tablets / small laptops: nudge closer to the edge and size a touch */
+@media (max-width: 1280px){
+  :root{
+    --cz-hero-img-width: min(86vh, 58vw);
+    --cz-hero-img-x: calc(100% - 48px);
+  }
+}
+
+/* Tablets and below: center the photo so it never clips off-screen */
+@media (max-width: 980px){
+  :root{
+    --cz-hero-img-width: 92vw;   /* fill width nicely */
+    --cz-hero-img-x: 50%;
+  }
+  .cz-hero{
+    background-position: center, 50% 58% !important; /* center the sphere */
+  }
+}
+
+.cz-hero{
+    background-position: center, 80% 98% !important; /* center the sphere */
+}
+
+/* =========================================
+   Corporate Sales HERO — Mobile polish
+   Targets your real classes: #czHero / .cz-hero / .cz-hero-inner / .cz-btn
+   Only affects small phones (like iPhone 390px)
+   ========================================= */
+@media (max-width: 480px){
+
+  /* 1) Hero size: make it less huge on mobile */
+  #czHero.cz-hero{
+    min-height: 360px !important;     /* smaller than your 500px+ */
+    padding: 0 !important;            /* we’re positioning inner instead */
+    border-radius: 0 !important;      /* keep your page consistent */
+  }
+
+  /* 2) Background layers:
+   - gradient stays cover
+   - image becomes contain (no cropping) */
+#czHero.cz-hero{
+  background-size: cover, contain !important;
+  background-position: center, 52% 45% !important;
+  background-repeat: no-repeat, no-repeat !important;
+}
+
+  /* 3) Add stronger readability overlay ONLY on mobile */
+  /* 3) Lighter overlay so it’s not too dark */
+#czHero.cz-hero::after{
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,.45) 0%,
+    rgba(0,0,0,.18) 55%,
+    rgba(0,0,0,0) 100%
+  ) !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+}
+
+
+  /* 4) Move text block to bottom-left with safe padding */
+  #czHero .cz-hero-inner{
+    position: absolute !important;
+    left: 16px !important;
+    right: 16px !important;
+    bottom: 16px !important;
+    max-width: 100% !important;
+    z-index: 2 !important;           /* above overlay */
+  }
+
+  /* 5) Headline: smaller but clearer */
+  #czHero .cz-hero-inner h1{
+    font-size: 22px !important;
+    line-height: 1.15 !important;
+    margin: 0 0 10px !important;
+    letter-spacing: -0.2px !important;
+    text-shadow: 0 2px 14px rgba(0,0,0,.45) !important;
+  }
+
+  /* 6) Paragraph: readable + not too long */
+  #czHero .cz-hero-inner p{
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+    margin: 0 0 12px !important;
+    max-width: 42ch !important;
+    color: rgba(255,255,255,.92) !important;
+    text-shadow: 0 2px 14px rgba(0,0,0,.35) !important;
+  }
+
+  /* 7) Buttons: smaller + tidy row */
+  #czHero .cz-cta-row{
+    gap: 10px !important;
+    margin-top: 8px !important;
+  }
+
+  #czHero .cz-btn{
+    padding: 9px 14px !important;
+    font-size: 13px !important;
+    min-height: 38px !important;
+    border-radius: 999px !important;
+  }
+}
+
+/* =========================================================
+   FINAL MOBILE OVERRIDE (≤ 480px ONLY) — wins over conflicts
+   - Smaller hero image
+   - Contact Sales pushed to far right
+   - Desktop untouched
+   ========================================================= */
+@media (max-width: 480px){
+
+  /* Make hero less tall on mobile */
+  #czHero.cz-hero{
+    min-height: 360px !important;
+    padding: 0 !important;
+  }
+
+  /* Background layers:
+     1st = gradient (cover)
+     2nd = image (explicit smaller size = downscaled)
+  */
+  #czHero.cz-hero{
+    background-size: cover, 56% auto !important;     /* <<< IMAGE SMALLER (try 70%–82%) */
+    background-position: center, 70% 58% !important; /* keeps sphere to the right */
+    background-repeat: no-repeat, no-repeat !important;
+  }
+
+  /* Lighter overlay so image isn't too dark */
+  #czHero.cz-hero::after{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    background: linear-gradient(
+      to top,
+      rgba(0,0,0,.34) 0%,
+      rgba(0,0,0,.12) 55%,
+      rgba(0,0,0,0) 100%
+    ) !important;
+    z-index:1 !important;
+    pointer-events:none !important;
+  }
+
+  /* Text block stays bottom-left */
+  #czHero .cz-hero-inner{
+    position:absolute !important;
+    left:16px !important;
+    right:16px !important;
+    bottom:16px !important;
+    z-index:2 !important;
+    max-width:100% !important;
+  }
+
+  /* Buttons row: keep left button left, push Contact Sales to right corner */
+  #czHero .cz-cta-row{
+    display:flex !important;
+    align-items:center !important;
+    width:100% !important;
+    gap:10px !important;
+  }
+  #czHero .cz-cta-row a:last-child{
+    margin-left:auto !important; /* <<< pushes Contact Sales to the far right */
+  }
+
+  /* Smaller buttons for mobile */
+  #czHero .cz-btn{
+    padding: 9px 14px !important;
+    font-size: 13px !important;
+    min-height: 38px !important;
+  }
+}
+/* =========================================
+   Corporate Sales – LANDSCAPE MOBILE FIX
+   Applies to ALL landscape orientations
+   ========================================= */
+@media (orientation: landscape) and (max-width: 980px) {
+
+  /* 1) Reduce image size in landscape */
+  #czHero.cz-hero{
+    background-size: cover, 22% auto !important;   /* <<< smaller image */
+    background-position: center, 78% 80% !important;
+    min-height: 300px !important;                  /* reduce banner height */
+  }
+
+  /* 2) Keep text readable but tighter */
+  #czHero .cz-hero-inner{
+    bottom: 14px !important;
+    left: 16px !important;
+    right: 16px !important;
+    max-width: 100% !important;
+  }
+
+  #czHero .cz-hero-inner h1{
+    font-size: 20px !important;
+    line-height: 1.15 !important;
+  }
+
+  #czHero .cz-hero-inner p{
+    font-size: 13px !important;
+    max-width: 46ch !important;
+  }
+
+  /* 3) CTA row layout */
+  #czHero .cz-cta-row{
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100%;
+  }
+
+  /* 4) Push "Contact Sales" to the far right */
+  #czHero .cz-cta-row .cz-btn--ghost{
+    margin-left: auto !important;   /* <<< THIS moves it right */
+  }
+
+  /* 5) Slightly smaller buttons for landscape */
+  #czHero .cz-btn{
+    padding: 8px 14px !important;
+    font-size: 13px !important;
+    min-height: 36px !important;
+  }
+}
+@media (orientation: landscape) and (max-width: 980px) {
+
+  /* 1) Reduce image size in landscape (KEEPING your screenshot logic) */
+  #czHero.cz-hero{
+    background-size: cover, 22% auto !important;   /* <<< smaller image */
+    background-position: center, 92% 80% !important;
+    min-height: 300px !important;                  /* reduce banner height */
+  }
+
+  /* 2) Fix header ↔ paragraph spacing + keep text grouped nicely */
+  #czHero .cz-hero-inner{
+    left: 18px !important;
+    right: 18px !important;
+    bottom: 18px !important;
+    max-width: 62% !important;                     /* keeps text away from the image */
+  }
+
+  #czHero .cz-hero-inner h1{
+    margin: 0 0 8px !important;                    /* tighter */
+    line-height: 1.15 !important;
+  }
+
+  #czHero .cz-hero-inner p{
+    margin: 0 0 12px !important;                   /* FIX: remove the auto-centering gap */
+    max-width: 48ch !important;
+    line-height: 1.45 !important;
+  }
+
+  /* 3) Push Contact Sales button to the far right in landscape */
+  #czHero .cz-cta-row{
+    width: 100% !important;
+    justify-content: space-between !important;     /* first left, second right */
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+  }
+
+  #czHero .cz-cta-row .cz-btn{
+    white-space: nowrap;
+  }
+}
+/* Align hero paragraph with the H1 (left aligned) */
+.cz-hero-inner p{
+  margin: 0 0 14px !important;   /* removes auto-centering */
+}
+
+/* ===== Corporate Sales — FIX HERO H1 SIZE (desktop) ===== */
+#czHero .cz-hero-inner h1{
+  font-size: 36px !important;   /* reduce size */
+  line-height: 1.08 !important;
+}
+
+/* Keep your existing responsive scaling, just set nicer targets */
+@media (max-width: 992px){
+  #czHero .cz-hero-inner h1{ font-size: 24px !important; }
+}
+@media (max-width: 768px){
+  #czHero .cz-hero-inner h1{ font-size: 24px !important; }
+}
+@media (max-width: 480px){
+  #czHero .cz-hero-inner h1{ font-size: 22px !important; }
+}
+
+/* =========================================
+   iPAD / TABLET ONLY — reduce hero IMAGE size
+   (does NOT affect phones or desktop)
+   ========================================= */
+@media (min-width: 800px) and (max-width: 1290px) and (hover: none) and (pointer: coarse){
+  #czHero.cz-hero{
+    /* 1st layer = gradient stays cover
+       2nd layer = image becomes smaller on iPads */
+    background-size: cover, 32% auto !important;
+    background-position: center, 96% 98% !important;
+    background-repeat: no-repeat, no-repeat !important;
+    
+  }
+  #czHero.cz-hero{
+    padding-top: 72px !important;   /* creates space above image */
+  }
+
+}
+
+/* =========================================================
+   FINAL OVERRIDES (PASTE LAST) — fixes ONLY:
+   1) Mobile landscape: add space above hero so image not “eaten”
+   2) iPad/tablet: reduce hero IMAGE size (only tablets)
+   ========================================================= */
+
+
+/* 1) ALL MOBILE LANDSCAPE (phones/tablets in landscape):
+      create top breathing space + stop the hero being pulled up */
+@media (orientation: landscape) and (max-width: 980px){
+
+  /* stop any upward shifting that causes the top to be eaten */
+  #czHero{
+    top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  /* add space above the hero background/image */
+  #czHero.cz-hero{
+    padding-top: 72px !important;     /* <- adjust 60–90px if needed */
+  }
+
+  /* keep image lower so it’s not clipped */
+  #czHero.cz-hero{
+    background-position: center, 92% 90% !important;
+  }
+}
+
+
+/* 2) iPAD / TABLETS ONLY (portrait + landscape):
+      reduce the hero IMAGE size (2nd background layer only) */
+@media (min-width: 768px) and (max-width: 1366px) and (hover: none) and (pointer: coarse){
+
+  #czHero.cz-hero{
+    /* 1st layer (gradient) stays cover, 2nd layer (photo) shrinks */
+    background-size: cover, 32% auto !important;  /* try 28%–38% */
+    background-position: center, 96% 92% !important;
+    background-repeat: no-repeat, no-repeat !important;
+  }
+
+}
+/* =========================================================
+   MOBILE LANDSCAPE — make ALL screens match your “perfect” example
+   (prevents the sphere being eaten at the top)
+   ========================================================= */
+@media (orientation: landscape) and (max-width: 980px){
+
+  /* lock spacing + stop any upward shift */
+  #czHero{
+    top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  /* consistent “perfect” look across all mobile landscape sizes */
+  #czHero.cz-hero{
+    padding-top: 72px !important;  /* space above image */
+
+    /* keep the gradient cover, but clamp sphere size so it never gets huge */
+    background-size: cover, clamp(180px, 22vw, 260px) auto !important;
+
+    /* keep sphere LOWER so top never clips */
+    background-position: center, 92% 88% !important;
+
+    background-repeat: no-repeat, no-repeat !important;
+  }
+}
+
+</style>
+
+{% raw %}
+<script>
+(function () {
+  const hero = document.getElementById('czHero');
+  if (!hero) return;
+
+  // Find the element that is actually right above the hero in the DOM
+  function getAboveEl() {
+    let above = hero.previousElementSibling;
+    if (!above) {
+      const p = hero.parentElement;
+      if (p) above = p.previousElementSibling;
+    }
+    if (!above) {
+      above = document.querySelector('.bottom-navbar, .category-nav, .navbar-secondary, .navbar:last-of-type, header');
+    }
+    return above || null;
+  }
+
+  function snapHero() {
+    const above = getAboveEl();
+    hero.style.marginTop = hero.style.marginTop || ''; // keep inline -1px as base
+
+    if (above) {
+      // compute current gap relative to viewport
+      const a = above.getBoundingClientRect();
+      const h = hero.getBoundingClientRect();
+      const gap = Math.round(h.top - a.bottom);
+
+      // If there's positive space beyond our base -1px, pull it up
+      if (gap > 0) {
+        const base = parseInt(hero.style.marginTop || '0', 10); // already -1px inline
+        hero.style.marginTop = (base - gap) + 'px';
+      }
+
+      // hide a 1px hairline if the nav draws a border/shadow
+      const seam = Math.round(hero.getBoundingClientRect().top - above.getBoundingClientRect().bottom);
+      if (seam === 1) {
+        const base2 = parseInt(hero.style.marginTop || '0', 10);
+        hero.style.marginTop = (base2 - 1) + 'px';
+      }
+    }
+  }
+
+  window.addEventListener('load', snapHero);
+  window.addEventListener('resize', snapHero);
+  window.addEventListener('scroll', snapHero, { passive: true });
+  setTimeout(snapHero, 120);
+})();
+</script>
+
+<script>
+(function () {
+  const hero = document.getElementById('czHero');
+  if (!hero) return;
+
+  // What usually sits above the hero on this site:
+  const likelyBars = '.bottom-navbar, .category-nav, .navbar-secondary, .navbar:last-of-type, header';
+
+  function elementAbove(el) {
+    // Prefer the immediate previous sibling
+    let above = el.previousElementSibling;
+
+    // If the hero is first inside a wrapper, use the wrapper's previous sibling
+    if (!above) {
+      const p = el.parentElement;
+      if (p) above = p.previousElementSibling;
+    }
+
+    // Fallback: find a nav/strip/header in the DOM
+    if (!above) above = document.querySelector(likelyBars);
+    return above || null;
+  }
+
+  function snap() {
+    const above = elementAbove(hero);
+    // reset previous adjustments
+    hero.style.top = '';
+    hero.style.marginTop = '';
+    hero.style.paddingTop = '';
+
+    // base hero top padding in your CSS
+    const BASE_PAD = 160; // matches .cz-hero { padding: 160px 0 140px; }
+
+    let gap = 0;
+
+    if (above) {
+      const a = above.getBoundingClientRect();
+      const h = hero.getBoundingClientRect();
+      gap = Math.round(h.top - a.bottom);
+    } else {
+      // If we couldn't find anything above, use header as absolute fallback
+      const header = document.querySelector('header');
+      if (header) {
+        const hRect = hero.getBoundingClientRect();
+        const head = header.getBoundingClientRect();
+        gap = Math.round(hRect.top - head.bottom);
+      }
+    }
+
+    if (gap > 0) {
+      // Move the hero UP by the exact gap, then add same padding back
+      hero.style.top = `-${gap}px`;
+      hero.style.paddingTop = `calc(${BASE_PAD}px + ${gap}px)`;
+    }
+
+    // Hide a faint 1px seam if the bar draws a border/shadow
+    const aboveEl = elementAbove(hero);
+    if (aboveEl) {
+      const seam = Math.round(hero.getBoundingClientRect().top - aboveEl.getBoundingClientRect().bottom);
+      if (seam === 1) {
+        const currentTop = parseInt(getComputedStyle(hero).top || '0', 10) || 0;
+        hero.style.top = (currentTop - 1) + 'px';
+        hero.style.paddingTop = `calc(${BASE_PAD}px + ${gap + 1}px)`;
+      }
+    }
+  }
+
+  // Run on load/resize/scroll to keep it tight
+  window.addEventListener('load', snap);
+  window.addEventListener('resize', snap);
+  window.addEventListener('scroll', snap, { passive: true });
+  setTimeout(snap, 120); // in case fonts/images shift layout after load
+})();
+</script>
+
+{% endraw %}
+
+{% endblock %}

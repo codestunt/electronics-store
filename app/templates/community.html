@@ -1,0 +1,158 @@
+{% set body_class = 'no-main-gutter' %}
+
+{% extends "layout.html" %}
+{% set page_title = 'Community' %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/community.css') }}?v=1001">
+
+
+
+<!-- pick any wide image you like in /static/images/... -->
+<section class="cm-hero"
+         style="--cm-hero-img: url('{{ url_for('static', filename='images/banners/essp.jpg') }}');">
+  <div class="cm-hero-inner">
+    <h1>Join the ElectroZone Community</h1>
+    <p>Explore our kitchen electronics, choose from a variety, and discover the latest innovations.</p>
+    <div class="cm-hero-cta">
+  <div class="cm-hero-cta">
+  <a href="{{ url_for('routes.category_page', slug='microwaves') }}" class="cm-btn cm-btn--light">Microwaves</a>
+  <a href="{{ url_for('routes.category_page', slug='fridges') }}" class="cm-btn cm-btn--outline">Fridges</a>
+</div>
+
+</div>
+
+  </div>
+</section>
+
+
+<!-- Quick stats (optional) -->
+<!-- Quick stats (centered perfectly) -->
+<section class="cm-stats-wrapper">
+  <div class="cm-stats">
+    <div class="cm-stat">
+      <span class="cm-stat-num">12.4k</span>
+      <span class="cm-stat-label">Members</span>
+    </div>
+
+    <div class="cm-stat">
+      <span class="cm-stat-num">3.1k</span>
+      <span class="cm-stat-label">Posts</span>
+    </div>
+
+    <div class="cm-stat">
+      <span class="cm-stat-num">864</span>
+      <span class="cm-stat-label">Tips & Guides</span>
+    </div>
+
+    <div class="cm-stat">
+      <span class="cm-stat-num">98</span>
+      <span class="cm-stat-label">Weekly Threads</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- Featured discussions -->
+<section id="featured" class="cm-section">
+  <h2 class="cm-title">Detailing</h2>
+
+  <div class="cm-grid">
+    <article class="cm-card">
+      <div class="cm-card-head">
+        <div class="cm-topic">TV & Displays</div>
+        <span class="cm-chip">Hot</span>
+      </div>
+      <h3 class="cm-card-title">Best TVs for Gaming in 2026</h3>
+      <p class="cm-card-text">Gamers, we have your go-to display for smooth 4K gaming. Just go through our Tv section and choose your preference.</p>
+      <div class="cm-card-foot">
+        
+        
+      </div>
+    </article>
+
+    <article class="cm-card">
+      <div class="cm-card-head">
+        <div class="cm-topic">Smart Home</div>
+        <span class="cm-chip">Set-up</span>
+      </div>
+      <h3 class="cm-card-title">Smart Home Setup</h3>
+      <p class="cm-card-text">Make use of our well detailed product manuals to connect your devices for the ultimate smart home (hubs, scenes, voice).</p>
+      <div class="cm-card-foot">
+
+      </div>
+    </article>
+
+    <article class="cm-card">
+      <div class="cm-card-head">
+        <div class="cm-topic">Projectors</div>
+        <span class="cm-chip">Idea</span>
+      </div>
+      <h3 class="cm-card-title">Projectors or TVs?</h3>
+      <p class="cm-card-text">Traditionally Tvs have been used in homes for decades but a cinema like effect from Projectors could bring a whole different experience.</p>
+      <div class="cm-card-foot">
+        
+        
+      </div>
+    </article>
+
+    <article class="cm-card">
+      <div class="cm-card-head">
+        <div class="cm-topic">Audio</div>
+        <span class="cm-chip">Guide</span>
+      </div>
+      <h3 class="cm-card-title">Budget Hi-Fi: Starter Setup</h3>
+      <p class="cm-card-text">Your best-value speakers, amps, and DACs under $500.</p>
+      <div class="cm-card-foot">
+        
+      
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Member stories / reviews -->
+<section class="cm-section">
+  <h2 class="cm-title">What Members Are Saying</h2>
+  <div class="cm-reviews">
+    <div class="cm-review">
+      <div class="cm-avatar">JD</div>
+      <div class="cm-review-body">
+        <h4>Shadreck Grant</h4>
+        <p>“I grabbed the VoltMax 4K from ElectroZone—picture is insanely crisp. Setup took 10 minutes!”</p>
+      </div>
+    </div>
+
+    <div class="cm-review">
+      <div class="cm-avatar">LS</div>
+      <div class="cm-review-body">
+        <h4>Lisa S.</h4>
+        <p>“The Product Finder is legit—filtered by price + features and found my projector in seconds.”</p>
+      </div>
+    </div>
+
+    <div class="cm-review">
+      <div class="cm-avatar">AK</div>
+      <div class="cm-review-body">
+        <h4>Andre K.</h4>
+        <p>“Great deals and the team is super helpful in the Community threads. Highly recommend.”</p>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+/* Accessible accordion */
+(function(){
+  const buttons = document.querySelectorAll('.cm-acc-btn');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      btn.parentElement.classList.toggle('is-open', !expanded);
+    });
+  });
+})();
+</script>
+{% endblock %}
+
+

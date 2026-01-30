@@ -1,0 +1,928 @@
+
+/* =========================
+   Community Page (scoped)
+   ========================= */
+
+/* Theme tokens */
+:root{
+  --cm-blue: #4682B4;         /* Steel Blue */
+  --cm-blue-dark: #3b6d96;    /* Hover/Darker */
+  --cm-blue-light: #5a9bd3;   /* Light tint (chips/accents) */
+  --cm-bg: #ffffff;
+  --cm-muted: #6b7280;
+  --cm-border: #e5e7eb;
+  --cm-soft: #f9fafc;
+}
+
+/* A11y utility */
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+
+/* Global page gutters (keep site rhythm) — hero is excluded */
+main, .cm-section, .cm-stats, .cm-cta{ padding-left:20px; padding-right:20px; }
+
+/* Remove site gutters ONLY on the Community page so hero can be full-bleed */
+.no-main-gutter main{
+  padding-left:0 !important;
+  padding-right:0 !important;
+}
+
+/* -------- HERO (full-bleed) --------
+   Provide the image via inline style:
+   style="--cm-hero-img: url('.../community.jpg')"
+*/
+.cm-hero{
+  width:100%;                 
+  position:relative;
+  /* ⬆️ increased overall banner height */
+  padding:160px 0 140px;       
+
+  color:#fff;
+  text-align:center;
+
+  /* fallback + readable overlay over the hero image */
+  background-image:
+    linear-gradient(to bottom, rgba(70,130,180,0.55), rgba(70,130,180,0.35)),
+    var(--cm-hero-img);
+  background-size:cover;
+
+  /* ⬇ lowered the image slightly for better composition */
+  background-position:center bottom 30%;  
+  background-repeat:no-repeat;
+}
+
+/* Keep the 20px inner gutter for content alignment */
+.cm-hero-inner{ max-width:980px; margin:0 auto; padding:0 20px; }
+.cm-hero h1{ font-size:42px; font-weight:800; margin:0 0 12px; }
+.cm-hero p{  font-size:18px; opacity:.97; margin:0 auto 18px; max-width:760px; }
+.cm-hero-cta{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:10px; }
+
+/* Buttons (steel blue) */
+.cm-btn{
+  border-radius:12px; font-weight:700; padding:12px 18px; cursor:pointer; text-decoration:none;
+  display:inline-flex; align-items:center; justify-content:center; transition:all .2s ease-in-out;
+}
+.cm-btn--light{
+  background:var(--cm-blue); color:#fff; border:none;
+}
+.cm-btn--light:hover{ background:var(--cm-blue-dark); }
+
+/* ⬇ Changed Join Now button text to white */
+.cm-btn--outline{
+  background:transparent; color:#fff; border:2px solid #fff;
+}
+.cm-btn--outline:hover{ background:#fff; color:var(--cm-blue); }
+
+/* -------- STATS -------- */
+.cm-stats{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:16px;
+  max-width:1200px; margin:36px auto 28px;  
+}
+.cm-stat{
+  background:#fff; border:1px solid var(--cm-border); border-radius:14px;
+  padding:16px; text-align:center;
+}
+.cm-stat-num{ display:block; font-size:24px; font-weight:800; color:#111; }
+.cm-stat-label{ display:block; font-size:12px; color:var(--cm-muted); }
+
+/* -------- CONTENT SECTIONS -------- */
+.cm-section{ padding:44px 0; }
+.cm-title{ font-size:28px; font-weight:800; color:#222; text-align:center; margin:0 0 24px; }
+.cm-grid{
+  display:grid; gap:22px; max-width:1200px; margin:0 auto;
+  grid-template-columns:repeat(auto-fit, minmax(260px,1fr));
+}
+.cm-card{
+  background:#fff; border:1px solid var(--cm-border); border-radius:14px; padding:18px;
+  transition:box-shadow .2s ease;
+}
+.cm-card:hover{ box-shadow:0 6px 20px rgba(0,0,0,.07); }
+.cm-card-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.cm-topic{ font-size:12px; font-weight:700; color:#111; }
+.cm-chip{
+  font-size:12px; font-weight:700; color:var(--cm-blue);
+  background: color-mix(in srgb, var(--cm-blue) 12%, white);
+  padding:4px 8px; border-radius:999px;
+}
+.cm-card-title{ font-size:18px; font-weight:700; margin:8px 0 6px; color:#111; }
+.cm-card-text{ font-size:14px; color:var(--cm-muted); margin:0 0 12px; }
+.cm-card-foot{ display:flex; align-items:center; justify-content:space-between; }
+.cm-meta{ font-size:13px; color:var(--cm-muted); }
+.cm-link{ color:var(--cm-blue); text-decoration:none; font-weight:700; }
+.cm-link:hover{ color:var(--cm-blue-dark); text-decoration:underline; }
+
+/* -------- REVIEWS -------- */
+.cm-reviews{ max-width:980px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
+.cm-review{
+  display:flex; gap:12px; background:#fff; border:1px solid var(--cm-border); border-radius:14px; padding:14px 16px;
+}
+.cm-avatar{
+  width:44px; height:44px; border-radius:50%; background:var(--cm-blue);
+  color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800;
+}
+.cm-review-body h4{ margin:2px 0 6px; font-size:15px; color:#111; }
+.cm-review-body p{ margin:0; color:#444; font-size:14px; }
+
+/* -------- ACCORDION -------- */
+.cm-accordion{ max-width:980px; margin:0 auto; display:flex; flex-direction:column; gap:10px; }
+.cm-acc-item{ border:1px solid var(--cm-border); border-radius:12px; overflow:hidden; background:#fff; }
+.cm-acc-btn{
+  width:100%; text-align:left; display:flex; justify-content:space-between; align-items:center;
+  padding:14px 16px; background:#fff; border:none; cursor:pointer; font-weight:700;
+}
+.cm-acc-btn i{ transition:transform .2s; }
+.cm-acc-item.is-open .cm-acc-btn i{ transform:rotate(180deg); }
+.cm-acc-panel{ display:none; padding:0 16px 14px; color:#444; border-top:1px solid var(--cm-border); }
+.cm-acc-item.is-open .cm-acc-panel{ display:block; }
+
+/* -------- CTA -------- */
+.cm-cta{
+  background:var(--cm-blue); color:#fff; text-align:center; padding:58px 0; margin-top:12px;
+}
+.cm-cta h2{ font-size:28px; font-weight:800; margin:0 0 6px; }
+.cm-cta p{ opacity:.96; margin:0 0 16px; }
+.cm-join-form{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.cm-join-form input{
+  background:#fff; color:#111; border:none; border-radius:10px; padding:10px 14px; min-width:260px; outline:none;
+}
+.cm-join-form .cm-btn{ background:#fff; color:var(--cm-blue); }
+.cm-join-form .cm-btn:hover{ background:color-mix(in srgb, #fff 85%, var(--cm-blue)); }
+
+/* -------- RESPONSIVE -------- */
+@media (max-width:900px){
+  .cm-stats{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:580px){
+  .cm-hero h1{ font-size:34px; }
+}
+
+/* No horizontal scrollbars from full-bleed hero */
+html, body{ overflow-x:hidden; }
+
+/* Center the stats container and keep a 20px gutter on both sides */
+.cm-stats{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
+  gap: 20px;
+  width: min(1200px, 100% - 40px);   
+  margin: 36px auto 28px;            
+  padding: 0;                         
+  justify-content: center;            
+}
+
+/* Responsive: keep it centered while collapsing columns */
+@media (max-width: 1100px){
+  .cm-stats{ grid-template-columns: repeat(2, minmax(260px, 1fr)); }
+}
+@media (max-width: 580px){
+  .cm-stats{ grid-template-columns: 1fr; }
+}
+
+/* Center wrapper — keeps the block itself centered on the page */
+.cm-stats-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 40px 0;
+}
+
+/* Stat cards */
+.cm-stat {
+  background: #fff;
+  border: 1px solid var(--cm-border);
+  border-radius: 14px;
+  padding: 16px 24px;
+  width: 220px;          
+}
+
+.cm-stat-num {
+  display: block;
+  font-size: 24px;
+  font-weight: 800;
+  color: #111;
+}
+
+.cm-stat-label {
+  display: block;
+  font-size: 12px;
+  color: var(--cm-muted);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .cm-stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 580px) {
+  .cm-stats { grid-template-columns: 1fr; }
+}
+
+/* -------- HERO (full-bleed) -------- */
+.cm-hero{
+  width:100%;                 
+  position:relative;
+
+  /* increased banner height for more breathing space */
+  padding:230px 0 200px;       
+
+  color:#fff;
+  text-align:center;
+
+  /* slightly stronger overlay for contrast */
+  background-image:
+    linear-gradient(to bottom, rgba(70,130,180,0.55), rgba(70,130,180,0.35)),
+    var(--cm-hero-img);
+  background-size:cover;
+
+  /* ✅ pull image further down to reveal full subject */
+  background-position:center 35%;  
+  background-repeat:no-repeat;
+}
+
+/* ✅ Move hero text block to bottom-left corner */
+.cm-hero-inner{
+  position:absolute;
+  bottom:60px;   /* distance from bottom edge */
+  left:70px;     /* distance from left edge */
+  max-width:600px;
+  padding:0;
+  margin:0;
+}
+
+.cm-hero h1{
+  font-size:42px;
+  font-weight:800;
+  margin:0 0 12px;
+}
+
+.cm-hero p{
+  font-size:18px;
+  opacity:.97;
+  margin:0 0 18px;
+  max-width:520px;
+}
+
+.cm-hero-cta{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  justify-content:flex-start; /* ⬅ align buttons with text left edge */
+  margin-top:10px;
+}
+
+/* ---- FIX NAVBAR–BANNER GAP ---- */
+.cm-hero {
+  margin-top: 0 !important;     /* remove any auto margin */
+}
+
+main {
+  padding-top: 0 !important;    /* neutralize inherited padding */
+}
+
+header + main .cm-hero,
+.navbar + .cm-hero {
+  margin-top: 0 !important;     /* ensure no space after navbar */
+}
+
+/* ===== NAVBAR ↔ HERO GAP FIX (high-specificity, safe) ===== */
+
+/* Kill any bottom margin on the category/bottom navbar */
+.bottom-navbar,
+.category-nav,
+.navbar-secondary,
+.navbar { 
+  margin-bottom: 0 !important;
+  border-bottom: 0;          /* in case a thin border is creating the band */
+}
+
+/* Remove any top spacing on the main area for this page */
+.no-main-gutter main {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Ensure the hero itself doesn't add space at the top */
+.no-main-gutter main > .cm-hero,
+header + main > .cm-hero,
+main > .cm-hero {
+  margin-top: 0 !important;
+}
+
+/* Zero the very first child’s top margin (common cause) */
+.no-main-gutter main > *:first-child {
+  margin-top: 0 !important;
+}
+
+/* If a sticky-header spacer exists, collapse it */
+.header-spacer,
+.nav-spacer,
+.navbar-spacer {
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Last-resort nudge for 1px hairline/border (use only if you still see a line) */
+.cm-hero {
+  border-top: 0 !important;
+  margin-top: 0px !important;  /* harmless pull-up to hide any hairline */
+}
+
+/* ======= FINAL NAVBAR–HERO GAP FIX ======= */
+
+/* Remove all vertical padding or margin between nav and hero */
+body, main, header, .navbar, .bottom-navbar, .category-nav {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+/* Force hero to start flush under navbar */
+main > .cm-hero,
+header + .cm-hero,
+main .cm-hero,
+.no-main-gutter main .cm-hero {
+  margin-top: 0px !important;  /* hides any 1px border */
+  padding-top: 0 !important;
+}
+
+/* Optional: remove top shadow/border line that might remain */
+.navbar::after,
+header::after,
+.bottom-navbar::after {
+  content: none !important;
+}
+
+/* If your navbar uses position: sticky or fixed, compensate cleanly */
+.navbar,
+.bottom-navbar,
+.category-nav {
+  position: relative;
+  z-index: 1000;
+}
+
+.cm-hero {
+  width: 100%;
+  position: relative;
+
+  /* 🔹 restored tall layout */
+  padding: 220px 0 190px;   /* taller hero height */
+
+  color: #fff;
+  text-align: left;
+
+  /* 🔹 smooth overlay and centered image */
+  background-image:
+    linear-gradient(to bottom, rgba(70,130,180,0.55), rgba(70,130,180,0.35)),
+    var(--cm-hero-img);
+  background-size: cover;
+  background-position: center 35%;   /* keeps image centered vertically */
+  background-repeat: no-repeat;
+
+  /* ensures hero hugs the navbar without gap */
+  margin-top: -1px !important;
+}
+
+/* === Fix: stop hero from eating into the bottom navbar === */
+
+/* 1) Remove the negative pull-up */
+.cm-hero{
+  margin-top: 0 !important;     /* was -1px */
+}
+
+/* 2) Add a crisp 1px seam under the navbar (optional but tidy) */
+.navbar,
+.bottom-navbar,
+.category-nav {
+  border-bottom: 1px solid #e5e7eb; /* soft divider */
+}
+
+/* 3) Tiny breathing room so the image doesn't sit under the nav */
+.navbar + .cm-hero,
+.bottom-navbar + .cm-hero,
+.category-nav + .cm-hero,
+header + main > .cm-hero {
+  padding-top: 8px;   /* small, consistent gap without looking “detached” */
+}
+
+/* ==== FINAL NAV ⇄ HERO ALIGNMENT (wins over previous rules) ==== */
+/* 0) Tweakable gap (keeps things “cemented” but not overlapped) */
+:root { --nav-hero-gap: 12px; }
+
+/* 1) Kill any negative pulls no matter what set them */
+body .cm-hero,
+body main .cm-hero,
+body header + main > .cm-hero,
+body .no-main-gutter main > .cm-hero {
+  margin-top: 0 !important;
+}
+
+/* 2) Ensure a small, consistent top pad so the image doesn’t sit under the nav */
+body .navbar + .cm-hero,
+body .bottom-navbar + .cm-hero,
+body .category-nav + .cm-hero,
+body header + main > .cm-hero {
+  padding-top: var(--nav-hero-gap) !important;  /* prevents “eaten” look */
+}
+
+/* 3) Keep the cinematic height regardless of padding changes */
+body .cm-hero {
+  min-height: 520px !important;      /* tall feel; adjust if you want */
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+/* 4) Make sure the bottom navbar sits cleanly above and shows a crisp seam */
+body .navbar,
+body .bottom-navbar,
+body .category-nav {
+  position: relative;
+  z-index: 3;
+  border-bottom: 1px solid #e5e7eb !important;  /* remove if you prefer zero seam */
+}
+
+/* === COMMUNITY HERO: zoom-out + shift right === */
+:root {
+  /* Smaller = more zoomed-out, so full image fits */
+  --cm-hero-img-width: max(100px, 36vw);
+}
+
+/* Keep your existing gradient as layer 1, and control photo layer 2 */
+.cm-hero {
+   background-size: contain !important;
+  background-position: right 30% bottom -40px !important; /* pushes right + slightly down */
+  background-repeat: no-repeat, no-repeat;
+}
+
+/* Wider screens — keep the right focus and slightly larger width */
+@media (min-width: 1600px) {
+  :root { --cm-hero-img-width: 1100px; }
+  .cm-hero { background-position: right 25% bottom -60px !important; }
+}
+
+/* Tablets: smaller and centered better */
+@media (max-width: 980px) {
+  :root { --cm-hero-img-width: 90vw; }
+  .cm-hero { background-position: right 40% bottom -30px !important; }
+}
+
+/* Mobile: center image so it stays visible */
+@media (max-width: 720px) {
+  :root { --cm-hero-img-width: 100vw; }
+  .cm-hero { background-position: center bottom -20px !important; }
+}
+
+/* === COMMUNITY HERO: smaller image + right aligned === */
+:root {
+  /* smaller number = zoom out more */
+  --cm-hero-img-width: max(200px, 25vw);
+}
+
+.cm-hero {
+   background-size: contain !important;
+  background-position: right 25% bottom -10px !important;
+  background-repeat: no-repeat, no-repeat;
+}
+
+/* Very large screens — keep the image compact */
+@media (min-width: 1600px) {
+  :root { --cm-hero-img-width: 900px; }
+  .cm-hero { background-position: right 20% bottom -60px !important; }
+}
+
+/* Tablets */
+@media (max-width: 980px) {
+  :root { --cm-hero-img-width: 70vw; }
+  .cm-hero { background-position: right 35% bottom -30px !important; }
+}
+
+/* Mobile */
+@media (max-width: 720px) {
+  :root { --cm-hero-img-width: 90vw; }
+  .cm-hero { background-position: center bottom -20px !important; }
+}
+
+/* =========================================================
+   COMMUNITY: close the gap under the fixed navbars (DESKTOP)
+   Paste at the VERY END of community.css
+   ========================================================= */
+@media (min-width: 901px){
+
+  /* 1) Disable any artificial nav→hero gap your file introduced */
+  :root{
+    --nav-hero-gap: 0px !important;
+  }
+
+  /* 2) Restore the correct offset under your fixed nav stack (61 + 64 = 125) */
+  body.no-main-gutter main{
+    padding-top: 114px !important;
+    margin-top: 0 !important;
+  }
+
+  /* 3) Make the hero start immediately (no extra top spacing) */
+  body.no-main-gutter main > .cm-hero{
+    margin-top: 0 !important;
+    padding-top: 0 !important;   /* removes the white band BEFORE the image */
+  }
+}
+/* =========================================================
+   COMMUNITY HERO — FINAL LOCK (NON-DESKTOP)
+   Removes buttons, fixes double shade, pushes text down
+   ========================================================= */
+@media (max-width: 1024px){
+
+  /* remove BOTH buttons */
+  body .cm-hero .cm-hero-cta{
+    display: none !important;
+  }
+
+  /* kill any pseudo overlay (if any exists elsewhere) */
+  body .cm-hero::before,
+  body .cm-hero::after{
+    content: none !important;
+    display: none !important;
+    background: none !important;
+  }
+
+  /* use ONE overlay only (background layer 1) */
+  body .cm-hero{
+    background-image:
+      linear-gradient(to top,
+        rgba(0,0,0,.58) 0%,
+        rgba(0,0,0,.25) 55%,
+        rgba(0,0,0,0) 100%
+      ),
+      var(--cm-hero-img) !important;
+
+     background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: 50% 55% !important;
+  }
+
+  /* push text DOWN (increase bottom value to push lower) */
+  body .cm-hero .cm-hero-inner{
+    position: absolute !important;
+    left: 18px !important;
+    right: 18px !important;
+    bottom: 22px !important;   /* 👈 lower = closer to bottom */
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 620px !important;
+  }
+}
+
+/* ✅ FORCE CENTER STATS (banners) — mobile portrait + landscape */
+@media (max-width: 1024px){
+
+  .cm-stats-wrapper{
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+    padding: 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  .cm-stats{
+    width: 100% !important;
+    max-width: 720px !important;
+    margin: 0 auto !important;
+
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+
+    justify-items: center !important;
+  }
+
+  .cm-stat{
+    width: 100% !important;
+    max-width: 320px !important;
+    text-align: center !important;
+  }
+}
+
+/* iPhone portrait — stack and keep centered */
+@media (max-width: 480px){
+  .cm-stats{
+    grid-template-columns: 1fr !important;
+    max-width: 380px !important;
+  }
+}
+/* =========================================
+   COMMUNITY — MOBILE SIDE SPACING FIX
+   Applies ONLY to mobile & small tablets
+   ========================================= */
+@media (max-width: 768px) {
+
+  /* Featured Discussions section */
+  #featured.cm-section {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Cards inside Featured Discussions */
+  #featured .cm-card {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* What Members Are Saying section */
+  .cm-section .cm-reviews {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Individual review cards */
+  .cm-review {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+/* =========================================================
+   LANDSCAPE MOBILE FIX
+   Adds left/right breathing room for cards & reviews
+   Target: phones in landscape (e.g. 844x390)
+   ========================================================= */
+@media (max-width: 1290px) and (max-height: 900px){
+
+  /* Featured Discussions section */
+  .cm-section{
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Reviews section wrapper */
+  .cm-reviews{
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Safety: prevent cards from touching edges */
+  .cm-card,
+  .cm-review{
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+/* =========================================================
+   COMMUNITY — UNIVERSAL MOBILE LANDSCAPE
+   Applies to ALL devices in landscape (phone + tablet)
+   ========================================================= */
+@media (max-width: 1024px) and (orientation: landscape){
+
+  /* Give the whole Community page breathing room */
+  .cm-section,
+  .cm-stats-wrapper{
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Featured cards grid: prevent it touching edges */
+  .cm-grid{
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Reviews block: keep it centered with side space */
+  .cm-reviews{
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Each review card / discussion card stays inside nicely */
+  .cm-card,
+  .cm-review{
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Optional: center the stats cards in landscape */
+  .cm-stats{
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+/* =========================================================
+   iPad 810×1080 (portrait) ONLY
+   Add left/right breathing room for Featured + Reviews sections
+   ========================================================= */
+@media (min-width: 800px) and (max-width: 900px) and (orientation: portrait){
+
+  /* Give the whole section content side padding + center it */
+  body.no-main-gutter .cm-section{
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+    max-width: calc(100% - 36px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Featured cards grid: keep nice spacing inside the padded section */
+  body.no-main-gutter .cm-grid{
+    gap: 16px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Reviews list container: ensure it also respects the same width */
+  body.no-main-gutter .cm-reviews{
+    width: 100% !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Each review row/card should never “touch” the edges */
+  body.no-main-gutter .cm-review{
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* ================================
+   Community HERO - Mobile text fix
+   (Portrait + Landscape)
+   Add this at the BOTTOM of community.css
+================================== */
+
+/* Base hero text behaviour (all screens) */
+.cm-hero-inner{
+  max-width: 1100px; /* keeps text from stretching too wide */
+}
+
+.cm-hero-inner h1{
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0 0 10px 0;
+  /* scales nicely from mobile -> desktop */
+  font-size: clamp(26px, 4.6vw, 56px);
+}
+
+.cm-hero-inner p{
+  margin: 0;
+  line-height: 1.35;
+  max-width: 62ch; /* keeps subtitle readable */
+  font-size: clamp(14px, 2.2vw, 18px);
+}
+
+/* -------- Mobile Portrait -------- */
+@media (max-width: 520px){
+  .cm-hero-inner{
+    padding: 18px 16px;
+  }
+
+  .cm-hero-inner h1{
+    font-size: 20px;      /* smaller than your current huge one */
+    line-height: 1.06;
+    margin-bottom: 10px;
+  }
+
+  .cm-hero-inner p{
+    font-size: 12px;
+    line-height: 1.35;
+    max-width: 34ch;
+  }
+}
+
+/* -------- Mobile Landscape (your main problem) -------- */
+@media (max-height: 520px) and (orientation: landscape){
+  .cm-hero{
+    min-height: 260px; /* prevents hero from becoming a massive block */
+  }
+
+  .cm-hero-inner{
+    padding: 14px 18px;
+    max-width: 760px;
+  }
+
+  .cm-hero-inner h1{
+    font-size: 26px;     /* key: shrink heading in landscape */
+    line-height: 1.05;
+    margin-bottom: 8px;
+  }
+
+  .cm-hero-inner p{
+    font-size: 13px;     /* key: shrink paragraph in landscape */
+    line-height: 1.25;
+    max-width: 46ch;
+  }
+}/* Breathing space BETWEEN hero banner and stats block */
+.cm-hero{
+  margin-bottom: 36px;
+}
+
+/* Slightly more on small screens */
+@media (max-width: 520px){
+  .cm-hero{
+    margin-bottom: 44px;
+  }
+}
+
+/* Mobile landscape (like 760x360) */
+@media (max-height: 420px) and (orientation: landscape){
+  .cm-hero{
+    margin-bottom: 52px;
+  }
+}
+
+/* =========================================================
+   COMMUNITY HERO — HARD RESET (final authority)
+   ========================================================= */
+.cm-hero{
+  padding-top: 220px !important;
+  padding-bottom: 140px !important; /* REAL bottom edge */
+  min-height: unset !important;
+  margin: 0 !important;
+}
+/* Space BETWEEN hero banner and stats banner */
+.cm-stats-wrapper{
+  margin-top: 48px !important;
+}
+
+/* Mobile landscape */
+@media (max-height: 420px) and (orientation: landscape){
+  .cm-stats-wrapper{
+    margin-top: 56px !important;
+  }
+}
+/* Community hero primary CTA — brand red */
+.cm-hero .cm-btn--light{
+  background: #B23850 !important;
+}
+
+.cm-hero .cm-btn--light:hover{
+  background: #9f2f44 !important; /* slightly darker hover */
+}
+
+/* Community hero heading – reduce size */
+.cm-hero h1,
+.community-hero h1,
+#communityHero h1{
+  font-size: 36px;      /* try 48–56px until it feels perfect */
+  line-height: 1.1;
+}
+
+
+/* =========================================================
+   COMMUNITY HERO — match banner height (same as other pages)
+   Height only (keep everything else the same)
+   ========================================================= */
+.cm-hero{
+  min-height: 200px !important;
+  height: 200px !important;
+  padding: 0 !important;                /* prevents extra vertical space */
+  display: flex;
+  align-items: center;                  /* keeps text nicely centered vertically */
+}
+.cm-hero-inner{
+  padding: 0 24px !important;           /* keep side breathing room */
+}
+@media (max-width: 720px){
+  .cm-hero-inner{ padding: 0 16px !important; }
+}
+
+/* =========================================================
+   COMMUNITY HERO — FORCE match 300px height (wins over all)
+   ========================================================= */
+body .cm-hero{
+  height: 400px !important;
+  min-height: 400px !important;
+  max-height: 400px !important;
+
+  padding: 0 !important;          /* kills padding-based height */
+  margin: 0 !important;
+  overflow: hidden !important;    /* prevents inner content making it look taller */
+
+  display: flex !important;
+  align-items: center !important; /* keeps inner nicely centered */
+}
+
+/* Ensure inner doesn't add vertical bulk */
+body .cm-hero .cm-hero-inner{
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin: 0 !important;
+  width: 100%;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+}
+
+/* Mobile breathing room */
+@media (max-width: 720px){
+  body .cm-hero .cm-hero-inner{
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}

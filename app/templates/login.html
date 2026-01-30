@@ -1,0 +1,191 @@
+{% extends "layout.html" %}
+{% set body_class = "edge-hero" %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pf.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="signin-container">
+  <div class="signin-row">
+    <!-- Left Column -->
+    <div class="signin-col-left">
+      <h2 class="signin-title">Sign In</h2>
+
+      
+
+      <!-- ✅ Login Form -->
+      <form method="POST" action="{{ url_for('routes.login') }}">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+
+        <label for="password">Password</label>
+        <div class="signin-input-group">
+          <input type="password" id="password" name="password" placeholder="Password" required>
+          <span class="signin-eye-icon" onclick="togglePassword()">
+            <i class="fa fa-eye" id="eyeIcon"></i>
+          </span>
+        </div>
+
+        <button type="submit" class="signin-btn-red">Sign In</button>
+      </form>
+
+      <div class="signin-forgot">
+        <a href="#" class="text-muted">Forgot your password?</a>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="signin-col-right">
+      <div class="signin-new-customer">
+        <h4 class="signin-subtitle">New Customer?</h4>
+        <p class="signin-desc">Create an account with us and you'll be able to:</p>
+        <ul class="signin-list">
+          <li>Check out faster</li>
+          <li>Save multiple Shipping addresses</li>
+          <li>Access your order history</li>
+          <li>Track new orders</li>
+          <li>Save items to your wishlist</li>
+        </ul>
+        <a href="{{ url_for('routes.signup') }}" class="signin-btn-red">Create Account</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ===== Desktop parity (same look as mobile) ===== */
+@media (min-width: 901px){
+  /* Sign In */
+  .signin-title{
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 6px 0 14px;
+    letter-spacing: .2px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .signin-new-customer .signin-subtitle{
+    font-size: 24px;
+    font-weight: 700;
+    margin: 6px 0 10px;
+    line-height: 1.25;
+  }
+  .signin-col-left label{
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    letter-spacing: .3px;
+  }
+  .signin-col-left input,
+  .signin-input-group input{
+    height: 48px;
+    font-size: 16px;
+    border-radius: 8px;
+  }
+  .signin-input-group .signin-eye-icon{
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .signin-btn-red{
+    height: 48px;
+    font-size: 17px;
+    font-weight: 700;
+    border-radius: 10px;
+  }
+  .signin-new-customer{
+    padding: 16px 14px;
+  }
+  }
+
+  /* Lift the password eye a touch */
+.signin-input-group { position: relative; }
+
+.signin-input-group .signin-eye-icon{
+  position: absolute;
+  right: 14px;
+  top: 40%;
+  transform: translateY(-58%);  /* was -50%; move slightly up */
+  line-height: 1;
+}
+
+
+/* Left-align the CTA inside the New Customer card */
+.signin-new-customer{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;  /* left edge for children */
+  text-align: left;         /* ensure text + bullets stay left */
+}
+
+.signin-new-customer .signin-btn-red{
+  width: auto;              /* stop stretching */
+  display: inline-block;
+  padding: 12px 22px;
+  margin: 12px 0 0 0;       /* small gap above, flush left */
+  align-self: flex-start;   /* left-align in the flex column */
+}
+
+/* If any mobile rule was centering the button, override it */
+@media (max-width: 900px){
+  .signin-new-customer .signin-btn-red{
+    margin-left: 0;
+    margin-right: auto;
+  }
+}
+/* Align "Create Account" button with bullet TEXT (not bullets) */
+.signin-new-customer{
+  /* one place to control the indent; tweak 24–32px to taste */
+  --bullet-indent: 28px;
+}
+
+/* Make the bullet text start exactly at --bullet-indent */
+.signin-new-customer ul{
+  list-style: disc outside;
+  padding-left: var(--bullet-indent);
+  margin: 10px 0 14px;
+}
+
+/* Nudge the CTA to the same start line as bullet text */
+.signin-new-customer .signin-btn-red{
+  margin-left: 20px;   /* ⟵ key line */
+  align-self: flex-start;
+  width: auto;
+  display: inline-flex;
+  padding: 12px 22px;
+}
+
+
+</style>
+<script>
+function togglePassword() {
+  const passwordInput = document.getElementById("password");
+  const eyeIcon = document.getElementById("eyeIcon");
+
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    eyeIcon.classList.remove("fa-eye");
+    eyeIcon.classList.add("fa-eye-slash");
+  } else {
+    passwordInput.type = "password";
+    eyeIcon.classList.remove("fa-eye-slash");
+    eyeIcon.classList.add("fa-eye");
+  }
+}
+</script>
+
+<script>
+  // Wait 1 sec, then fade out over ~3.5s
+  setTimeout(() => {
+    const banner = document.querySelector('.flash-banner');
+    if (!banner) return;
+    banner.classList.add('fade-out');
+    setTimeout(() => banner.remove(), 4000);
+  }, 1000);
+</script>
+
+
+{% endblock %}

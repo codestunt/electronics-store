@@ -1,0 +1,224 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="ps-wrapper">
+  <div class="ps-card">
+    <div class="ps-icon-circle">
+      <span>✔</span>
+    </div>
+
+    <h1 class="ps-title">Thank you for your order!</h1>
+
+    {% if order_ref %}
+      <p class="ps-order-ref">
+        Order reference:
+        <strong>{{ order_ref }}</strong>
+      </p>
+    {% endif %}
+
+    <p class="ps-lead">
+      Your payment was successful and your ElectroZone order is now being processed.
+      A confirmation email will be sent to your registered email address shortly.
+    </p>
+
+    <div class="ps-buttons">
+      <a href="{{ url_for('routes.home') }}" class="ps-btn ps-btn-primary">
+        Back to Home
+      </a>
+
+      <a href="{{ url_for('routes.account') }}" class="ps-btn ps-btn-ghost">
+        View My Account
+      </a>
+    </div>
+
+    <hr class="ps-divider">
+
+    <div class="ps-next">
+      <h2>What happens next?</h2>
+      <ul>
+        <li>We’ll confirm your payment and start preparing your items for dispatch.</li>
+        <li>You’ll receive an email with your order summary and tracking details (where available).</li>
+        <li>You can review your details any time via the <strong>Account</strong> or <strong>Help</strong> pages.</li>
+      </ul>
+    </div>
+
+    <div class="ps-footer-note">
+      Need help? Visit our
+      <a href="{{ url_for('routes.help') }}">Help Centre</a>
+      or contact ElectroZone support.
+    </div>
+  </div>
+</div>
+
+<style>
+  :root {
+    --ez-red:  #B23850;
+    --ez-red-dark: #962c42;
+    --ez-blue: #3B8BEB;
+    --ez-bg-soft: #F7F7FB;
+    --ez-border: #E4E4EE;
+    --ez-ink: #111827;
+    --ez-muted: #6B7280;
+  }
+
+  .ps-wrapper {
+    max-width: 900px;
+    margin: 40px auto 80px;
+    padding: 0 20px;
+  }
+
+  .ps-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 28px 26px 30px;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+    border: 1px solid var(--ez-border);
+  }
+
+  .ps-icon-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 999px;
+    background: radial-gradient(circle at 30% 20%, #ffffff 0, #ffffff 30%, var(--ez-red) 110%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .ps-icon-circle span {
+    color: #ffffff;
+    font-size: 32px;
+    font-weight: 800;
+  }
+
+  .ps-title {
+    font-size: 28px;
+    margin: 0 0 8px;
+    font-weight: 800;
+    color: var(--ez-ink);
+  }
+
+  .ps-order-ref {
+    margin: 0 0 8px;
+    color: var(--ez-muted);
+    font-size: 14px;
+  }
+
+  .ps-lead {
+    margin: 6px 0 20px;
+    font-size: 15px;
+    color: var(--ez-muted);
+    max-width: 640px;
+  }
+
+  .ps-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .ps-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    transition: transform 0.05s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+
+  .ps-btn-primary {
+    background: linear-gradient(135deg, var(--ez-red), var(--ez-red-dark));
+    color: #ffffff;
+    box-shadow: 0 12px 25px rgba(178, 56, 80, 0.35);
+  }
+
+  .ps-btn-primary:hover {
+    opacity: 0.96;
+  }
+
+  .ps-btn-ghost {
+    background: #ffffff;
+    color: var(--ez-blue);
+    border-color: var(--ez-border);
+  }
+
+  .ps-btn-ghost:hover {
+    background: var(--ez-bg-soft);
+  }
+
+  .ps-btn:active {
+    transform: translateY(1px);
+    box-shadow: none;
+  }
+
+  .ps-divider {
+    border: 0;
+    border-top: 1px solid var(--ez-border);
+    margin: 18px 0 16px;
+  }
+
+  .ps-next h2 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ez-ink);
+  }
+
+  .ps-next ul {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--ez-muted);
+    font-size: 14px;
+  }
+
+  .ps-next li + li {
+    margin-top: 4px;
+  }
+
+  .ps-footer-note {
+    margin-top: 18px;
+    font-size: 13px;
+    color: var(--ez-muted);
+  }
+
+  .ps-footer-note a {
+    color: var(--ez-blue);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .ps-footer-note a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 640px) {
+    .ps-card {
+      padding: 22px 18px 24px;
+    }
+
+    .ps-title {
+      font-size: 24px;
+    }
+
+    .ps-buttons {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .ps-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+{% endblock %}
+

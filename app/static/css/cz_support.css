@@ -1,0 +1,389 @@
+
+
+:root{--red:#B23850;--blue:steelblue;--soft:#f7f9fc;--ink:#121826;--muted:#5b6473;--border:#e6eaf0;}
+.czp-wrap{max-width:1150px;margin:0 auto;padding:0 20px;}
+.czp-hero{padding:44px 0;background:linear-gradient(140deg, rgba(59,139,235,.14), rgba(18,24,38,.06));}
+.czp-wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:stretch;}
+.czp-hero-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:26px;box-shadow:0 10px 30px rgba(18,24,38,.06);}
+.czp-kicker{display:inline-block;font-weight:900;color:var(--blue);font-size:13px;letter-spacing:.3px;margin-bottom:10px}
+.czp-hero-card h1{margin:0 0 10px;font-size:40px;line-height:1.05;color:var(--ink)}
+.czp-hero-card p{margin:0;color:var(--muted);font-size:16px;line-height:1.6}
+.czp-actions{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
+.czp-btn{display:inline-block;padding:11px 14px;border-radius:14px;font-weight:900;text-decoration:none}
+.czp-btn--primary{background:var(--blue);color:#fff}
+.czp-btn--ghost{border:2px solid rgba(18,24,38,.18);color:var(--ink);background:transparent}
+.czp-btn:hover{filter:brightness(.97)}
+.czp-image-box{border-radius:18px;border:1px dashed rgba(18,24,38,.25);background:linear-gradient(180deg,#ffffff,#f2f5fb);display:flex;align-items:center;justify-content:center;min-height:260px}
+.czp-image-text{display:flex;flex-direction:column;gap:6px;align-items:center;color:rgba(18,24,38,.65);text-align:center}
+.czp-section{padding:30px 0 56px;background:#fff}
+.czp-grid{display:grid;grid-template-columns:1fr .85fr;gap:22px;align-items:start}
+.czp-panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px;box-shadow:0 10px 28px rgba(18,24,38,.05)}
+.czp-panel h2{margin:0 0 12px;color:var(--ink);font-size:22px}
+.czp-form{margin-top:6px}
+.czp-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.czp-field{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.czp-field label{font-weight:900;color:var(--ink);font-size:13px}
+.czp-field input,.czp-field select,.czp-field textarea{border:1px solid var(--border);border-radius:12px;padding:11px 12px;font-size:14px;outline:none}
+.czp-field input:focus,.czp-field select:focus,.czp-field textarea:focus{border-color:rgba(59,139,235,.55);box-shadow:0 0 0 4px rgba(59,139,235,.14)}
+.czp-submit{margin-top:14px;width:100%;border:none;border-radius:14px;padding:12px 14px;background:var(--red);color:#fff;font-weight:900;font-size:15px;cursor:pointer}
+.czp-submit:hover{filter:brightness(.96)}
+.czp-quick{display:grid;gap:10px;margin-top:8px}
+.czp-quick-item{padding:12px;border:1px solid var(--border);border-radius:14px;background:var(--soft)}
+.czp-quick-item h3{margin:0 0 6px;color:var(--ink);font-size:15px}
+.czp-quick-item p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+.czp-mini-cta{margin-top:14px;padding:14px;border-radius:16px;border:1px solid rgba(178,56,80,.20);background:rgba(178,56,80,.08)}
+.czp-mini-cta h3{margin:0 0 6px;color:var(--ink);font-size:16px}
+.czp-mini-cta p{margin:0 0 10px;color:var(--muted);font-size:13px;line-height:1.5}
+.czp-link-btn{display:inline-block;padding:10px 12px;border-radius:12px;background:var(--blue);color:#fff;font-weight:900;text-decoration:none}
+.czp-link-btn:hover{filter:brightness(.96)}
+.czp-faq{background:linear-gradient(180deg,#fff, #f7f9fc)}
+.czp-faq h2{margin:0 0 12px;color:var(--ink);font-size:24px}
+.czp-faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.czp-faq-item{border:1px solid var(--border);border-radius:16px;padding:12px 14px;background:#fff}
+.czp-faq-item summary{cursor:pointer;font-weight:900;color:var(--ink)}
+.czp-faq-item p{margin:10px 0 0;color:var(--muted);font-size:13px;line-height:1.6}
+
+@media (max-width: 980px){
+  .czp-wrap{grid-template-columns:1fr}
+  .czp-grid{grid-template-columns:1fr}
+  .czp-row{grid-template-columns:1fr}
+  .czp-faq-grid{grid-template-columns:1fr}
+  .czp-hero-card h1{font-size:34px}
+}
+
+/* ================================
+   Contact Support – Desktop tweaks
+   ================================ */
+/* ================================
+   Contact Support – Desktop tweaks (SCOPED)
+   Only affect the Support page form, not the navbar search
+   ================================ */
+@media (min-width: 992px) {
+
+  /* ONLY the form inside your support panel */
+  .czp-panel .czp-form {
+    position: relative;
+  }
+
+  /* ONLY the red submit button on this page */
+  .czp-panel .czp-submit {
+    width: auto !important;
+    min-width: 170px;
+    padding: 10px 22px;
+    font-size: 15px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    /* push it to the right */
+    margin-left: auto;
+    margin-top: 14px;
+  }
+}
+
+/* Blue Contact Sales button */
+.contact-sales-btn,
+.need-sales .btn,
+a[href*="contact-sales"] {
+  background-color: steelblue !important;
+  border-color: steelblue !important;
+  color: #fff !important;
+}
+
+/* ================================
+   Contact Support – Sales box button alignment
+   ================================ */
+@media (min-width: 992px) {
+
+  /* Pink "Need Sales instead?" box */
+  .need-sales,
+  .support-sales-box,
+  .sales-alt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  /* Text stays on the left */
+  .need-sales p,
+  .need-sales .text,
+  .support-sales-box p {
+    margin: 0;
+    max-width: 70%;
+  }
+
+  /* Contact Sales button */
+  .need-sales a,
+  .need-sales .btn,
+  a[href*="contact-sales"] {
+    margin-left: auto;
+    white-space: nowrap;
+  }
+}
+/* ================================
+   Contact Support – Sales box (desktop)
+   Move "Contact Sales" to right + steelblue
+   ================================ */
+@media (min-width: 992px) {
+  .czp-mini-cta{
+    display: grid;
+    grid-template-columns: 1fr auto;  /* text left, button right */
+    column-gap: 18px;
+    align-items: center;
+  }
+
+  .czp-mini-cta h3{
+    grid-column: 1;
+    margin: 0 0 6px 0;
+  }
+
+  .czp-mini-cta p{
+    grid-column: 1;
+    margin: 0;
+  }
+
+  .czp-mini-cta .czp-link-btn{
+    grid-column: 2;
+    grid-row: 1 / span 2;   /* sits vertically centered beside h3 + p */
+    justify-self: end;
+    background: steelblue !important;
+    border-color: steelblue !important;
+    white-space: nowrap;
+  }
+}
+
+/* ================================
+   Contact Support – Wider layout (desktop)
+   Stretch width-to-width + add breathing room
+   ================================ */
+@media (min-width: 992px){
+
+  /* Wider container across the page */
+  .czp-wrap{
+    max-width: 1600px;          /* was 1150px */
+    padding-left: 34px;
+    padding-right: 34px;
+  }
+
+  /* Hero grid spacing + proportional split */
+  .czp-hero .czp-wrap{
+    gap: 34px;                  /* was 22px */
+    grid-template-columns: 1.15fr .85fr;
+  }
+
+  /* Main content grid spacing + proportional split */
+  .czp-grid{
+    gap: 34px;                  /* was 22px */
+    grid-template-columns: 1.15fr .85fr;
+  }
+
+  /* Optional: make the hero image box feel less tight */
+  .czp-image-box{
+    min-height: 360px;
+  }
+}
+
+.czp-image-box{
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  border-radius: 18px;
+  overflow: hidden;     /* trims image to rounded corners */
+  background: #fff;
+}
+
+.czp-hero-img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;    /* fills container cleanly */
+  display: block;       /* removes inline gaps */
+}
+.czp-image-box{
+  width: 100%;
+  height: 300px;          /* ✅ reduced height */
+  border: none !important; /* ✅ removes dotted border */
+  border-radius: 18px;
+  overflow: hidden;        /* keeps rounded corners clean */
+  background: #fff;
+}
+
+/* =========================================================
+   CONTACT SUPPORT — iPad / Tablet: keep image BESIDE text
+   + enforce same image height as other pages (300px)
+   ========================================================= */
+@media (min-width: 768px) and (max-width: 1024px){
+
+  /* Force hero layout back to 2 columns */
+  .czp-hero .czp-wrap{
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    gap: 20px !important;
+  }
+
+  .czp-hero-card{
+    flex: 0 0 58% !important;
+    min-width: 0 !important;
+  }
+
+  .czp-image-box{
+    flex: 0 0 42% !important;
+    min-width: 0 !important;
+
+    /* ✅ match height + remove dotted border */
+    height: 300px !important;
+    border: none !important;
+    outline: none !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    background: #fff !important;
+  }
+
+  .czp-hero-img{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+}
+
+/* =========================================================
+   MOBILE LANDSCAPE FIX (Galaxy S10 / 760x360 etc.)
+   ========================================================= */
+@media (max-width: 900px) and (orientation: landscape){
+
+  .czp-hero .czp-wrap{
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    gap: 16px !important;
+  }
+
+  .czp-hero-card{
+    flex: 0 0 55% !important;
+    padding: 16px !important;
+  }
+
+  .czp-image-box{
+    flex: 0 0 45% !important;
+
+    height: 240px !important;   /* 👈 trimmed for short screens */
+    border: none !important;
+    outline: none !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    background: #fff !important;
+  }
+
+  .czp-hero-img{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+}
+
+/* =========================================================
+   CONTACT SUPPORT — iPAD PORTRAIT ONLY
+   Add breathing space on the RIGHT of the hero image
+   ========================================================= */
+@media (orientation: portrait) and (min-width: 768px) and (max-width: 1024px){
+
+  /* stop any edge-hugging caused by 100vw/overflow */
+  .czsp-hero,
+  .czsp-hero .czsp-wrap{
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  /* equal left/right gutters */
+  .czsp-hero > .czsp-wrap{
+    padding-left: 26px !important;
+    padding-right: 26px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* give the image column a tiny extra right gutter */
+  .czsp-hero-right{
+    justify-content: flex-end !important;
+    padding-right: 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ensure image never overflows its box */
+  .czsp-image-box{
+    max-width: 520px !important;
+    overflow: hidden !important;
+  }
+
+  .czsp-hero-img{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+}
+
+/* =========================================================
+   CONTACT SUPPORT — iPad PORTRAIT ONLY
+   Restore equal left/right breathing space in hero section
+   ========================================================= */
+@media (orientation: portrait) and (min-width: 768px) and (max-width: 1024px){
+
+  /* restore the missing container padding */
+  .czp-hero .czp-wrap{
+    padding-left: 26px !important;
+    padding-right: 26px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ensure image never touches the edge even if it tries */
+  .czp-image-box{
+    margin-right: 0 !important;
+  }
+
+  .czp-hero-img{
+    max-width: 100% !important;
+    display: block !important;
+  }
+}
+/* =========================================================
+   CONTACT SUPPORT — iPad PORTRAIT ONLY
+   Restore equal left/right breathing space in hero section
+   ========================================================= */
+@media (orientation: portrait) and (min-width: 768px) and (max-width: 1024px){
+
+  /* restore the missing container padding */
+  .czp-hero .czp-wrap{
+    padding-left: 26px !important;
+    padding-right: 26px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ensure image never touches the edge even if it tries */
+  .czp-image-box{
+    margin-right: 0 !important;
+  }
+
+  .czp-hero-img{
+    max-width: 100% !important;
+    display: block !important;
+  }
+}
+
+/* =========================================
+   Contact Support — PHONE LANDSCAPE ONLY
+   Add breathing space on the RIGHT
+   ========================================= */
+@media (orientation: landscape) and (max-width: 980px){
+
+  section.czp-hero > .czp-wrap{
+    padding-right: 34px !important;
+  }
+
+}

@@ -1,0 +1,44 @@
+
+{# templates/_pf_results.html #}
+
+{% if products and products|length > 0 %}
+  <div class="pf-grid">
+    {% for p in products %}
+      <article class="pf-card">
+        <!-- Fixed-ratio media box to prevent cropping -->
+        <div class="pf-media">
+          <img
+            class="pf-img"
+            src="{{ url_for('static', filename=p.image_path) }}"
+            alt="{{ p.name }}"
+            loading="lazy"
+          >
+        </div>
+
+        <div class="pf-body">
+          <h3 class="pf-name">{{ p.name }}</h3>
+          <p class="pf-snippet">
+            {{ (p.description or '')[:100] ~ ('…' if (p.description or '')|length > 100 else '') }}
+          </p>
+          <div class="pf-row">
+            <span class="pf-price">${{ '%.2f'|format(p.price) }}</span>
+            <form method="POST" action="{{ url_for('routes.add_to_cart') }}">
+              <input type="hidden" name="product_id" value="{{ p.id }}">
+              <button class="pf-add" {% if p.stock_quantity|int <= 0 %}disabled{% endif %}>
+                {% if p.stock_quantity|int <= 0 %}Out of stock{% else %}Add to Cart{% endif %}
+              </button>
+            </form>
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+
+  <nav class="pf-pager">
+    <a href="#" class="pf-page {% if page <= 1 %}is-disabled{% endif %}" data-page="{{ page - 1 }}">Prev</a>
+    <span class="pf-page-num">Page {{ page }} of {{ total_pages }}</span>
+    <a href="#" class="pf-page {% if page >= total_pages %}is-disabled{% endif %}" data-page="{{ page + 1 }}">Next</a>
+  </nav>
+{% else %}
+  <div class="pf-empty">No matching products found.</div>
+{% endif %}

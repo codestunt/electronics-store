@@ -1,0 +1,615 @@
+
+
+
+
+:root{--red:#B23850;--blue:steelblue;--soft:#f7f9fc;--ink:#121826;--muted:#5b6473;--border:#e6eaf0;}
+.czs-wrap{max-width:1150px;margin:0 auto;padding:0 20px;}
+.czs-hero{padding:44px 0;background:linear-gradient(140deg, rgba(178,56,80,.12), rgba(59,139,235,.10));}
+.czs-hero .czs-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:stretch;}
+.czs-kicker{display:inline-block;font-weight:800;color:var(--red);font-size:13px;letter-spacing:.3px;margin-bottom:10px}
+.czs-hero-left h1{margin:0 0 10px;font-size:40px;line-height:1.05;color:var(--ink)}
+.czs-hero-left p{margin:0;color:var(--muted);font-size:16px;line-height:1.6}
+.czs-cards{margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.czs-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:0 10px 26px rgba(18,24,38,.06)}
+.czs-card h3{margin:0 0 6px;font-size:15px;color:var(--ink)}
+.czs-card p{margin:0;font-size:13px;color:var(--muted);line-height:1.5}
+.czs-image-box{height:100%;min-height:260px;border-radius:18px;border:1px dashed rgba(18,24,38,.25);background:linear-gradient(180deg,#ffffff, #f2f5fb);display:flex;align-items:center;justify-content:center}
+.czs-image-text{display:flex;flex-direction:column;gap:6px;align-items:center;color:rgba(18,24,38,.65);text-align:center}
+.czs-section{padding:30px 0 60px;background:#fff}
+.czs-grid{display:grid;grid-template-columns:1fr .85fr;gap:22px}
+.czs-panel{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px;box-shadow:0 10px 28px rgba(18,24,38,.05)}
+.czs-panel h2{margin:0 0 12px;color:var(--ink);font-size:22px}
+.czs-form{margin-top:6px}
+.czs-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.czs-field{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.czs-field label{font-weight:800;color:var(--ink);font-size:13px}
+.czs-field input,.czs-field select,.czs-field textarea{border:1px solid var(--border);border-radius:12px;padding:11px 12px;font-size:14px;outline:none}
+.czs-field input:focus,.czs-field select:focus,.czs-field textarea:focus{border-color:rgba(178,56,80,.55);box-shadow:0 0 0 4px rgba(178,56,80,.12)}
+.czs-submit{margin-top:14px;width:100%;border:none;border-radius:14px;padding:12px 14px;background:var(--blue);color:#fff;font-weight:900;font-size:15px;cursor:pointer}
+.czs-submit:hover{filter:brightness(.96)}
+.czs-small{margin:10px 0 0;color:var(--muted);font-size:13px;text-align:center}
+.czs-small a{color:var(--red);font-weight:900;text-decoration:none}
+.czs-info{display:grid;gap:10px;margin-top:8px}
+.czs-info-row{display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--border);border-radius:14px;background:var(--soft)}
+.czs-highlight{margin-top:14px;padding:14px;border-radius:16px;border:1px solid rgba(59,139,235,.20);background:rgba(59,139,235,.08)}
+.czs-highlight h3{margin:0 0 6px;color:var(--ink);font-size:16px}
+.czs-highlight p{margin:0 0 10px;color:var(--muted);font-size:13px;line-height:1.5}
+.czs-link-btn{display:inline-block;padding:10px 12px;border-radius:12px;background:var(--red);color:#fff;font-weight:900;text-decoration:none}
+.czs-link-btn:hover{filter:brightness(.96)}
+
+@media (max-width: 980px){
+  .czs-hero .czs-wrap{grid-template-columns:1fr}
+  .czs-cards{grid-template-columns:1fr}
+  .czs-grid{grid-template-columns:1fr}
+  .czs-row{grid-template-columns:1fr}
+  .czs-hero-left h1{font-size:34px}
+}
+
+/* Desktop-only: smaller + right aligned */
+@media (min-width: 992px) {
+  .cz-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 14px;
+  }
+
+  .cz-btn-submit {
+    width: auto !important;          /* overrides any width:100% */
+    min-width: 120px;
+    padding: 10px 18px;
+    font-size: 15px;
+    border-radius: 999px;
+    background: steelblue !important;  /* your theme blue */
+    border: 0;
+    color: white;
+  }
+}
+
+/* ================================
+   Contact Sales – Desktop button alignment
+   Blue LEFT (Sales form) + Red RIGHT (Prefer Support)
+   ================================ */
+@media (min-width: 992px) {
+
+  /* 🔵 Blue "Send to Sales" -> EXTREME LEFT of its box */
+  .cz-form-actions{
+    display: flex;
+    justify-content: flex-start; /* push to LEFT */
+  }
+
+  .cz-btn-submit{
+    width: auto !important;
+    min-width: 160px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--blue) !important;
+    color: #fff;
+  }
+
+  /* 🔴 Red "Contact Support" -> EXTREME RIGHT of its box */
+  .czs-highlight{
+    display: flex;
+    align-items: center;
+  }
+
+  /* keep text on left (h3 + p stack) */
+  .czs-highlight h3,
+  .czs-highlight p{
+    margin-right: 14px;
+  }
+
+  .czs-highlight .czs-link-btn{
+    margin-left: auto;  /* push to RIGHT edge */
+    white-space: nowrap;
+  }
+}
+
+/* ================================
+   Contact Sales – Wider layout (desktop)
+   Makes page breathe + stretch width-to-width proportionally
+   ================================ */
+@media (min-width: 992px){
+
+  /* Wider container across the whole page */
+  .czs-wrap{
+    max-width: 1600px;          /* was 1150px */
+    padding-left: 34px;
+    padding-right: 34px;
+  }
+
+  /* Give the hero and main grid more breathing room */
+  .czs-hero .czs-wrap{
+    gap: 34px;                  /* was 22px */
+    grid-template-columns: 1.15fr .85fr;  /* keeps proportions, just feels wider */
+  }
+
+  .czs-grid{
+    gap: 34px;                  /* was 22px */
+    grid-template-columns: 1.15fr .85fr;  /* same proportional split */
+  }
+
+  /* Slightly widen the image placeholder panel */
+  .czs-image-box{
+    min-height: 300px;          /* optional: helps reduce crowded feel */
+  }
+}
+/* ================================
+   Contact Sales – Prefer Support header fix
+   ================================ */
+.czs-highlight h3{
+  white-space: nowrap;        /* FORCE one line */
+  font-size: 17px;
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+
+.czs-highlight p{
+  margin-top: 0;
+  line-height: 1.5;
+}
+
+/* Desktop polish */
+@media (min-width: 992px){
+  .czs-highlight{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 20px;
+    align-items: center;
+  }
+
+  .czs-highlight h3,
+  .czs-highlight p{
+    grid-column: 1;
+  }
+
+  .czs-highlight a{
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    white-space: nowrap;
+  }
+}
+
+/* ================================
+   Contact Sales – Hero Image Fix
+   ================================ */
+
+/* Keep the right column controlled */
+.czs-hero-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Image container sizing */
+.czs-image-box {
+  width: 100%;
+  max-width: 520px;        /* 🔑 controls image size */
+  aspect-ratio: 4 / 3;    /* keeps it professional */
+  overflow: hidden;
+  border-radius: 18px;
+}
+
+/* Actual image control */
+.czs-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* crops nicely, no stretching */
+  display: block;
+}
+
+.czs-image-box{
+  height:100%;
+  min-height:210px;
+  border-radius:18px;
+  border:none;                 /* ✅ remove perforated line */
+  background:#fff;             /* clean background */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;             /* keeps image clipped to radius */
+}
+
+.czs-image-box img{
+  width:100%;
+  height:100%;
+  object-fit:cover;             /* 🔑 fills box perfectly */
+  display:block;
+}
+
+/* ================================
+   Contact Sales – Hero Image
+   ================================ */
+
+.czs-image-box {
+  width: 100%;
+  height: 300px;             /* MATCHES support */
+  border: none !important;   /* removes dotted border */
+  border-radius: 18px;
+  overflow: hidden;          /* trims image cleanly */
+  background: #fff;
+}
+
+.czs-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;         /* clean crop */
+  display: block;            /* no inline gaps */
+}
+
+/* =========================================================
+   CONTACT SALES — LANDSCAPE MOBILE: image NEXT TO text
+   ========================================================= */
+@media (orientation: landscape) and (max-width: 980px){
+
+  /* Force the hero layout back to 2 columns (like desktop) */
+  .czs-hero-inner{
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    gap: 18px !important;
+  }
+
+  .czs-hero-left{
+    flex: 1 1 55% !important;
+    min-width: 0 !important;
+  }
+
+  .czs-hero-right{
+    flex: 1 1 45% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: stretch !important;
+  }
+
+  /* Image box sizing (same “professional” height style) */
+  .czs-image-box,
+  .czs-image-text{
+    width: 100% !important;
+    height: 300px !important;        /* match your other pages */
+    border: none !important;          /* remove dotted border */
+    outline: none !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    background: #fff !important;
+  }
+
+  .czs-hero-right img,
+  .czs-hero-img{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+}
+
+/* =========================================================
+   CONTACT SALES — FIX BUTTON STYLING ON MOBILE
+   (prevents mobile rules from “resetting” it)
+   ========================================================= */
+@media (max-width: 980px){
+
+  /* covers <button>, <input type="submit">, and common button classes */
+  .czs-btn,
+  .czs-btn--primary,
+  .czs-form button,
+  .czs-form input[type="submit"],
+  button[type="submit"]{
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    background: #B23850 !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 999px !important;
+    padding: 12px 18px !important;
+    font-weight: 800 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .czs-btn:hover,
+  .czs-btn--primary:hover,
+  .czs-form button:hover,
+  .czs-form input[type="submit"]:hover{
+    background: #9e3046 !important;
+  }
+}
+
+/* =========================================================
+   CONTACT SALES — LANDSCAPE: keep image NEXT TO text
+   ========================================================= */
+@media (orientation: landscape) and (max-width: 980px){
+
+  /* The 2-column wrapper in your HTML is .czs-wrap */
+  .czs-hero .czs-wrap{
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    gap: 18px !important;
+  }
+
+  .czs-hero-left{
+    flex: 0 0 55% !important;
+    min-width: 0 !important;
+  }
+
+  .czs-hero-right{
+    flex: 0 0 45% !important;
+    min-width: 0 !important;
+    display: flex !important;
+  }
+
+  /* Keep the image at the same professional height as the other pages */
+  .czs-image-box{
+    width: 100% !important;
+    height: 300px !important;      /* match your standard */
+    border: none !important;        /* kills dotted border if any */
+    outline: none !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    background: #fff !important;
+  }
+
+  .czs-hero-img{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+}
+
+/* =========================================================
+   CONTACT SALES — iPAD / TABLET: keep image BESIDE text
+   (matches desktop layout)
+   ========================================================= */
+
+/* iPad portrait/landscape width band */
+@media (min-width: 768px) and (max-width: 1024px){
+
+  /* Force the hero wrapper to be 2 columns again */
+  .czs-hero .czs-wrap{
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 22px !important;
+  }
+
+  .czs-hero-left{
+    flex: 0 0 56% !important;
+    min-width: 0 !important;
+  }
+
+  .czs-hero-right{
+    flex: 0 0 44% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+  }
+
+  /* Match the same “uniform” image height used on your other pages */
+  .czs-image-box{
+    width: 100% !important;
+    height: 300px !important;
+    border: none !important;
+    outline: none !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    background: #fff !important;
+  }
+
+  .czs-hero-img{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+}
+/* =========================================================
+   CONTACT SALES — iPAD / TABLET: keep image BESIDE text
+   (matches desktop layout)
+   ========================================================= */
+
+/* iPad portrait/landscape width band */
+@media (min-width: 768px) and (max-width: 1024px){
+
+  /* Force the hero wrapper to be 2 columns again */
+  .czs-hero .czs-wrap{
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 22px !important;
+  }
+
+  .czs-hero-left{
+    flex: 0 0 56% !important;
+    min-width: 0 !important;
+  }
+
+  .czs-hero-right{
+    flex: 0 0 44% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+  }
+
+  /* Match the same “uniform” image height used on your other pages */
+  .czs-image-box{
+    width: 100% !important;
+    height: 300px !important;
+    border: none !important;
+    outline: none !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    background: #fff !important;
+  }
+
+  .czs-hero-img{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+}
+
+
+
+/* ==========================================
+   Contact Sales — MOBILE PORTRAIT ONLY
+   Fix missing right margin/gutter
+   ========================================== */
+@media (max-width: 600px) and (orientation: portrait) {
+
+  /* Prevent any tiny overflow from killing the right spacing */
+  html, body {
+    overflow-x: hidden;
+  }
+
+  /* Force equal gutters on BOTH sides */
+  .czs-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+
+    box-sizing: border-box !important;
+  }
+
+  /* Safety: if any child is using 100vw, clamp it */
+  .czs-hero,
+  .czs-section,
+  .czs-hero .czs-wrap,
+  .czs-section .czs-wrap {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* =========================================================
+   Contact Sales — MOBILE PORTRAIT ONLY
+   Force equal left/right gutters (fix right edge hugging)
+   ========================================================= */
+@media (max-width: 600px) and (orientation: portrait){
+
+  /* Kill any width:100vw style causing right-side clipping */
+  .czs-hero,
+  .czs-section{
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* IMPORTANT: apply padding to the ACTUAL wrap containers */
+  .czs-hero > .czs-wrap,
+  .czs-section > .czs-wrap{
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Safety: prevent any child from pushing wider than the screen */
+  .czs-hero-left,
+  .czs-hero-right,
+  .czs-panel,
+  .czs-cards,
+  .czs-card{
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+/* =========================================================
+   CONTACT SALES — iPAD PORTRAIT ONLY
+   Add breathing space on the RIGHT of the hero image
+   (Kindle Fire / iPad-like portrait widths)
+   ========================================================= */
+@media (orientation: portrait) and (min-width: 768px) and (max-width: 1024px){
+
+  /* prevent any 100vw overflow causing edge-hugging */
+  .czs-hero,
+  .czs-hero .czs-wrap{
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ensure the main wrapper has equal gutters */
+  .czs-hero > .czs-wrap{
+    padding-left: 26px !important;
+    padding-right: 26px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* force the right column NOT to sit flush to the edge */
+  .czs-hero-right{
+    justify-content: flex-end !important;
+    padding-right: 10px !important; /* tiny extra breathing space */
+    box-sizing: border-box !important;
+  }
+
+  /* keep image inside its box and never overflow */
+  .czs-image-box{
+    max-width: 520px !important;      /* keeps it from stretching too wide */
+    margin-right: 0 !important;
+  }
+
+  .czs-hero-img{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+}
+
+/* =========================================================
+   CONTACT SALES — PHONE LANDSCAPE ONLY
+   REAL FIX: hero section is clipping the gutter
+   ========================================================= */
+@media (orientation: landscape) and (max-width: 767px) {
+
+  /* This is the KEY FIX */
+  section.czs-hero {
+    padding-right: 28px !important;   /* breathing space */
+    overflow: visible !important;     /* stop clipping */
+    box-sizing: border-box !important;
+  }
+
+  /* Safety: keep image from pushing edge */
+  section.czs-hero .czs-hero-right {
+    padding-right: 8px !important;
+  }
+}
+/* =========================================================
+   CONTACT SALES — PHONE LANDSCAPE ONLY (Galaxy etc.)
+   Add breathing space on RIGHT of the hero image
+   (Does NOT affect iPad: iPad landscape is usually >= 1024px)
+   ========================================================= */
+@media (orientation: landscape) and (max-width: 980px){
+
+  /* make sure NOTHING clips the gutter */
+  section.czs-hero{
+    overflow: visible !important;
+  }
+
+  /* THIS is the gutter you are missing */
+  section.czs-hero > .czs-wrap{
+    padding-right: 34px !important;   /* ✅ breathing space on the right */
+    padding-left: 20px !important;    /* keep left consistent */
+    box-sizing: border-box !important;
+  }
+
+  /* extra safety so right column doesn't sit flush */
+  .czs-hero-right{
+    padding-right: 10px !important;
+    box-sizing: border-box !important;
+  }
+}

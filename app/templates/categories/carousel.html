@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<section class="ez-category-hero">
+  <div class="ez-category-hero-inner">
+    <h1 class="ez-category-title">{{ page_title }}</h1>
+    <p class="ez-category-subtitle">Explore our best-in-class {{ page_title }}.</p>
+  </div>
+</section>
+
+{% if products and products|length %}
+  {% set items = products %}
+  {% set heading = page_title %}
+  {% set carousel_id = 'cat-' ~ page_title|lower %}
+  {% include "partials/product_carousel.html" %}
+{% else %}
+  <p class="ez-empty">No products found in this category.</p>
+{% endif %}
+
+{% endblock %}

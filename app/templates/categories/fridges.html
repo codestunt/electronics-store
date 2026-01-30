@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% set body_class = "edge-hero" %}
+
+{% set page_title = 'Fridges' %}
+{% set page_subtitle = 'Smart cooling, efficient living.' %}
+{% set page_bg = 'images/banners/fridge.jpg' %}
+
+{% block styles %}
+<style>
+  .ez-white-page,
+  .ez-white-page section,
+  .ez-white-page .ez-grid { background:#ffffff !important; background-image:none !important; }
+  .ez-white-page .ez-category-title,
+  .ez-white-page .ez-category-subtitle { color:#000 !important; text-shadow:none !important; }
+
+  /* ✅ DEBUG (temporary): if you see this red box, the CSS is applying */
+  @media (max-width: 1024px) and (orientation: portrait){
+    .ez-category-hero { outline: 4px solid red !important; }
+  }
+
+  /* ✅ MOBILE PORTRAIT ONLY: hide the hero title + subtitle no matter what */
+  @media (max-width: 1024px) and (orientation: portrait){
+    .ez-category-title,
+    .ez-category-subtitle,
+    .ez-category-hero-inner{
+      display: none !important;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="ez-white-page">
+  <section class="ez-category-hero ez-img-hero">
+  <div class="ez-category-hero-inner">
+    <h1 class="ez-category-title">{{ page_title }}</h1>
+    <p class="ez-category-subtitle">Explore our best-in-class {{ page_title }}.</p>
+  </div>
+<!-- FRIDGES TEMPLATE LOADED -->
+
+  <div class="ez-hero-media">
+    <img
+      class="ez-hero-img"
+      src="{{ url_for('static', filename=page_bg) }}"
+      alt="{{ page_title }}"
+      loading="eager"
+    >
+  </div>
+</section>
+
+
+
+
+
+
+  <div class="ez-grid">
+    {% for p in products %}
+      <div class="ez-card">
+        <img class="ez-card-img" src="{{ url_for('static', filename=p.image_path) }}" alt="{{ p.name }}" loading="lazy">
+        <div class="ez-card-body">
+          <h3 class="ez-card-title">{{ p.name }}</h3>
+          <div class="ez-card-price">${{ '%.2f'|format(p.price) }}</div>
+        </div>
+      </div>
+    {% else %}
+      <p>No products found in this category.</p>
+    {% endfor %}
+  </div>
+
+  {% if pages and pages > 1 %}
+  <nav class="pager">
+    {% if page > 1 %}<a href="{{ url_for(request.endpoint, page=page-1) }}">&laquo; Prev</a>{% endif %}
+    <span>Page {{ page }} of {{ pages }}</span>
+    {% if page < pages %}<a href="{{ url_for(request.endpoint, page=page+1) }}">Next &raquo;</a>{% endif %}
+  </nav>
+  {% endif %}
+</div>
+{% endblock %}

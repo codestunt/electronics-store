@@ -1,0 +1,66 @@
+{# templates/partials/pz_carousel.html #}
+{# Accepts:
+   - items: list of products (each has id, name, price, image_path, optional rating, review_count)
+   - carousel_id: unique string, e.g. "home-best" or "cat-tvs"
+   - title (optional), subtitle (optional)
+#}
+
+{% set _items = items
+   if items is defined else
+   (products if products is defined else (bestsellers if bestsellers is defined else [])) %}
+
+{% set _title = title if title is defined else 'Products' %}
+{% set _subtitle = subtitle if subtitle is defined else 'Discover our featured electronics.' %}
+
+<div class="pz-container py-5">
+  <div class="pz-header text-center">
+    <h2 class="pz-title">{{ _title }}</h2>
+    <p class="pz-subtitle">{{ _subtitle }}</p>
+  </div>
+</div>
+
+<div class="pz-carousel-wrapper">
+  <button class="pz-scroll-btn left"  onclick="{{ carousel_id }}_left()">‹</button>
+
+  <div class="pz-scrolling-wrapper" id="{{ carousel_id }}">
+    {% for product in _items %}
+      <div class="pz-product-card">
+        <div class="pz-product-image">
+          <img src="{{ url_for('static', filename=product.image_path) }}" alt="{{ product.name }}">
+        </div>
+
+        <h5 class="pz-product-name">{{ product.name }}</h5>
+
+        <p class="pz-stars">
+          {% set rating = (product.rating if product.rating is defined else 0)|int %}
+          {% for _ in range(rating) %}
+            <i class="fas fa-star text-warning"></i>
+          {% endfor %}
+          <span class="pz-review-count">{{ product.review_count if product.review_count is defined else 0 }} Reviews</span>
+        </p>
+
+        <p class="pz-price">${{ "%.2f"|format(product.price) }}</p>
+
+        <form action="{{ url_for('routes.add_to_cart') }}" method="POST">
+          <input type="hidden" name="product_id" value="{{ product.id }}">
+          <button type="submit" class="pz-cart-btn">Add to Cart</button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+
+  <button class="pz-scroll-btn right" onclick="{{ carousel_id }}_right()">›</button>
+</div>
+
+{# Per-instance scroll handlers so multiple carousels won't conflict #}
+<script>
+(function(){
+  const lane = document.getElementById('{{ carousel_id }}');
+  function stepPx() {
+    const card = lane.querySelector('.pz-product-card');
+    return card ? (card.getBoundingClientRect().width + 16) * 2 : 600; // ~two cards
+  }
+  window['{{ carousel_id }}_left']  = () => lane.scrollBy({ left: -stepPx(), behavior: 'smooth' });
+  window['{{ carousel_id }}_right'] = () => lane.scrollBy({ left:  stepPx(), behavior: 'smooth' });
+})();
+</script>

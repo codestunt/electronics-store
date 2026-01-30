@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+{% set page_title = "Contact Support" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cz_support.css') }}?v=999">
+
+<section class="czp-hero">
+  <div class="czp-wrap">
+    <div class="czp-hero-card">
+      <span class="czp-kicker">Help Center • Orders • Troubleshooting</span>
+      <h1 style="color: #B23850">Contact Support</h1>
+      <p>
+        Need assistance? Send a support request and our team will get back to you.
+        You can also browse FAQs and common fixes in our Help Page. Going through these FAQs will help give you first hand
+         information before you may contact our team. 
+      </p>
+
+      <div class="czp-actions">
+        
+      </div>
+    </div>
+
+    <div class="czp-image-box">
+        <img class="czp-hero-img"
+        src="{{ url_for('static', filename='images/customer.jpeg') }}"
+        alt="Support Team">
+    </div>
+
+  </div>
+</section>
+
+<section id="ticket" class="czp-section">
+  <div class="czp-wrap czp-grid">
+    <div class="czp-panel">
+      <h2>Open a Support Ticket</h2>
+
+      <form method="POST" action="{{ url_for('routes.ez_send_support_form_to_gmail') }}" class="cz-form">
+
+        <div class="czp-row">
+          <div class="czp-field">
+            <label>Full Name</label>
+            <input type="text" name="name" placeholder="Your name" required>
+          </div>
+          <div class="czp-field">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="you@email.com" required>
+          </div>
+        </div>
+
+        <div class="czp-row">
+          <div class="czp-field">
+            <label>Topic</label>
+            <select name="topic">
+              <option value="Order Issue">Order Issue</option>
+              <option value="Delivery Issue">Delivery Issue</option>
+              <option value="Refund / Return">Refund / Return</option>
+              <option value="Account Help">Account Help</option>
+              <option value="Technical Help">Technical Help</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="czp-field">
+            <label>Order Number (optional)</label>
+            <input type="text" name="order_number" placeholder="e.g., EZ-10492">
+          </div>
+        </div>
+
+        <div class="czp-field">
+          <label>Message</label>
+          <textarea name="message" rows="7" placeholder="Describe the issue clearly. Include product name and what you tried so far." required></textarea>
+        </div>
+
+        <button type="submit" class="czp-submit">Submit Ticket</button>
+      </form>
+    </div>
+
+    <div class="czp-panel czp-side">
+      <h2>Quick Help</h2>
+
+      <div class="czp-quick">
+        <div class="czp-quick-item">
+          <h3>Delivery Tracking</h3>
+          <p>Check your email confirmation for a tracking link.</p>
+        </div>
+        <div class="czp-quick-item">
+          <h3>Returns</h3>
+          <p>Visit our policy pages or open a ticket to request a return.</p>
+        </div>
+        <div class="czp-quick-item">
+          <h3>Account Login</h3>
+          <p>Try resetting your password or double-check email spelling.</p>
+        </div>
+      </div>
+
+      <div class="czp-mini-cta">
+        <h3>Need Sales instead?</h3>
+        <p>For bulk pricing and bundles, Sales is the right team.</p>
+        <a href="{{ url_for('routes.contact_sales') }}" class="czp-link-btn">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

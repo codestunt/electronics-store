@@ -1,0 +1,102 @@
+
+/* ===== Product Finder layout ===== */
+:root { --pf-gutter: 20px; }
+
+.pf-wrap{
+  width: 100%;
+  max-width: none;          /* full width */
+  margin: 0;
+  padding: 20px var(--pf-gutter);  /* 20px breathing space left/right */
+}
+
+.pf-title{font-size:28px;font-weight:700;margin:6px 0 18px;color:#333}
+
+.pf-search{
+  display:flex;gap:10px;align-items:center;position:sticky;top:0;
+  background:#fff;padding:10px 0;z-index:1
+}
+.pf-search input{
+  flex:1;height:44px;padding:0 14px;border:1px solid #ddd;border-radius:10px;font-size:16px;
+}
+.pf-btn{height:44px;padding:0 16px;border:0;border-radius:10px;cursor:pointer;font-weight:600;background:steelblue;color:#fff}
+.pf-btn:hover{filter:brightness(0.95)}
+
+.pf-meta{margin:8px 2px 14px;color:#666;font-size:14px}
+
+/* ===== Grid: fluid, edge-to-edge within 20px gutter ===== */
+.pf-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  column-gap: 16px;   /* horizontal spacing */
+  row-gap: 120px;      /* increased vertical spacing between rows */
+  width:100%;
+
+}
+
+
+/* ===== Card ===== */
+.pf-card{
+  border:1px solid #eee;border-radius:14px;overflow:hidden;background:#fff;
+  display:flex;flex-direction:column
+}
+
+/* Fixed ratio media box to stop cropping & keep rows even.
+   Change to 16/9 or 1/1 if you prefer. */
+.pf-media{
+  width:100%;
+  aspect-ratio: 4 / 3;
+  background:#fff;                /* clean bg for PNGs */
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+
+/* Image shows fully (no cut) */
+.pf-img{
+  width:100%;height:100%;
+  object-fit: contain;            /* <<< key: no cropping */
+  display:block;
+}
+
+.pf-body{padding:12px}
+.pf-name{font-size:16px;margin:0 0 6px;color:#222}
+.pf-snippet{font-size:13px;color:#6b7280;line-height:1.35;margin:0 0 10px;min-height:34px}
+.pf-row{display:flex;justify-content:space-between;align-items:center}
+.pf-price{font-weight:700;color:#111}
+.pf-add{border:1px solid #ddd;background:#fff;border-radius:10px;padding:8px 12px;font-weight:600;cursor:pointer}
+.pf-add:hover{background:#f7f7f7}
+.pf-add[disabled]{opacity:.5;cursor:not-allowed}
+
+.pf-empty{border:1px dashed #ddd;border-radius:12px;padding:24px;text-align:center;color:#666}
+
+.pf-pager{display:flex;gap:10px;justify-content:center;align-items:center;margin:18px 0}
+.pf-page{padding:8px 12px;border:1px solid #ddd;border-radius:10px;text-decoration:none;color:#333}
+.pf-page.is-disabled{pointer-events:none;opacity:.4}
+.pf-page-num{font-size:14px;color:#666}
+
+/* Add to Cart button — Blue style */
+.pf-add {
+  background: steelblue;           /* Same blue from your reference */
+  border: 1px solid #3B8BEB;
+  color: #fff;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Hover effect: slightly darker blue for feedback */
+.pf-add:hover {
+  background: #3378d1;
+  border-color: #3378d1;
+}
+
+/* Keep Out of Stock button GRAY, exactly as before */
+.pf-add[disabled] {
+  background: #f2f2f2;
+  border: 1px solid #ddd;
+  color: #888;
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+

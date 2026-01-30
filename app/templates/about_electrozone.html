@@ -1,0 +1,265 @@
+{% extends "layout.html" %}
+{% set body_class = "edge-hero" %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pz.css') }}">
+<style>
+  /* ===== About page (scoped) ===== */
+  :root{
+    --ez-primary: #3B8BEB;   /* your blue */
+    --ez-accent:  #B23850;   /* your red */
+    --ez-ink:     #0f172a;   /* dark text */
+    --ez-muted:   #6b7280;
+    --ez-soft:    #f6f8fb;
+  }
+
+  .ez-about{color:#0f172a}
+  .ez-about .container{max-width:1120px;margin:auto;padding:40px 20px}
+
+  /* Hero */
+  .ez-about-hero{
+    background: #fbfbfb;
+    border-bottom: 1px solid #eef1f5;
+  }
+  .ez-about-hero h1{
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ez-ink);
+    margin: 8px 0 18px;
+  }
+  .ez-about-hero p.lede{
+    font-size: clamp(18px, 2.4vw, 22px);
+    color: #243041;
+    max-width: 960px;
+  }
+
+  /* Section blocks */
+  .ez-section{padding:56px 0}
+  .ez-section.alt{background: var(--ez-soft)}
+  .ez-kicker{
+    color: var(--ez-accent);
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: .08em;
+    font-size: 13px;
+  }
+  .ez-title{
+    font-size: clamp(24px, 3.4vw, 36px);
+    line-height: 1.2;
+    margin: 10px 0 12px;
+    color: var(--ez-ink);
+  }
+  .ez-body{
+    font-size: 18px;
+    color: #243041;
+  }
+
+  /* Split layout */
+  .ez-split{
+    display:grid; gap:28px;
+    grid-template-columns: 1fr;
+    align-items:center;
+  }
+  @media (min-width: 980px){
+    .ez-split{grid-template-columns: 1.05fr .95fr}
+    .ez-split.reverse{grid-template-columns: .95fr 1.05fr}
+    .ez-split.reverse .ez-media{order:-1}
+  }
+
+  .ez-media{
+    background:#fff;border-radius:16px;overflow:hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+  }
+  .ez-media img{display:block;width:100%;height:auto}
+
+  /* Decorative */
+  .ez-hr{
+  height: 1px;
+  background: #e6ebf2;
+  width: 100vw;                  /* full viewport width */
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);   /* center it perfectly */
+}
+
+
+  /* Accessibility focus */
+  .ez-about a{color: var(--ez-primary);text-decoration: none}
+  .ez-about a:hover{text-decoration: underline}
+
+
+/* === ABOUT PAGE: breathing room + "Audio" style headings (no HTML changes) === */
+
+/* Fluid gutters for the whole page */
+:root { --about-gutter: clamp(24px, 6vw, 72px); }
+
+/* widen container and push content away from edges */
+.ez-about .container{
+  max-width: 1200px;                  /* nicer line length */
+  padding-left: var(--about-gutter) !important;
+  padding-right: var(--about-gutter) !important;
+}
+
+/* more vertical rhythm between sections */
+.ez-section{
+  padding-block: clamp(36px, 6vw, 88px) !important;
+}
+
+/* tighten hero copy width a touch for readability */
+.ez-about-hero p.lede{
+  max-width: 65ch !important;
+}
+
+/* ====== “Audio” style heading treatment ====== */
+.ez-about h1,
+.ez-about h2,
+.ez-about h3{
+  position: relative;
+  color: #0c1a2a;                     /* rich ink */
+  letter-spacing: .2px;
+  text-shadow: 0 2px 14px rgba(0,0,0,.10);  /* subtle depth like Audio */
+  margin-bottom: 22px;                /* room for underline bar */
+}
+
+/* keep your existing sizes but nudge a bit bolder */
+.ez-about h1{ font-weight: 800; font-size: 2.9rem; }
+.ez-about h2{ font-weight: 800; }
+.ez-about h3{ font-weight: 700; }
+
+/* gradient underline bar under every heading */
+.ez-about h1::after,
+.ez-about h2::after,
+.ez-about h3::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -12px;
+  width: clamp(70px, 14vw, 140px);
+  height: 6px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--ez-accent), var(--ez-primary));
+  box-shadow: 0 2px 10px rgba(59,139,235,.25);
+}
+
+/* optional: soften paragraphs a touch for big screens */
+.ez-body{
+  max-width: 75ch;                    /* comfortable line length */
+  line-height: 1.6;
+}
+
+/* small screens keep comfy gutters */
+@media (max-width: 600px){
+  :root{ --about-gutter: 20px; }
+}
+
+
+/* === Slightly increase margin breathing space === */
+:root {
+  --about-gutter: clamp(40px, 8vw, 100px);   /* was 24–72px — now wider */
+}
+
+/* widen container spacing proportionally */
+.ez-about .container {
+  max-width: 1250px;                         /* gives content more width control */
+  padding-left: var(--about-gutter) !important;
+  padding-right: var(--about-gutter) !important;
+}
+
+/* keep section rhythm consistent */
+.ez-section {
+  padding-block: clamp(48px, 8vw, 96px) !important;
+}
+
+
+
+</style>
+
+<section class="ez-about">
+  <!-- HERO -->
+  <header class="ez-about-hero">
+    <div class="container">
+      <h1>About Us</h1>
+      <p class="lede">
+        ElectroZone’s company and culture are a lot like our products—thoughtfully designed,
+        not cobbled—so every visit feels smooth, trustworthy, and delightful.
+      </p>
+    </div>
+  </header>
+
+  <!-- Our Mission -->
+  <section class="ez-section">
+    <div class="container ez-split">
+      <div>
+        <div class="ez-kicker">Our Mission</div>
+        <h2 class="ez-title">Helping Millions of Homes & Businesses Shop Better</h2>
+        <p class="ez-body">
+          We believe “better” beats “bigger.” Shopping better means clarity, value, and support—
+          from discovering the right product to getting help when you need it. Our mission
+          aligns every part of ElectroZone with the success of our customers. Win-win.
+        </p>
+      </div>
+      <div class="ez-media">
+        <img src="{{ url_for('static', filename='images/banners/owners.jpg') }}"
+             alt="ElectroZone team helping customers shop smarter">
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Story -->
+  <section class="ez-section alt">
+    <div class="container ez-split reverse">
+      <div>
+        <div class="ez-kicker">Our Story</div>
+        <h2 class="ez-title">From a simple idea to a crafted experience</h2>
+        <div class="ez-body">
+          <p>
+            In 2018, ElectroZone started with a simple question: <em>Why is buying tech still so hard?</em>
+            Specs were confusing, service was inconsistent, and support often felt like an afterthought.
+          </p>
+          <p>
+            We set out to build a different kind of store—one that pairs expert guidance with
+            clear information, transparent pricing, and fast, friendly support. Since then,
+            ElectroZone has grown into a trusted destination for TVs, audio, phones, projectors,
+            and home appliances—while keeping the same crafted, customer-first approach.
+          </p>
+          <p>
+            Today, our teams design every page, process, and package to feel seamless. No noise,
+            no clutter—just great gear and genuine help when you need it.
+          </p>
+        </div>
+      </div>
+      <div class="ez-media">
+        <img src="{{ url_for('static', filename='images/banners/owner.jpg') }}"
+             alt="Founders discussing ElectroZone’s customer-first design">
+      </div>
+    </div>
+  </section>
+
+  <!-- Culture / People (optional third block for parity with HubSpot visual rhythm) -->
+  <section class="ez-section">
+    <div class="container ez-split">
+      <div>
+        <div class="ez-kicker">Culture</div>
+        <h2 class="ez-title">Crafted, not cobbled</h2>
+        <p class="ez-body">
+          We design our experiences like we curate our products—thoughtfully. That means
+          accessible content, reliable advice, and support that actually supports. It’s how we
+          earn trust, one order at a time.
+        </p>
+      </div>
+      <div class="ez-media">
+        <img src="{{ url_for('static', filename='images/banners/team.jpg') }}"
+             alt="ElectroZone office and customer support team">
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="ez-hr"></div>
+  </div>
+</section>
+
+{% endblock %}
+

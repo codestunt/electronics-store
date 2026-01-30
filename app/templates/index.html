@@ -1,0 +1,2488 @@
+<!-- templates/index.html -->
+{% extends "layout.html" %}
+{% set body_class = "home" %}
+
+
+{% block content %}
+<section class="ez-hero">
+  <video class="ez-hero__video" autoplay muted loop playsinline>
+    <source src="{{ url_for('static', filename='video/clip1.mp4') }}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="ez-hero__overlay">
+    <h1>Built for Innovation.<br>Made for Every Home.</h1>
+    <p>Explore premium electronics for your modern lifestyle.</p>
+    <a href="#bestsellers" class="shop-btn btn btn-danger">SHOP NOW</a>
+
+  </div>
+</section>
+
+<style>
+/* Product Section Header */
+.pz-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+}
+.pz-subtitle {
+  font-size: 16px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+/* Carousel Wrapper */
+.pz-carousel-wrapper {
+  position: relative;
+  overflow: visible; /* Allow scroll buttons outside */
+  margin: 20px auto;
+  max-width: 1200px; /* Limit width */
+  padding: 10px 0;
+}
+
+/* Scrolling Wrapper with Hidden Scrollbar */
+.pz-scrolling-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  padding: 10px 40px;
+}
+.pz-scrolling-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+/* ✅ Scroll Buttons Better Placement */
+.pz-scroll-btn {
+  position: absolute;
+  top: 40%;
+  z-index: 10;
+  background-color: #f2f2f2; /* Off-white */
+  color: #555;
+  border: none;
+  padding: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: background-color 0.2s;
+}
+.pz-scroll-btn:hover {
+  background-color: #dbdada;
+}
+.pz-scroll-btn.left {
+  left: 8px; /* Float in the empty left space */
+}
+.pz-scroll-btn.right {
+  right: -96px; /* Float in the empty right space */
+}
+
+/* Product Card */
+.pz-product-card {
+  flex: 0 0 23%;  /* Four cards per row */
+  margin: 10px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 15px;
+  text-align: center;
+  min-width: 220px;
+}
+.pz-product-card:hover {
+  transform: scale(1.02);
+}
+
+/* Fix image display inside cards */
+.pz-product-image img {
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  object-position: center;
+  background-color: #fff;
+  padding: 10px;
+}
+
+/* Product Info */
+.pz-product-name {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+  margin: 10px 0 5px;
+  padding: 0 10px;
+}
+.pz-review-count {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 4px;
+}
+.pz-product-price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #B23850;
+  margin-bottom: 14px;  /* ✅ More space before Add to Cart */
+}
+
+/* ✅ Gold Stars */
+.star-rating {
+  color: #f2b01e;
+  margin-bottom: 5px;
+}
+.pz-stars {
+  color: #f2b01e;
+}
+
+/* ✅ Add to Cart Button Refined */
+.pz-cart-btn {
+  background-color: #4682B4; /* Steel Blue */
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+}
+.pz-cart-btn:hover {
+  background-color: #3b6d99;
+}
+.pz-add-cart-btn:hover {
+  background-color: #2a6ac9;
+}
+
+/* VoltMax 4K Section */
+.ez-hero-bg-section {
+  background: #f9f9f9;
+  padding: 60px 30px;
+  text-align: center;
+  
+}
+.volt-section-hero h1 {
+  font-size: 36px;
+  color: #3B8BEB;
+  margin-bottom: 10px;
+}
+.volt-section-hero p {
+  font-size: 18px;
+  color: #555;
+  max-width: 700px;
+  margin: 0 auto 20px;
+}
+.volt-section-hero a {
+  color: #B23850;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+
+.volt-wrapper {
+  padding: 20px;
+  margin: auto;
+  text-align: left;        /* Keep text left aligned */
+  max-width: 600px;        /* Keep width tidy */
+  margin-left: 20px;       /* ✅ Move closer to the left margin */
+}
+/* Utility */
+.text-center {
+  text-align: center;
+}
+.py-5 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.container-fluid {
+  padding: 0 40px;
+}
+
+
+.volt-flex-container {
+    display: flex;
+    justify-content: flex-start; /* ✅ Aligns to left */
+    align-items: center; /* Keep vertical centering */
+    gap: 40px; /* Keep some space between text and image */
+}
+
+
+.volt-wrapper {
+    text-align: left;  /* ✅ Forces left justification */
+    max-width: 600px;  /* Optional: keep width tidy */
+    
+}
+
+.volt-wrapper h2,
+.volt-wrapper p,
+.volt-wrapper a {
+    text-align: left;
+    display: block; /* Ensures proper alignment for inline elements */
+}
+
+
+.volt-intro {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3B8BEB;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.volt-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.volt-brand {
+  color: #B23850;
+}
+
+.volt-subtitle {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+  max-width: 480px;
+  text-align: left;
+}
+
+a.volt-btn {
+    display: inline-block !important;       /* Override Bootstrap full width */
+    background-color: #b0d0f8 !important;   /* Blue background */
+    color: #B23850 !important;              /* Text color */
+    padding: 10px 20px !important;          /* Comfortable padding */
+    border: none !important;                /* Remove border */
+    border-radius: 6px !important;          /* Rounded corners */
+    font-size: 16px !important;             /* Text size */
+    font-weight: bold !important;           /* Bold text */
+    text-decoration: none !important;       /* Remove underline */
+    width: auto !important;                 /* Auto width so it fits text */
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a.volt-btn:hover {
+    background-color: #2d6fa8 !important;  /* Darker blue on hover */
+    color: #fff !important;                /* White text on hover */
+}
+
+
+/* ✅ Make image smaller */
+.volt-image-block {
+  flex-shrink: 0;
+  max-width: 300px; /* reduced from 400px */
+  margin-right: 44px;
+}
+
+.volt-product-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+  .volt-flex-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .volt-wrapper {
+    padding-right: 0;
+  }
+
+  .volt-image-block {
+    max-width: 90%;
+    margin-top: 30px;
+  }
+}
+
+/* 📌 Parent container left align already perfect */
+.ez-hero-text {
+  text-align: left;
+  margin-left: 40px;
+  max-width: 640px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Intro line — small caps, spaced */
+.ez-hero-intro {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: #B23850;
+  margin-bottom: 10px;
+}
+
+/* Main title — bold, clean */
+.ez-hero-title {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #000;
+}
+
+/* Subtitle — lighter weight */
+.ez-hero-sub {
+  font-size: 20px;
+  font-weight: 400;
+  color: #444;
+  margin-bottom: 12px;
+}
+
+/* Description — muted grey, better spacing */
+.ez-hero-desc {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* 🎯 Professional button styling */
+a.ez-hero-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #B23850, #962c42);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 50px; /* premium pill look */
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(178, 56, 80, 0.3);
+  transition: all 0.3s ease;
+}
+a.ez-hero-btn:hover {
+  background: linear-gradient(135deg, #962c42, #B23850);
+  box-shadow: 0 6px 16px rgba(178, 56, 80, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Hero: make background pure white to match the image */
+.ez-hero-bg-section {
+  background: #fff !important;
+}
+
+/* Make the hero pure white (you already did this) */
+.ez-hero-bg-section { background:#fff; }
+
+/* Put text + image in two columns and align vertically */
+.ez-hero-container{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;  /* text | image */
+  gap: 48px;
+  align-items: center;               /* ← THIS fixes the “image lower than text” issue */
+}
+
+/* Remove stray top margins so text block doesn't push down */
+.ez-hero-text > *:first-child { margin-top: 0; }
+.ez-hero-title { margin-top: 0; }
+
+/* Keep the image vertically centered and flush (no odd top margin) */
+.ez-hero-image{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+.ez-hero-image img{
+  display: block;          /* avoid inline baseline drop */
+  max-width: 560px;        /* adjust as you like */
+  width: 100%;
+  height: auto;
+}
+
+/* Stretch hero edge-to-edge */
+.ez-hero-container{
+  width: 100%;
+  max-width: 100%;
+  padding: 60px 0;                /* no side padding */
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* text | image */
+  align-items: center;
+}
+
+/* Nudge content to the page edges */
+.ez-hero-text{ padding-left: 24px; }     /* left margin */
+.ez-hero-image{ padding-right: 44px; }   /* right margin */
+.ez-hero-image{ display:flex; justify-content:flex-end; }
+
+/* Make the image a bit smaller */
+.ez-hero-image img{
+  display:block;
+  width: 100%;
+  max-width: 340px;     /* tweak smaller/larger: e.g., 480px, 560px */
+  height: auto;
+}
+
+/* Mobile: stack and re-center */
+@media (max-width: 900px){
+  .ez-hero-container{ grid-template-columns: 1fr; padding: 36px 16px; }
+  .ez-hero-text{ padding-left: 0; text-align: center; }
+  .ez-hero-image{ padding-right: 0; justify-content: center; margin-top: 20px; }
+  .ez-hero-image img{ max-width: 420px; }
+}
+
+
+/* Responsive: stack on mobile */
+@media (max-width: 900px){
+  .ez-hero-container{
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .ez-hero-image{ justify-content: center; margin-top: 24px; }
+}
+
+/* 📱 Mobile layout */
+@media (max-width: 768px) {
+  .ez-hero-container {
+    flex-direction: column;
+    text-align: left;
+  }
+  .ez-hero-image {
+    justify-content: flex-start;
+    margin-top: 20px;
+  }
+}
+
+/* ===== Signup Band ===== */
+.signup-band{
+  background:#f4f1ee;            /* soft off-white like screenshot */
+  padding:40px 5%;
+  border-top:1px solid #eee;
+  border-bottom:1px solid #eee;
+  margin-bottom: 0;
+  
+
+}
+
+/* Kill the light gray background on the products header section */
+#bestsellers,
+#bestsellers.bg-light {
+  background: transparent !important;
+}
+
+.signup-inner{
+  max-width:1200px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  gap:40px;
+}
+.signup-copy{ flex:1; }
+.signup-copy h3{
+  margin:0 0 6px;
+  font-size:32px;
+  font-weight:800;
+  color:#111;
+}
+.signup-copy p{
+  margin:0;
+  font-size:18px;
+  color:#555;
+}
+
+/* form on the right */
+.signup-form{
+  flex:1;
+  display:flex;
+  gap:16px;
+  justify-content:flex-end;
+}
+.signup-form input{
+  flex:1;
+  min-width:320px;
+  padding:14px 16px;
+  border:1px solid #cfcfcf;
+  border-radius:8px;
+  font-size:16px;
+  outline:none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.signup-form input:focus{
+  border-color:#3B8BEB;                     /* your blue */
+  box-shadow:0 0 0 3px rgba(59,139,235,.15);
+}
+
+/* orange CTA */
+.signup-btn{
+  padding:12px 20px;
+  border:none;
+  border-radius:8px;
+  background:#E05A1F;                        /* orange like screenshot */
+  color:#fff;
+  font-weight:700;
+  font-size:16px;
+  cursor:pointer;
+  transition: background .2s, transform .05s;
+}
+.signup-btn:hover{ background:#c94e1b; }
+.signup-btn:active{ transform: translateY(1px); }
+
+/* accessibility helper */
+.visually-hidden{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+/* responsive */
+@media (max-width: 992px){
+  .signup-inner{ flex-direction:column; align-items:flex-start; }
+  .signup-form{ width:100%; justify-content:flex-start; }
+  .signup-form input{ min-width:0; width:100%; }
+}
+
+/* Shift only the text block left */
+.signup-copy {
+  text-align: left;   /* Align text to the left */
+  margin-left: -90px; /* Move block left, adjust value as needed */
+}
+
+/* MOBILE ONLY — does not touch desktop */
+:root { --ezm-nav-h: 68px; }  /* safe to keep; only used below */
+
+@media (max-width: 900px){
+  /* push page under the fixed mobile navbar */
+  main{ padding-top: calc(var(--ezm-nav-h) + 8px); }
+
+  /* hero video: shorter and centered subject on phones only */
+  .video-section{
+    position: relative;           /* local to mobile only */
+    overflow: hidden;
+  }
+  .video-section .bg-video{
+    width: 100%;
+    height: 56vh;                 /* shorter hero on phones */
+    object-fit: cover;
+    object-position: 50% 45%;     /* slight upward bias; tweak 40–50% */
+    display: block;
+  }
+
+  /* overlay text: placed nicely under the navbar and sized for mobile */
+  .video-overlay{
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: calc(var(--ezm-nav-h) + 12px) 16px 16px;
+    max-width: 92%;
+    color: #fff;
+    z-index: 1;
+    margin-bottom: -90px;
+  }
+  .video-overlay h1{
+    font-size: 30px;
+    line-height: 1.18;
+    margin: 0 0 8px;
+  }
+  .video-overlay p{
+    font-size: 16px;
+    line-height: 1.4;
+    margin: 0 0 12px;
+  }
+
+  /* very soft gradient for readability on bright frames */
+  .video-section::after{
+    content:"";
+    position:absolute; inset:0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0,0,0,.18) 0%,
+      rgba(0,0,0,.22) 38%,
+      rgba(0,0,0,.08) 70%,
+      transparent 100%
+    );
+    pointer-events:none;
+    z-index: 0;
+  }
+}
+
+/* Mobile-only tweaks */
+@media (max-width: 900px){
+  /* 1) Close the tiny gap under the navbar */
+  .ezm-nav{ margin-bottom: 0; }                 /* make sure nav adds no gap */
+  main{ padding-top: var(--ezm-nav-h); }        /* remove the extra +8px padding */
+  .video-section{ margin-top: 0 !important; }   /* ensure the hero starts right away */
+
+  /* (Optional) If the 'gap' you see is the nav border, comment the border and use a subtle shadow */
+  /* .ezm-nav{ border-bottom: none; box-shadow: 0 1px 0 rgba(0,0,0,.06); } */
+
+  /* 2) Drop the overlay text to the bottom with comfortable spacing */
+  .video-overlay{
+    justify-content: flex-start;         /* push block to bottom of hero */
+    padding: 0 16px 30px;              /* left/right 16, bottom 30px gap */
+    max-width: 92%;
+  }
+  .video-overlay h1{
+    font-size: 28px;                   /* keep it bold but not oversized */
+    line-height: 1.15;
+    margin: 0 0 8px;
+  }
+  .video-overlay p{
+    font-size: 16px;
+    margin: 0 0 12px;
+  }
+  .shop-btn{ margin-top: 10px; }
+}
+
+
+/* ===============================
+   MOBILE: lock hero height + overlay
+   =============================== */
+@media (max-width: 900px){
+
+  /* keep the page just under the fixed nav, no extra gap */
+  main{ padding-top: var(--ezm-nav-h); }
+
+  /* 1) The hero container becomes the frame with fixed height */
+  .video-section{
+    position: relative;
+    height: 56vh;             /* adjust 54–60vh if you want */
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;         /* trims anything outside the frame */
+  }
+
+  /* 2) The video fills that frame exactly */
+  .video-section .bg-video{
+    position: absolute;       /* fill the section */
+    inset: 0;                 /* top/right/bottom/left = 0 */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;        /* crop without letterbox */
+    object-position: 50% 45%; /* center subject; tweak if needed */
+    display: block;
+    z-index: 1;
+  }
+
+  /* 3) Optional gradient for readability (doesn't affect layout) */
+  .video-section::after{
+    content:"";
+    position:absolute; inset:0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0,0,0,.18) 0%,
+      rgba(0,0,0,.22) 38%,
+      rgba(0,0,0,.08) 70%,
+      transparent 100%
+    );
+    pointer-events:none;
+    z-index: 2;
+  }
+
+  /* 4) Overlay pinned to the bottom inside the frame */
+  .video-overlay{
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 28px;            /* bottom gap */
+    top: auto;               /* ensure not using top */
+    padding: 0;
+    max-width: 92%;
+    display: block !important;
+    z-index: 3;              /* above video and gradient */
+  }
+
+  .video-overlay h1{
+    font-size: 28px;
+    line-height: 1.15;
+    margin: 0 0 8px;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0,0,0,.25);
+  }
+  .video-overlay p{
+    font-size: 16px;
+    margin: 0 0 12px;
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0,0,0,.25);
+  }
+}
+
+/* 📱 Lift the overlay further so the button is fully visible */
+@media (max-width: 900px){
+  .video-overlay{
+    /* was: bottom: calc(64px + env(safe-area-inset-bottom, 0px)); */
+    bottom: calc(150px + env(safe-area-inset-bottom, 0px));  /* ↑ move higher */
+  }
+  /* tighten spacing so text + button fit comfortably */
+  .video-overlay h1{ margin: 0 0 6px; }
+  .video-overlay p{  margin: 0 0 10px; }
+}
+
+/* Extra lift on very small phones if needed */
+@media (max-width: 380px){
+  .video-overlay{
+    bottom: calc(110px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 900px){
+  /* Never allow horizontal spill, and keep page pure white */
+  html, body{
+    overflow-x: clip !important;
+    background:#fff !important;
+  }
+
+  /* Any section that could be full-bleed: clamp to viewport and remove shadows */
+  .video-section,
+  .ez-hero-bg-section,
+  .innovation-section,
+  #bestsellers,
+  .pz-container,
+  .pz-carousel-wrapper,
+  .pz-scrolling-wrapper{
+    background:#fff !important;
+    width:100% !important;
+    max-width:100% !important;
+    margin-left:0 !important;
+    padding-left:0 !important;
+    padding-right:0 !important;
+    box-shadow:none !important;
+  }
+
+  /* Carousel lane: make sure it can’t push left or add fades */
+  .pz-carousel-wrapper::before,
+  .pz-carousel-wrapper::after{
+    content:none !important;
+    display:none !important;
+  }
+  .pz-scrolling-wrapper{
+    display:flex !important;
+    flex-wrap:nowrap !important;
+    overflow-x:auto !important;
+    gap:16px !important;
+    padding:0 16px !important;   /* small gutters, inside the viewport */
+  }
+
+  /* Exactly one card per screen on mobile, no external shadow that can look like a “strip” */
+  .pz-product-card{
+    flex:0 0 calc(100% - 32px) !important;
+    min-width:calc(100% - 32px) !important;
+    margin:0 0 16px !important;
+    box-shadow:none !important;
+  }
+  .pz-product-image img{
+    height:46vw !important;
+    object-fit:contain !important;
+    background:#fff !important;
+  }
+
+  /* Kill the arrows entirely and remove any offsets they had */
+  .pz-scroll-btn{
+    display:none !important;
+    left:auto !important; right:auto !important;
+    width:0 !important; height:0 !important; padding:0 !important; border:0 !important;
+  }
+
+  /* Remove any leftover negative nudge we added earlier */
+  .signup-copy{ margin-left:0 !important; }
+  .volt-section-hero{ margin-left:0 !important; width:100% !important; }
+}
+
+/* ===== Mobile polish: even side padding + smaller speaker image ===== */
+@media (max-width: 768px) {
+  :root { --gutter: 18px; }           /* one place to change side padding */
+
+  html, body { overflow-x: hidden; }  /* avoid any horizontal creep */
+
+  /* Give both sides breathing room on the main sections */
+  .video-section,
+  .pz-header,                 /* "Products" title + subtitle */
+  .pz-carousel-wrapper,       /* the scrolling product area */
+  .innovation-section,
+  .ez-hero-bg-section,        /* white section with the speakers image */
+  .volt-section-hero,
+  .signup-band {
+    padding-left: var(--gutter) !important;
+    padding-right: var(--gutter) !important;
+  }
+
+  /* Keep your product cards centered and tidy on mobile */
+  .pz-product-card {
+    margin: 0 auto 24px;
+    max-width: 440px;         /* one card per view already, keep it narrow */
+  }
+
+  /* Shrink the speakers image (VoltMax) and keep it centered */
+  .ez-hero-container { 
+    grid-template-columns: 1fr; 
+    gap: 20px;
+  }
+  .ez-hero-image { 
+    justify-content: center; 
+  }
+  .ez-hero-image img {
+    max-width: 300px !important;   /* ↓ reduce size of the speaker picture */
+    width: 60%;
+    height: auto;
+    margin-top: 100px;
+    margin-left: -36px;
+  }
+
+  /* Innovation block: make sure text isn’t hugging the edge */
+  .innovation-wrapper { padding: 0; }   /* wrapper already gets gutter above */
+
+  /* Signup band: undo the negative shift and add side padding */
+  .signup-inner { 
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+  }
+  .signup-copy { margin-left: 0 !important; }
+
+  /* General containers */
+  .container-fluid { padding-left: var(--gutter); padding-right: var(--gutter); }
+
+  /* Safety: all images stay responsive within the new gutters */
+  img { max-width: 100%; height: auto; }
+}
+
+/* MOBILE-ONLY fixes for the VoltMax 4K section */
+@media (max-width: 768px) {
+  /* 1) Remove the soft gray and stop the full-bleed width on mobile */
+  .volt-section-hero {
+    background-color: #F5F5F5;    /* kill the gray shade */
+    width: 100% !important;             /* undo 102vw */
+    margin-left: 0 !important;          /* undo calc(...) */
+    padding: 32px 18px !important;      /* tidy mobile padding */
+  }
+
+  /* 2) Make the image smaller and centered */
+  .volt-image-block {
+    max-width: 260px;                   /* adjust if you want 240–300px */
+    margin: 12px auto 0;                /* center under the text */
+  }
+  .volt-image-block .volt-product-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+/* ──────────────────────────────────────────
+   MOBILE: tighten gaps for VoltMax sections
+   (no effect on desktop)
+   ────────────────────────────────────────── */
+@media (max-width: 768px){
+
+  /* Close gap between the video and the first VoltMax block */
+  .video-section{ margin-bottom: 14px; }
+
+  /* ===== First block: "VoltMax™ 4K – Smart Display Panel" ===== */
+  .ez-hero-bg-section{
+    padding: 18px 0 22px !important;    /* was roomy; now tighter */
+    margin: 0 !important;
+  }
+  .ez-hero-container{ row-gap: 10px; }
+  .ez-hero-text{ padding: 0 16px; }      /* keep side breathing space */
+  .ez-hero-intro{ margin: 0 0 6px; }
+  .ez-hero-title{ margin: 0 0 6px; }     /* reduce gap above “VoltMax™ 4K” */
+  .ez-hero-sub{ margin: 0 0 8px; }
+  .ez-hero-desc{ margin: 0 0 12px; }
+  .ez-hero-btn{  margin-top: 8px; }
+
+  /* Make sure no stray margins re-open the gap */
+  .ez-hero-overlay,
+  .ez-hero-container > *{ margin-top: 0 !important; }
+
+  /* ===== Second block: "FROM THE INNOVATORS… INTRODUCING VoltMax™ 4K" ===== */
+  .volt-section-hero{
+    background-color: #F5F5F5;         /* no grey on mobile */
+    padding: 24px 16px 28px !important;  /* tighter top/bottom, keep side padding */
+    margin: 0 !important;
+    width: 100% !important;              /* don’t overflow mobile width */
+    left: 0 !important;                  /* cancel earlier desktop nudge */
+  }
+  .volt-wrapper{ margin: 0 !important; }
+  .volt-wrapper h2,
+  .volt-wrapper p{ margin: 6px 0; line-height: 1.25; }
+  .volt-btn{ margin-top: 10px !important; }
+
+  /* Smaller speaker/computer image & less space above it */
+  .volt-image-block{
+    max-width: 78vw !important;          /* reduce image footprint */
+    margin: 12px auto 0 !important;      /* pull up closer to the text */
+  }
+  .volt-product-img{
+    max-height: 230px;                   /* keep proportionate height */
+    object-fit: contain;
+  }
+
+  /* Safety: prevent any pseudo elements or margins from adding vertical gaps */
+  .ez-hero-bg-section,
+  .volt-section-hero,
+  .innovation-section,
+  .signup-band{
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  .ez-hero-bg-section::before,
+  .ez-hero-bg-section::after,
+  .volt-section-hero::before,
+  .volt-section-hero::after{ display: none !important; }
+}
+
+/* Move the first VoltMax block a little left on mobile only */
+@media (max-width: 768px){
+  /* keep container padding slim, then nudge the text left */
+  .ez-hero-container{ padding-left: 10px; padding-right: 16px;}
+
+  .ez-hero-text{
+    text-align: left;       /* anchor copy to the left */
+    margin-left: 6px;      /* <— nudge; try -6 to -12px to taste */
+    max-width: 92vw;        /* make sure it stays inside the viewport */
+    
+  }
+}
+
+/* ≡ Mobile-only spacing tweaks for the VoltMax hero */
+@media (max-width: 768px){
+
+  /* Pull the “VoltMax™ 4K / Smart Display Panel” section up a bit */
+  .ez-hero-bg-section{
+    padding-top: 14px !important;   /* was ~60px—trimmed for mobile */
+    padding-bottom: 28px;           /* keep a little breathing room below */
+    margin-top: -6px;               /* tiny nudge upward; adjust -4…-12px */
+  }
+
+  /* Slightly reduce the space at the end of the section above (video block) */
+  .innovation-section{
+    padding-bottom: 24px !important; /* was 60px inline—closer handoff */
+  }
+
+  /* Ensure the text block doesn’t reintroduce top spacing */
+  .ez-hero-intro{ margin-top: 0 !important; }
+}
+
+
+@media (max-width: 768px) {
+  footer .footer-top,
+  .site-footer .footer-top,
+  footer .footer-sections,
+  .site-footer .footer-sections,
+  footer .row, .site-footer .row {          /* pick the one you actually have */
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 24px;
+    width: 100%;
+  }
+
+  .site-footer .container,
+  .site-footer .container-fluid {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  footer .footer-top > *,
+  .site-footer .footer-top > *,
+  footer .row > *,
+  .site-footer .row > * {
+    min-width: 0; /* avoid overflow */
+  }
+}
+
+/* ===== Desktop: keep hero text at the bottom of the video ===== */
+@media (min-width: 901px){
+  .video-section{                 /* the video wrapper */
+    position: relative !important;
+  }
+
+  .video-section .video-overlay{  /* the text block */
+    position: absolute !important;
+    left: 5vw;                    /* distance from left edge */
+    bottom: 6vh;                  /* distance from bottom edge */
+    top: auto !important;
+    right: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 56rem;             /* keep lines readable */
+    z-index: 3;                   /* above video & gradient */
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0,0,0,.35);
+  }
+
+  /* optional: subtle darkening at the bottom for readability */
+  .video-section::after{
+    content:"";
+    position:absolute; inset:0;
+    background: linear-gradient(to bottom,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,.05) 40%,
+      rgba(0,0,0,.30) 100%
+    );
+    pointer-events:none;
+    z-index: 2;
+  }
+
+  .video-section .bg-video{       /* keep video behind everything */
+    display:block;
+    width:100%;
+    height:auto;
+    z-index: 1;
+  }
+}
+
+/* ——— STOP the page from being wider than the screen ——— */
+html, body { overflow-x: hidden !important; background:#fff; }
+
+/* clamp Volt section to viewport width */
+.volt-section-hero{
+  width: 100% !important;
+  margin-left: 0 !important;
+  
+}
+
+
+/* AFTER */
+.pz-carousel-wrapper { position: relative; overflow: hidden; }
+
+.pz-scroll-btn.left  { left: 8px;  transform: none; }
+.pz-scroll-btn.right { right: 8px; transform: none; }
+
+
+
+html, body { overflow-x: hidden !important; background:#fff; }
+
+
+
+/* === Left gutter fix: remove all negative nudges and clamp widths === */
+.volt-section-hero{
+  left: 0 !important;
+  width: 100% !important;
+  margin-left: 0 !important;   /* kills the old 102vw + calc(...) effect too */
+  background-color: #F5F5F5;   /* Light Gray */
+;
+}
+
+.signup-copy{
+  margin-left: 0 !important;   /* was -90px */
+}
+
+/* Keep carousel arrows inside the lane so they don't create overflow */
+.pz-carousel-wrapper{ overflow: hidden !important; }
+.pz-scroll-btn.left  { left: 8px !important; }   /* was negative */
+.pz-scroll-btn.right { right: 8px !important; }
+
+/* Belt & suspenders: never allow horizontal spill */
+html, body { overflow-x: hidden !important; background:#fff; }
+
+/* If any section still tries to spill, clip it locally */
+.video-section,
+.ez-hero-bg-section,
+.innovation-section { overflow-x: hidden; }
+
+
+/* ====== Carousel: clean, 4-up, no clipping ====== */
+:root { --pz-gap: 24px; }                 /* spacing between cards */
+
+/* Wrapper holds the arrows; add side padding for their hit area */
+.pz-carousel-wrapper{
+  position: relative;
+  padding: 0 56px;                        /* space for arrows */
+  max-width: 1200px;
+  margin: 20px auto;
+  overflow: hidden;                       /* hide any spill */
+}
+
+/* Horizontal lane */
+.pz-scrolling-wrapper{
+  display: flex;
+  gap: var(--pz-gap);
+  overflow: hidden;                       /* keep edges clean */
+  scroll-behavior: smooth;
+  /* kill earlier padding/flex-wrap/scrollbar rules */
+  padding: 0 !important;
+  flex-wrap: nowrap !important;
+}
+
+/* Exactly four cards visible */
+.pz-scrolling-wrapper .pz-product-card{
+  box-sizing: border-box;
+  flex: 0 0 calc((100% - (3 * var(--pz-gap))) / 4);
+  margin: 0 !important;                   /* use gap above */
+}
+
+/* Arrows centered vertically and inside the wrapper */
+.pz-scroll-btn{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.pz-scroll-btn.left  { left: 8px; }
+.pz-scroll-btn.right { right: 8px; }
+
+/* Images stay contained */
+.pz-product-image img{
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  display: block;
+}
+
+/* (Optional) Responsiveness: 3-up and 2-up */
+@media (max-width: 992px){
+  .pz-scrolling-wrapper .pz-product-card{
+    flex: 0 0 calc((100% - (2 * var(--pz-gap))) / 3);
+  }
+}
+@media (max-width: 640px){
+  .pz-scrolling-wrapper .pz-product-card{
+    flex: 0 0 calc((100% - (1 * var(--pz-gap))) / 2);
+  }
+  .pz-scroll-btn{ display:none; } /* hide arrows on small phones */
+}
+
+
+/* Keep buttons outside so they don't cover cards */
+.pz-carousel-wrapper {
+  position: relative;
+  overflow: visible;                /* let arrows sit outside */
+}
+
+/* Add side gutters + snap padding so ends don't get cut */
+.pz-scrolling-wrapper {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;                        /* whatever your current gap is */
+  padding-inline: 24px;             /* <<< gutter inside the scroller */
+  scroll-padding-inline: 24px;      /* <<< where snapping stops */
+  scroll-snap-type: x mandatory;    /* if you're using snap */
+}
+
+/* Invisible spacers so first/last card can fully show */
+.pz-scrolling-wrapper::before,
+.pz-scrolling-wrapper::after {
+  content: "";
+  flex: 0 0 12px;                   /* usually half your gap; adjust if needed */
+}
+
+/* Ensure 5 cards fit without cropping (keeps math stable with gap+padding) */
+.pz-product-card {
+  scroll-snap-align: start;
+  flex: 0 0 calc((100% - 4 * 16px - 48px) / 5); /* 4 gaps + 24px*2 padding */
+}
+
+/* If product images themselves look clipped inside the card */
+.pz-product-card img {
+  width: 100%;
+  height: 180px;                    /* your chosen height */
+  object-fit: contain;              /* no cropping */
+  display: block;
+}
+
+/* Place arrows slightly outside the wrapper edges */
+.pz-scroll-btn.left  { left:  -14px; }
+.pz-scroll-btn.right { right: -14px; }
+.pz-scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+/* === HERO / VIDEO FIX ON SMALL SCREENS === */
+@media (max-width: 1024px){
+  /* keep content starting just under the fixed mobile nav */
+  main{
+    padding-top: calc(var(--ezm-nav-h) + 4px) !important;
+  }
+
+  /* make sure the hero/video starts at the top and isn't cropped */
+  .video-section,
+  .ez-hero-bg-section,
+  .volt-section-hero{
+    margin-top: 0 !important;
+    /* on short screens, let it fill the space under the nav */
+    min-height: calc(100dvh - var(--ezm-nav-h));
+  }
+}
+
+/* Fine-tune for very short landscape phones */
+@media (max-width: 1024px) and (max-height: 500px) and (orientation: landscape){
+  .video-section,
+  .ez-hero-bg-section,
+  .volt-section-hero{
+    height: auto;
+    min-height: calc(100dvh - var(--ezm-nav-h));
+    overflow: hidden;
+  }
+}
+
+/* === OVERRIDE: treat up to 1024px wide as mobile === */
+@media (max-width: 1024px){
+  /* hide desktop nav bars */
+  .top-navbar,
+  .main-navbar{
+    display: none !important;
+  }
+
+  /* always show the mobile bar */
+  .ezm-nav{
+    display: flex !important;
+  }
+}
+
+
+/* ================================
+   MASTER MOBILE LAYER (≤ 1024px)
+   ================================ */
+@media (max-width: 1024px){
+
+  /* 0) Global safety – text & no sideways scroll */
+  html, body{
+    font-size: 15px;
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+  }
+
+  /* 1) Nav: ALWAYS show mobile bar, ALWAYS hide desktop bars */
+  .top-navbar,
+  .main-navbar{
+    display: none !important;
+  }
+
+  .ezm-nav{
+    display: flex !important;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 2000;
+    background:#fff;
+    border-bottom: 1px solid #eee;
+  }
+
+  :root{
+    --ezm-nav-h: 64px;  /* one single source of truth */
+  }
+
+  /* push page content below fixed bar */
+  main{
+    padding-top: calc(var(--ezm-nav-h) + 8px) !important;
+  }
+
+  /* 2) Images / video: never overflow */
+  img, video{
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* 3) Hero / landing video sections – no cropping, no weird white bands */
+  .video-section,
+  .ez-hero-bg-section,
+  .volt-section-hero{
+    margin-top: 0 !important;
+    width: 100% !important;
+    left: 0 !important;
+    min-height: calc(100dvh - var(--ezm-nav-h));
+    overflow: hidden;
+  }
+
+  /* Short landscape devices: allow hero to shrink a bit */
+  @media (max-height: 500px){
+    .video-section,
+    .ez-hero-bg-section,
+    .volt-section-hero{
+      min-height: auto;
+    }
+  }
+
+  /* 4) Generic two-column layouts → stacked */
+  .ez-columns,
+  .ezf-top,
+  .grid-3,
+  .grid-4,
+  .two-col,
+  .split-layout,
+  .hero-layout{
+    display: block !important;
+  }
+
+  .ez-columns > *,
+  .ezf-top > *,
+  .grid-3 > *,
+  .grid-4 > *,
+  .two-col > *,
+  .split-layout > *,
+  .hero-layout > *{
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 18px 0;
+  }
+
+  /* 5) Product carousels – simple horizontal scroll */
+  .pz-carousel-wrapper{
+    padding: 0 16px !important;
+  }
+
+  .pz-scrolling-wrapper{
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+  }
+
+  .pz-scrolling-wrapper .pz-product-card{
+    flex: 0 0 calc(50% - 12px);   /* 2 cards per row on phones */
+  }
+
+  .pz-scroll-btn{
+    width: 32px;
+    height: 32px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* 6) Footer – stack nicely, keep icons on screen */
+  .ez-footer,
+  .ezf-container{
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .ezf-top{
+    display: block !important;
+  }
+
+  .ezf-brand-col{
+    margin-bottom: 20px;
+  }
+
+  .ezf-col{
+    margin-bottom: 16px;
+  }
+
+  .ezf-divider{
+    margin-left: 0 !important;
+    width: 120px;
+  }
+
+  .ezf-bottom{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .ezf-address,
+  .ezf-copy{
+    margin-left: 0 !important;
+    text-align: left;
+    font-size: 0.8rem;
+    white-space: normal;
+  }
+
+  .ezf-social{
+    margin-left: 0;
+    margin-right: 0;
+    justify-content: flex-start;
+  }
+
+  /* 7) Forms / long text blocks – full-width + breathing room */
+  form,
+  .legal-container,
+  .signup-band,
+  .card,
+  .section-inner{
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+  }
+
+  .legal-container{
+    margin: 20px auto;
+    padding: 16px;
+  }
+}
+/* ✅ MOBILE: force the hero video to be truly centered */
+@media (max-width: 900px){
+
+  .video-section{
+    position: relative !important;
+    width: 100% !important;
+    height: 56vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    float: right !important;
+    margin-left: 16px !important; /* Adds space between image and text */
+  }
+
+  .video-section .bg-video{
+    /* kill previous rules like inset:0; right:0; width:100% */
+    inset: auto !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 50% !important;
+    right: auto !important;
+
+    transform: translateX(-50%) !important;
+
+    width: auto !important;
+    min-width: 100% !important;
+    height: 100% !important;
+
+    object-fit: cover !important;
+    object-position: center center !important;
+
+    display: block !important;
+  }
+
+  /* Keep overlay inside safe padding (prevents text clipping) */
+  .video-overlay{
+    margin-left: -96px !important;
+    left: 16px !important;
+    right: 16px !important;
+    max-width: calc(100% - 32px) !important;
+  }
+}
+/* ✅ MOBILE ONLY: center the hero video properly (no HTML changes) */
+@media (max-width: 900px){
+
+  .video-section{
+    position: relative !important;
+    height: 56vh !important;        /* keep your current hero height */
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Force the video to be truly centered in the viewport */
+  .video-section .bg-video{
+    position: absolute !important;
+    top: 0 !important;
+    left: 50% !important;           /* key: anchor to middle */
+    transform: translateX(-50%) !important;
+
+    width: 100vw !important;        /* fill screen width */
+    height: 100% !important;        /* fill section height */
+    object-fit: cover !important;
+
+    /* key: shift crop slightly LEFT so subject is not stuck on the right */
+    object-position: 67% 33% !important;  /* try 35%–45% if needed */
+  }
+
+  /* Ensure overlay text isn't cut on the left */
+  .video-section .video-overlay{
+    left: 16px !important;
+    right: 16px !important;
+    margin: 0 !important;
+    max-width: none !important;
+    bottom: 30px;
+  }
+}
+/* ✅ MOBILE ONLY — tighten Products section spacing + stop hidden content */
+@media (max-width: 768px){
+
+  /* 1) Products header section: remove huge vertical padding (py-5) */
+  #bestsellers.pz-container,
+  #bestsellers.py-5{
+    padding-top: 14px !important;
+    padding-bottom: 10px !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Tighten title/subtitle spacing */
+  #bestsellers .pz-header{
+    margin: 0 !important;
+    padding: 0 14px !important;
+  }
+
+  #bestsellers .pz-title{
+    margin: 0 0 6px !important;
+    line-height: 1.1;
+  }
+
+  #bestsellers .pz-subtitle{
+    margin: 0 !important;
+    padding-bottom: 6px !important;
+  }
+
+  /* 2) Remove the giant gap before the first product card */
+  .pz-carousel-wrapper{
+    margin-top: 6px !important;
+    padding-top: 0 !important;
+  }
+
+  .pz-scrolling-wrapper{
+    padding-top: 8px !important;   /* small breathing room only */
+    margin-top: 0 !important;
+  }
+
+  /* 3) If the previous section is creating hidden/overlap space above Products */
+  .video-section{
+    margin-bottom: 10px !important;  /* stop excessive gap before Products */
+  }
+}
+
+/* ✅ MOBILE ONLY — remove forced full-screen section height + tighten spacing */
+@media (max-width: 768px){
+
+  /* 1) Stop the hero sections from being forced to near-100vh (this is the main cause) */
+  .ez-hero-bg-section,
+  .volt-section-hero{
+    min-height: auto !important;
+    height: auto !important;
+  }
+
+  /* 2) Reduce bottom space under the first VoltMax block (image + text) */
+  .ez-hero-bg-section{
+    padding-bottom: 14px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .ez-hero-container{
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* If your image had extra margins creating blank space */
+  .ez-hero-image{
+    margin-top: 12px !important;
+  }
+  .ez-hero-image img{
+    margin-top: 0 !important;
+  }
+
+  /* 3) Pull the next section up (FROM THE INNOVATORS...) */
+  .volt-section-hero{
+    margin-top: 0 !important;
+    padding-top: 18px !important;
+  }
+}
+/* 📱 MOBILE ONLY — add breathing room between CTA button and image */
+@media (max-width: 768px){
+
+  /* Space below the CTA button */
+  .ez-hero-btn{
+    margin-bottom: 18px !important;   /* loosen without creating a gap */
+  }
+
+  /* Space above the product image */
+  .ez-hero-image{
+    margin-top: 28px !important;      /* balanced vertical rhythm */
+  }
+
+  /* Ensure the image itself isn’t pushing extra space */
+  .ez-hero-image img{
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+/* 📱 LANDSCAPE ONLY (do not affect portrait) */
+@media (max-width: 1024px) and (orientation: landscape) and (max-height: 520px){
+
+  /* Make sure the hero has enough height under the fixed mobile nav */
+  .video-section{
+    height: calc(100vh - var(--ezm-nav-h)) !important;
+    min-height: calc(100vh - var(--ezm-nav-h)) !important;
+    overflow: hidden !important;
+  }
+
+  /* Show more of the TOP of the video (prevents “cut off at the top”) */
+  .video-section .bg-video{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: 50% 20% !important; /* ↑ tweak: 15% = more top, 30% = less */
+  }
+
+  /* Optional: keep overlay readable + not too tall in landscape */
+  .video-overlay h1{
+    font-size: 24px !important;
+    line-height: 1.12 !important;
+  }
+  .video-overlay p{
+    font-size: 14px !important;
+  }
+}
+
+/* 📱 MOBILE LANDSCAPE ONLY — Products spacing fix */
+@media (max-width: 1024px) and (orientation: landscape) {
+
+  /* Create space ABOVE Products header */
+  #bestsellers {
+    padding-top: 24px !important;   /* space from video */
+    padding-bottom: 10px !important;
+  }
+
+  /* Tighten header spacing */
+  #bestsellers .pz-title {
+    margin-top: 0 !important;
+    margin-bottom: 6px !important;
+    font-size: 26px;
+  }
+
+  /* REMOVE huge white gap under subtitle (circled area) */
+  #bestsellers .pz-subtitle {
+    margin-bottom: 6px !important;
+  }
+
+  /* Pull carousel closer to header */
+  .pz-carousel-wrapper {
+    margin-top: 6px !important;
+  }
+}
+/* ✅ LANDSCAPE ONLY: add breathing space before Products */
+@media (max-width: 1024px) and (orientation: landscape){
+
+  /* Space AFTER the hero */
+  .video-section{
+    margin-bottom: 32px !important;   /* ← breathing room */
+  }
+
+  /* Space BEFORE Products header */
+  #bestsellers{
+    padding-top: 24px !important;     /* ← controls gap above “Products” */
+  }
+
+  /* Slightly relax header spacing itself */
+  #bestsellers .pz-header{
+    margin-top: 0 !important;
+  }
+
+  #bestsellers .pz-title{
+    margin-top: 0 !important;
+  }
+}
+/* ✅ LANDSCAPE ONLY: tighten space under Products header */
+@media (max-width: 1024px) and (orientation: landscape){
+
+  /* Reduce space under the Products header block */
+  #bestsellers .pz-header{
+    margin-bottom: 8px !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Reduce space above the first product image */
+  .pz-carousel-wrapper{
+    margin-top: 8px !important;   /* was too large */
+    padding-top: 0 !important;
+  }
+
+  /* Safety: remove any hidden top margin on the scroller */
+  .pz-scrolling-wrapper{
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .pz-subtitle{
+    margin-bottom: -26px;
+  }
+}
+/* ✅ LANDSCAPE ONLY — add breathing room to Innovation text */
+@media (max-width: 1024px) and (orientation: landscape){
+
+  .innovation-section{
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  .innovation-wrapper{
+    padding-left: 16px !important;
+  }
+
+  .innovation-wrapper .text-column{
+    padding-left: 12px !important;
+  }
+}
+/* ===============================
+   LANDSCAPE ONLY — Signup band polish
+   =============================== */
+@media (max-width: 1024px) and (orientation: landscape){
+
+  .signup-band{
+    padding-left: 28px !important;
+    padding-right: 28px !important;
+  }
+
+  .signup-inner{
+    max-width: 100% !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    gap: 24px !important;
+  }
+
+  .signup-copy{
+    margin-left: 0 !important;
+    padding-left: 8px;
+  }
+
+  .signup-form{
+    padding-right: 8px;
+  }
+
+  .signup-form input{
+    height: 48px;
+  }
+
+  .signup-btn{
+    height: 48px;
+    padding: 0 22px;
+  }
+}
+/* ===============================
+   LANDSCAPE ONLY — Footer social icons fix
+   =============================== */
+@media (max-width: 1024px) and (orientation: landscape){
+
+  /* Give the footer safe side padding so nothing gets eaten */
+  .site-footer,
+  footer{
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    box-sizing: border-box;
+  }
+
+  /* Make sure the inner container can’t overflow */
+  .site-footer .container,
+  .site-footer .container-fluid,
+  footer .container,
+  footer .container-fluid{
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
+  }
+
+  /* Social row: keep it on-screen and aligned nicely */
+  .ezf-social{
+    margin-left: 0 !important;        /* cancels any desktop auto-push */
+    margin-right: 0 !important;
+    justify-content: flex-end !important;
+    padding-right: 8px !important;    /* small gutter from the edge */
+    gap: 12px;
+    flex-wrap: wrap;                   /* never overflow */
+  }
+
+  /* Make icons consistent + tappable */
+  .ezf-social a{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    text-decoration: none;
+  }
+
+  /* If you’re using font-awesome icons */
+  .ezf-social i{
+    font-size: 18px;
+    line-height: 1;
+  }
+}
+/* =========================================================
+   ✅ MOBILE LANDSCAPE ONLY (does NOT affect portrait)
+   Fix: hero cut-off, huge gaps, tight headers, left-edge hug,
+        newsletter styling, footer icons off-screen, VoltMax gaps
+   ========================================================= */
+@media (max-width: 900px) and (orientation: landscape) {
+
+  /* 0) Safety: prevent sideways scroll in landscape */
+  html, body{
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+  }
+
+  /* 1) Global rhythm: remove stacked giant vertical gaps */
+  section{
+    margin-top: 28px !important;
+    margin-bottom: 28px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* 2) HERO (your landing video/image): stop cut-off + keep centered */
+  .video-section{
+    position: relative !important;
+    height: 62vh !important;          /* stable hero size in landscape */
+    min-height: 260px !important;
+    max-height: 520px !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .video-section .bg-video{
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    object-fit: cover !important;
+    object-position: 50% 50% !important;   /* centered */
+    transform: translateZ(0);              /* smooth rendering */
+  }
+
+  /* Keep overlay readable and not crushed */
+  .video-overlay{
+    position: absolute !important;
+    left: 24px !important;
+    right: 24px !important;
+    bottom: 18px !important;
+    top: auto !important;
+    padding: 0 !important;
+    max-width: 70% !important;
+    z-index: 5 !important;
+  }
+  .video-overlay h1{
+    font-size: 26px !important;
+    line-height: 1.12 !important;
+    margin: 0 0 6px !important;
+  }
+  .video-overlay p{
+    font-size: 14px !important;
+    margin: 0 0 10px !important;
+  }
+
+  /* 3) Products header: add breathing space from hero + reduce giant gap below */
+  #bestsellers,
+  .pz-container{
+    margin-top: 42px !important;   /* space ABOVE "Products" */
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+
+  .pz-header{
+    margin: 0 auto 10px !important;
+    padding: 0 24px !important;    /* keep off the edges */
+  }
+
+  .pz-title{ margin: 0 0 8px !important; }
+  .pz-subtitle{ margin: 0 !important; }
+
+  /* Close the “big white hole” between header and first product card */
+  .pz-carousel-wrapper{
+    margin-top: 10px !important;
+    padding-top: 0 !important;
+  }
+
+  /* 4) General side breathing space for sections that hug the left */
+  .innovation-section,
+  .innovation-wrapper,
+  .signup-band,
+  .signup-inner,
+  .volt-section-hero,
+  .ez-hero-bg-section,
+  .ez-hero-container{
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 5) Innovation section: stop “stuck to the left edge” feel */
+  .innovation-section .text-column{
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  /* 6) VoltMax big gap fixes (between sections) */
+  .ez-hero-bg-section{
+    margin-top: 28px !important;
+    padding-top: 12px !important;
+    padding-bottom: 18px !important;
+  }
+
+  .volt-section-hero{
+    margin-top: 22px !important;
+    padding-top: 16px !important;
+    padding-bottom: 22px !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    left: 0 !important;
+  }
+
+  /* If an image/button is too tight, add a small buffer */
+  .ez-hero-image img,
+  .volt-image-block{
+    margin-top: 12px !important;
+  }
+
+  /* 7) Newsletter: professional layout (no edge collisions) */
+  .signup-band{
+    margin-top: 22px !important;
+    padding-top: 18px !important;
+    padding-bottom: 18px !important;
+  }
+
+  .signup-inner{
+    gap: 16px !important;
+  }
+
+  .signup-form{
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  .signup-form input{
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+
+  /* 8) Footer social icons: pull them back from the right edge */
+  .ezf-social,
+  .footer-social{
+    margin-right: 0 !important;
+    padding-right: 24px !important;
+    justify-content: flex-end !important;
+  }
+
+  /* If your icons are absolutely positioned and getting cut off */
+  .footer-social{
+    right: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    bottom: 18px !important;
+  }
+}
+
+/* ✅ LANDSCAPE ONLY: remove the giant blank space above VoltMax */
+@media (max-width: 900px) and (orientation: landscape){
+
+  /* This is the section showing "INTRODUCING VoltMax™ 4K" */
+  .ez-hero-bg-section{
+    min-height: auto !important;     /* <-- stops the forced tall section */
+    height: auto !important;
+    padding-top: 18px !important;    /* small breathing room (adjust 12–26px) */
+    padding-bottom: 18px !important;
+    margin-top: 0 !important;
+  }
+
+  /* If the tall height is coming from the inner wrapper instead */
+  .ez-hero-overlay,
+  .ez-hero-container{
+    min-height: auto !important;
+    height: auto !important;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+}
+
+/* =========================================================
+   LANDSCAPE ONLY: FORCE HERO VIDEO FULL-WIDTH (fix right blank space)
+   ========================================================= */
+@media (max-width: 1024px) and (orientation: landscape) {
+
+  :root{ --ezm-nav-h: 64px; }
+
+  .video-section{
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+
+    position: relative !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    height: calc(100vh - var(--ezm-nav-h)) !important;
+  }
+
+  .video-section video,
+  .video-section .bg-video{
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: 50% 50% !important;
+    display: block !important;
+  }
+
+  /* breathing space before Products */
+  #bestsellers{
+    margin-top: 18px !important;
+    padding-top: 18px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+/* =========================================
+   FINAL GAP KILLER (INDEX ONLY)
+   Put this at the VERY BOTTOM of index.html <style>
+   ========================================= */
+
+/* 1) Remove any top spacing above the hero */
+.video-section{
+  margin-top: -40px !important;   /* increase to -60px if you still see a gap */
+  padding-top: 0 !important;
+}
+
+/* 2) Remove common “wrapper” spacing that sits above the first section */
+main{
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+main > *:first-child{
+  margin-top: 0 !important;
+}
+
+/* 3) If the hero sits inside a container, clamp that too */
+main > .container,
+main > .container-fluid{
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* 4) Delete invisible spacer elements if your template has any */
+.spacer,
+.nav-spacer,
+.header-spacer,
+.ezm-spacer,
+.nav-gap,
+.gap,
+.gap-fix{
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: none !important;
+}
+
+/* ✅ MOBILE ONLY: Products spacing (top + bottom gap control) */
+@media (max-width: 1024px){
+  #bestsellers{
+    padding-top: 120px !important;     /* space ABOVE Products header */
+    padding-bottom: 0 !important;     /* keep it tight */
+  }
+
+  #bestsellers .pz-header{
+    margin-bottom: 0px !important;   /* pulls carousel closer */
+  }
+
+  #bestsellers .pz-title{
+    margin-bottom: 3px !important;    /* tight title spacing */
+  }
+
+  #bestsellers .pz-subtitle{
+    margin-bottom: -12px !important;  /* closes the gap BELOW subtitle */
+  }
+}
+
+/* FORCE the hero video crop to shift LEFT (mobile only) */
+@media (max-width: 1024px){
+  body.home section.ez-hero{
+    position: relative !important;
+    overflow: hidden !important;
+  }
+
+  body.home section.ez-hero > video.ez-hero__video{
+    width: 100% !important;
+    height: 60vh !important;          /* adjust if you want */
+    display: block !important;
+    object-fit: cover !important;
+
+    /* THIS is the left shift */
+    object-position: 75% 50% !important;  /* try 0%..30% (0% = far left) */
+  }
+}
+
+/* LANDSCAPE: show more of the TOP of the hero video (fix head cut off) */
+@media (max-width: 1024px) and (orientation: landscape) and (max-height: 520px){
+  body.home section.ez-hero{
+    position: relative !important;
+    overflow: hidden !important;
+  }
+
+  body.home section.ez-hero > video.ez-hero__video{
+    width: 100% !important;
+    height: 52vh !important;          /* slightly shorter helps reduce cropping */
+    display: block !important;
+    object-fit: cover !important;
+
+    /* KEY: move crop UP so the head is included */
+    object-position: 90% 10% !important;  /* try 10%–30% for the 2nd value */
+  }
+}
+
+/* ===============================
+   iPad / Tablet: Innovation left padding fix
+   (moves text to the right + adds clean margins)
+   =============================== */
+@media (min-width: 768px) and (max-width: 1024px){
+
+  .innovation-section{
+    padding-left: 48px !important;
+    padding-right: 48px !important;
+  }
+
+  .innovation-wrapper{
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  .innovation-section .text-column{
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+  }
+}
+
+/* ===============================
+   iPad / Tablet: Newsletter band fix
+   (targets your real classes)
+   =============================== */
+@media (min-width: 768px) and (max-width: 1024px){
+
+  /* Give the whole band proper side gutters + clean height */
+  .signup-band{
+    padding: 28px 48px !important;     /* ← left/right breathing space */
+    margin-top: 16px !important;
+    margin-bottom: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Keep content centered and not stretched edge-to-edge */
+  .signup-inner{
+    max-width: 1100px !important;
+    margin: 0 auto !important;
+    gap: 28px !important;
+    align-items: center !important;
+  }
+
+  /* STOP any old negative shifting */
+  .signup-copy{
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  /* Make the form fit nicely and not overflow */
+  .signup-form{
+    justify-content: flex-end !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  .signup-form input{
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 520px !important;      /* keeps it neat on iPad */
+  }
+
+  .signup-btn{
+    white-space: nowrap !important;
+    width: auto !important;
+    padding: 12px 22px !important;
+  }
+}
+/* =========================================================
+   FIXES THAT MATCH YOUR REAL CLASSES (index.html)
+   Put this at the VERY BOTTOM of <style>
+   ========================================================= */
+
+/* 1) HERO VIDEO: shift the subject LEFT on mobile/ tablet */
+@media (max-width: 1024px){
+  body.home section.ez-hero > video.ez-hero__video{
+    width: 100% !important;
+    height: 60vh !important;
+    display: block !important;
+    object-fit: cover !important;
+
+    /* move subject LEFT: try 20%–40% (smaller = more left) */
+    object-position: 30% 50% !important;
+  }
+}
+
+/* 2) HERO VIDEO LANDSCAPE: show more TOP so head isn't cut off */
+@media (max-width: 1024px) and (orientation: landscape) and (max-height: 520px){
+  body.home section.ez-hero > video.ez-hero__video{
+    height: 52vh !important;
+    object-fit: cover !important;
+
+    /* second value controls vertical crop: smaller = more top */
+    object-position: 30% 15% !important;
+  }
+}
+
+/* 3) iPAD / TABLET: kill the giant blank gap under VoltMax section
+      (this overrides your MASTER MOBILE min-height rule) */
+@media (min-width: 768px) and (max-width: 1024px){
+  body.home .volt-section-hero{
+    min-height: auto !important;
+    height: auto !important;
+    padding-top: 36px !important;
+    padding-bottom: 26px !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* move VoltMax text to the right = better left margin */
+  body.home .volt-wrapper{
+    margin-left: 0 !important;
+    padding-left: 56px !important;
+    padding-right: 24px !important;
+  }
+}
+
+/* 4) iPAD / TABLET: Innovation section left padding (INLINE STYLE OVERRIDE) */
+@media (min-width: 768px) and (max-width: 1024px){
+  body.home .innovation-section{
+    padding-left: 48px !important;
+    padding-right: 48px !important;
+  }
+}
+/* iPhone 11 Pro Max / XR / 414px wide: pull hero video subject LEFT */
+@media (min-width: 350px) and (max-width: 920px) {
+
+  body.home section.ez-hero > video.ez-hero__video{
+    object-fit: cover !important;
+    object-position: 75% 10% !important; /* ← move left (try 20%–35%) */
+  }
+
+}
+
+/* ✅ MOBILE ONLY: reduce hero height so overlay + video stay together */
+@media (max-width: 768px){
+
+  body.home section.ez-hero{
+    position: relative;
+    height: 58vh;              /* ↓ reduce height (try 52–62vh) */
+    min-height: 360px;         /* safety so it doesn't get too tiny */
+    overflow: hidden;
+    background: #000;          /* prevents white/odd banding */
+  }
+
+  body.home .ez-hero__video{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;         /* fills container (no leftover space) */
+    object-position: 50% 35%;  /* shows more “top”; tweak if needed */
+    display: block;
+  }
+
+  body.home .ez-hero__overlay{
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 22px;              /* keeps text sitting nicely on the video */
+    top: auto;
+    z-index: 2;
+    max-width: 92%;
+  }
+}
+/* ✅ iPAD / TABLET ONLY: keep overlay on the video (kills the big black gap) */
+@media (min-width: 769px) and (max-width: 1024px){
+
+  body.home section.ez-hero{
+    position: relative !important;
+    height: 62vh !important;          /* adjust 58–70vh if you want */
+    min-height: 520px !important;
+    overflow: hidden !important;
+    background: #000 !important;
+  }
+
+  body.home section.ez-hero > video.ez-hero__video{
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: 50% 35% !important;  /* shows more upper area */
+    display: block !important;
+  }
+
+  body.home section.ez-hero .ez-hero__overlay{
+    position: absolute !important;
+    left: 48px !important;
+    right: 48px !important;
+    bottom: 44px !important;
+    top: auto !important;
+    z-index: 5 !important;
+    max-width: 720px !important;      /* clean readable line length */
+    margin: 0 !important;
+  }
+}
+/* ✅ FIX: short LANDSCAPE phones – add headroom without black gaps */
+@media (max-width: 820px) and (orientation: landscape) and (max-height: 450px){
+
+  body.home section.ez-hero{
+    position: relative !important;
+    height: calc(100vh - var(--ezm-nav-h, 0px)) !important;
+    min-height: 320px !important;   /* ⬅️ MORE HEIGHT (was 260) */
+    overflow: hidden !important;
+    background: #000 !important;
+  }
+
+  body.home section.ez-hero > video.ez-hero__video{
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+
+    /* ⬅️ Lift framing upward to keep head visible */
+    object-position: 60% 10% !important;
+  }
+
+  body.home section.ez-hero .ez-hero__overlay{
+    position: absolute !important;
+    left: 22px !important;
+    right: 22px !important;
+    bottom: 18px !important;
+    top: auto !important;
+
+    margin: 0 !important;
+    background: transparent !important;
+    max-width: 620px !important;
+    z-index: 3 !important;
+  }
+
+  body.home section.ez-hero .ez-hero__overlay h1{
+    font-size: 30px !important;
+    line-height: 1.1 !important;
+    margin-bottom: 6px !important;
+  }
+
+  body.home section.ez-hero .ez-hero__overlay p{
+    font-size: 14px !important;
+    margin-bottom: 10px !important;
+  }
+}
+
+
+</style>
+<!-- 🎯 Product Section -->
+<div class="pz-container py-5" id="bestsellers" style="padding-top: 80px;">
+  <div class="pz-header text-center" style="margin-bottom: -6px;">
+  <h2 class="pz-title" style="margin-bottom: 3px;">Products</h2>
+  <p class="pz-subtitle" style="margin-bottom: -50px;">
+    Discover our featured electronics.
+  </p>
+</div>
+
+</div>
+
+<div class="pz-carousel-wrapper mt-0">
+
+  <button class="pz-scroll-btn left" onclick="scrollLeft()">‹</button>
+
+  <div class="pz-scrolling-wrapper" id="carousel">
+    {% for product in bestsellers %}
+    <div class="pz-product-card">
+      <div class="pz-product-image">
+        <img src="{{ url_for('static', filename=product.image_path) }}" alt="{{ product.name }}">
+      </div>
+
+      <h5 class="pz-product-name">{{ product.name }}</h5>
+
+      <p class="pz-stars">
+  {% set rating = product.rating|int %}
+  {% for _ in range(rating) %}
+    <i class="fas fa-star text-warning"></i>
+  {% endfor %}
+  <span class="pz-review-count">{{ product.review_count or 0 }} Reviews</span>
+</p>
+
+
+
+      <p class="pz-price">${{ "%.2f"|format(product.price) }}</p>
+
+      <form action="{{ url_for('routes.add_to_cart') }}" method="POST">
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+        <button type="submit" class="pz-cart-btn">Add to Cart</button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+
+  <button class="pz-scroll-btn right" onclick="scrollRight()">›</button>
+</div>
+
+
+<!-- Innovation Section -->
+<section class="innovation-section" style="padding: 60px 5%; background-color: #f9f9f9;">
+  <div class="innovation-wrapper" style="display: flex; flex-wrap: wrap; align-items: center; gap: 40px;">
+    <div class="text-column" style="flex: 1 1 500px; min-width: 300px;">
+      <h6 class="innovation-title" style="color: #B23850; font-size: 16px; letter-spacing: 1px;">UNRIVALED TECH</h6>
+      <h2 class="innovation-heading" style="font-size: 36px; margin: 20px 0;">INNOVATION<br>BEHIND PERFORMANCE</h2>
+      <ul class="innovation-features" style="list-style: none; padding: 0;">
+        <li style="margin-bottom: 10px;"><i class="fas fa-bolt" style="color: #B23850; margin-right: 8px;"></i> SmartFlow™ boosts airflow and efficiency for every electronic device.</li>
+        <li style="margin-bottom: 10px;"><i class="fas fa-fire" style="color: #B23850; margin-right: 8px;"></i> Operates cooler to extend lifespan and prevent overheating.</li>
+        <li style="margin-bottom: 10px;"><i class="fas fa-cloud" style="color: #B23850; margin-right: 8px;"></i> Say goodbye to fan noise and smoky overheating units.</li>
+      </ul>
+      <a href="{{ url_for('routes.product_finder') }}" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #B23850; color: #fff; text-decoration: none; border-radius: 4px;">
+        Explore SmartTech Range
+      </a>
+
+    </div>
+
+    <div class="video-column" style="flex: 1 1 600px; min-width: 300px;">
+      <video autoplay muted loop playsinline style="width: 100%; border-radius: 8px; margin-top: 40px;">
+        <source src="{{ url_for('static', filename='video/clip100.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+</section>
+
+<section class="ez-hero-bg-section">
+  <div class="ez-hero-overlay">
+    <div class="ez-hero-container">
+      
+      <!-- 📝 Text Block -->
+      <div class="ez-hero-text">
+        <p class="ez-hero-intro">INTRODUCING</p>
+        <h1 class="ez-hero-title">VoltMax™</h1>
+        <p class="ez-hero-sub">Immersive Sound. Precision Design.</p>
+        <p class="ez-hero-desc">
+          Engineered for clarity and depth, the VoltMax™ speaker system delivers rich, room-filling audio with studio-grade balance.<br>
+           Each speaker is crafted to produce crisp highs, detailed mids, and powerful low-end response—bringing movies, music, and gaming to life with uncompromising precision.<br><br>
+          
+           Designed for modern interiors, VoltMax blends minimalist aesthetics with advanced acoustic engineering to elevate both your sound and your space.
+        </p>
+        <a href="{{ url_for('routes.product_finder') }}" class="ez-hero-btn">Shop VoltMax Now</a>
+
+      </div>
+
+      <!-- 🖼 Image Block -->
+      <div class="ez-hero-image">
+        <img src="{{ url_for('static', filename='images/cream.jpg') }}" alt="VoltMax Sound system">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section class="volt-section-hero">
+  <div class="volt-flex-container">
+    <!-- 📝 Text Block Left -->
+    <div class="volt-wrapper">
+      <p class="volt-intro">FROM THE INNOVATORS IN MODERN TECH</p>
+      <h2 class="volt-title">INTRODUCING <span class="volt-brand">VoltMax™ 4K</span></h2>
+      <p class="volt-subtitle">Designed for the connected home, VoltMax™ 4K combines stunning Ultra-High Definition visuals with intelligent performance.<br>
+         <br>
+ 
+            Whether you’re watching, working, or multitasking, VoltMax™ adapts to your lifestyle with speed, clarity, and precision.</p>
+      <a href="{{ url_for('routes.product_finder') }}" class="volt-btn">Shop VoltMax</a>
+
+    </div>
+
+    <!-- 🖼️ Image Block Right -->
+    <div class="volt-image-block">
+      <img src="{{ url_for('static', filename='images/beauty.jpg') }}" alt="VoltMax 4K Desktop" class="volt-product-img">
+    </div>
+  </div>
+</section>
+{% endblock %}           

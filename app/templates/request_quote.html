@@ -1,0 +1,142 @@
+{% extends "layout.html" %}
+{% set page_title = "Request a Quote" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cz_quote.css') }}?v=999">
+
+<section class="czq-hero">
+  <div class="czq-wrap">
+    <div class="czq-hero-card">
+      <span class="czq-kicker">Bulk Pricing • Business Bundles • Fast Turnaround</span>
+      <h1>Request a Quote</h1>
+      <p>
+        Tell us what you need — we’ll prepare a tailored quote with the best available pricing,
+        delivery options, and product recommendations for your business.
+      </p>
+
+      <div class="czq-badges">
+        <div class="czq-badge" style="background-color: #B23850; color: white"> Flexible bundles</div>
+        <div class="czq-badge" style="background-color: #B23850; color: white"> Wholesale pricing</div>
+        <div class="czq-badge" style="background-color: #B23850; color: white"> Delivery support</div>
+      </div>
+    </div>
+
+        <div class="czq-image">
+            <div class="czq-image-box">
+                <img
+                src="{{ url_for('static', filename='images/quote.jpeg') }}"
+                alt="Business quotation discussion"
+                class="czq-hero-img"
+    >
+            </div>
+        </div>
+
+  </div>
+</section>
+
+<section class="czq-section">
+  <div class="czq-wrap czq-grid">
+    <div class="czq-panel">
+      <h2>What you’ll receive</h2>
+      <ul class="czq-list">
+        <li><span>•</span> Line-by-line pricing & availability</li>
+        <li><span>•</span> Recommended alternatives (if stock is limited)</li>
+        <li><span>•</span> Delivery timeline options</li>
+        <li><span>•</span> Bundle discounts when applicable</li>
+      </ul>
+
+      <div class="czq-note">
+        <strong>Tip:</strong> The more detail you add, the faster we can respond.
+      </div>
+
+      <div class="czq-steps">
+        <div class="czq-step">
+          <div class="czq-step-num">1</div>
+          <div>
+            <h3>Share your needs</h3>
+            <p>Products, quantities, preferred brands, and budget.</p>
+          </div>
+        </div>
+        <div class="czq-step">
+          <div class="czq-step-num">2</div>
+          <div>
+            <h3>We prepare options</h3>
+            <p>Best pricing + matching accessories & warranties.</p>
+          </div>
+        </div>
+        <div class="czq-step">
+          <div class="czq-step-num">3</div>
+          <div>
+            <h3>You approve</h3>
+            <p>Confirm the quote and we’ll guide you to checkout.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="czq-panel czq-form">
+      <h2>Quote Request Form</h2>
+
+      <form method="POST" action="{{ url_for('routes.ez_send_quote_form_to_gmail') }}" class="czq-form-inner">
+
+
+        <div class="czq-row">
+          <div class="czq-field">
+            <label>Company Name</label>
+            <input type="text" name="company" placeholder="e.g., ElectroZone Partners Pty Ltd" required>
+          </div>
+          <div class="czq-field">
+            <label>Contact Person</label>
+            <input type="text" name="contact" placeholder="Full name" required>
+          </div>
+        </div>
+
+        <div class="czq-row">
+          <div class="czq-field">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="you@company.com" required>
+          </div>
+          <div class="czq-field">
+            <label>Phone (optional)</label>
+            <input type="text" name="phone" placeholder="+61 ...">
+          </div>
+        </div>
+
+        <div class="czq-row">
+          <div class="czq-field">
+            <label>Category</label>
+            <select name="category">
+              <option value="TVs">TVs</option>
+              <option value="Audio">Audio</option>
+              <option value="Phones">Phones</option>
+              <option value="Projectors">Projectors</option>
+              <option value="Fridges">Fridges</option>
+              <option value="Microwaves">Microwaves</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="czq-field">
+            <label>Estimated Quantity</label>
+            <input type="text" name="qty" placeholder="e.g., 10 units">
+          </div>
+        </div>
+
+        <div class="czq-field">
+          <label>What do you need?</label>
+          <textarea name="message" rows="6" placeholder="List products, specs, timelines, budget, preferred brands..." required></textarea>
+        </div>
+
+        <div class="rq-form-actions">
+            <button type="submit" class="rq-btn-submit" style="background-color: steelblue; color: white">Send Request</button>
+        </div>
+
+
+        <p class="czq-small">
+          Prefer to talk to Sales instead?
+          <a href="{{ url_for('routes.contact_sales') }}">Contact Sales</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
