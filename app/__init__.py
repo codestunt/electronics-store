@@ -4,7 +4,7 @@ from flask import Flask
 from dotenv import load_dotenv
 import os
 
-from .extensions import mysql, mail
+from .extensions import mail
 from .routes import routes
 from .routes_payments import bp_pay
 
@@ -57,11 +57,7 @@ def create_app():
     # ------------------------------------------------------------------
     # MySQL configuration (your existing values)
     # ------------------------------------------------------------------
-    app.config["MYSQL_HOST"] = "localhost"
-    app.config["MYSQL_USER"] = "CodeStunt"
-    app.config["MYSQL_PASSWORD"] = "44LIME#Mouse"
-    app.config["MYSQL_DB"] = "electronics_store"
-    app.config["MYSQL_CURSORCLASS"] = "DictCursor"
+    
 
     # ------------------------------------------------------------------
     # Email configuration (Flask-Mail)
@@ -90,7 +86,7 @@ def create_app():
     # ------------------------------------------------------------------
     # Initialise extensions
     # ------------------------------------------------------------------
-    mysql.init_app(app)
+    
     mail.init_app(app)
 
     # ------------------------------------------------------------------
