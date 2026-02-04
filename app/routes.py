@@ -11,6 +11,39 @@ from datetime import datetime
 import os
 import re
 
+
+
+# =========================================================
+# Helpers
+# =========================================================
+
+def _send_form_email(subject: str, to_email: str, body: str, reply_to: str | None = None):
+    msg = Message(subject=subject, recipients=[to_email], body=body)
+    if reply_to:
+        msg.reply_to = reply_to
+    mail.send(msg)
+
+
+def _normalize_image_path(path: str | None) -> str:
+    if not path:
+        return "images/placeholder.jpg"
+    p = str(path).replace("\\", "/").lstrip("/")
+    if p.startswith("static/"):
+        p = p[len("static/"):]
+    return p or "images/placeholder.jpg"
+
+
+def _dict_rows(cursor):
+    return cursor.fetchall()
+
+
+def _get_count(row):
+    if not row:
+        return 0
+    if isinstance(row, dict):
+        return next(iter(row.values()), 0)
+    return row[0]
+
 # =========================================================
 # Blueprint
 # =========================================================
@@ -284,7 +317,7 @@ def login():
             session["user"] = user_email
             session["username"] = user_name
             session["email"] = user_email
-            session["user_email"] = user_email  # used by your pay_complete() in payments blueprint
+            session["user_email"] = user_email  # used by pay_complete() in payments blueprint
             flash("Login successful!", "success")
             return redirect(url_for("routes.dashboard"))
 
@@ -592,6 +625,9 @@ Please prepare the voucher and send it to the recipient email above.
 # =========================================================
 # Search (Render-safe)
 # =========================================================
+# =========================================================
+# Search (Render-safe)
+# =========================================================
 @routes.route("/search")
 def search():
     q = (request.args.get("q") or "").strip()
@@ -608,56 +644,67 @@ def search():
     conn = get_db_connection()
     cur = conn.cursor()
     try:
+        # ✅ COUNT QUERY
         cur.execute(
             """
-            SELECT COUNT(*)
+            SELECT COUNT(*) AS count
             FROM products
-            WHERE name ILIKE %s OR review_summary ILIKE %s OR tag ILIKE %s
+            WHERE name ILIKE %s
+               OR review_summary ILIKE %s
+               OR tag ILIKE %s
             """,
             (like, like, like),
         )
-        total = cur.fetchone()[0] if not isinstance(cur.fetchone(), dict) else cur.fetchone()["count"]
 
-        # Re-run because calling fetchone twice would consume it if dict cursor
-        cur.execute(
-            """
-            SELECT COUNT(*)
-            FROM products
-            WHERE name ILIKE %s OR review_summary ILIKE %s OR tag ILIKE %s
-            """,
-            (like, like, like),
-        )
-        total = cur.fetchone()[0] if not isinstance(cur.fetchone(), dict) else cur.fetchone()["count"]
+        row = cur.fetchone()
+        total = _get_count(row)
 
+
+        # ✅ RESULT QUERY
         cur.execute(
             """
             SELECT id, name, price, image_path, review_summary, tag
             FROM products
-            WHERE name ILIKE %s OR review_summary ILIKE %s OR tag ILIKE %s
+            WHERE name ILIKE %s
+               OR review_summary ILIKE %s
+               OR tag ILIKE %s
             ORDER BY name ASC
             LIMIT %s OFFSET %s
             """,
             (like, like, like, page_size, offset),
         )
+
         results = _dict_rows(cur)
+
     finally:
         cur.close()
         conn.close()
 
-    # normalize images if dict rows
+    # normalize images
     for r in results:
         if isinstance(r, dict):
             r["image_path"] = _normalize_image_path(r.get("image_path"))
 
     pages = max(1, ceil(total / page_size))
 
-    return render_template("search.html", q=q, results=results, total=total, page=page, pages=pages)
+    return render_template(
+        "search.html",
+        q=q,
+        results=results,
+        total=total,
+        page=page,
+        pages=pages,
+    )
+
 
 
 # =========================================================
 # Product Finder (Render-safe)
 # =========================================================
+
 @routes.route("/product-finder", methods=["GET"])
+raise Exception("DEPLOY CHECK: NEW CODE IS LIVE")
+
 def product_finder():
     q = (request.args.get("q") or "").strip()
     page = max(int(request.args.get("page", 1) or 1), 1)
@@ -680,11 +727,14 @@ def product_finder():
     conn = get_db_connection()
     cur = conn.cursor()
     try:
-        cur.execute("SELECT COUNT(*) FROM products")
-        total_all = cur.fetchone()[0]
+        cur.execute("SELECT COUNT(*) AS count FROM products")
+        row = cur.fetchone()
+        total_all = _get_count(row)
 
-        cur.execute(f"SELECT COUNT(*) FROM products {where_sql}", params)
-        total = cur.fetchone()[0]
+
+        cur.execute(f"SELECT COUNT(*) AS count FROM products {where_sql}", params)
+        row = cur.fetchone()
+        total = _get_count(row)
 
         total_pages = max(1, ceil(total / PER_PAGE))
 
