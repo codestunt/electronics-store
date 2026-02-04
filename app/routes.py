@@ -703,8 +703,6 @@ def search():
 # =========================================================
 
 @routes.route("/product-finder", methods=["GET"])
-raise Exception("DEPLOY CHECK: NEW CODE IS LIVE")
-
 def product_finder():
     q = (request.args.get("q") or "").strip()
     page = max(int(request.args.get("page", 1) or 1), 1)
