@@ -10,6 +10,7 @@ from math import ceil
 from datetime import datetime
 import os
 import re
+from flask import get_flashed_messages
 
 
 
@@ -43,6 +44,15 @@ def _get_count(row):
     if isinstance(row, dict):
         return next(iter(row.values()), 0)
     return row[0]
+
+
+
+
+def _consume_flashes():
+    """
+    Consume flash messages so they don't reappear on reload.
+    """
+    get_flashed_messages(with_categories=True)
 
 # =========================================================
 # Blueprint
@@ -101,13 +111,14 @@ def inject_stripe_pk():
 # Category config
 # =========================================================
 CATEGORY_MAP = {
-    "tvs":        ("TVs",        "tv"),
-    "audio":      ("Audio",      "audio"),
-    "phones":     ("Phones",     "phone"),
-    "projectors": ("Projectors", "projector"),
-    "fridges":    ("Fridges",    "fridge"),
-    "microwaves": ("Microwaves", "microwave"),
+    "tvs":        ("TVs", "tvs"),
+    "audio":      ("Audio", "audio"),
+    "phones":     ("Phones", "phones"),
+    "projectors": ("Projectors", "visual"),
+    "fridges":    ("Fridges", "appliances"),
+    "microwaves": ("Microwaves", "appliance"),
 }
+
 
 BANNER_MAP = {
     "tvs":        "images/banners/lg.jpg",
@@ -137,8 +148,8 @@ HERO_BG_MAP = {
 }
 
 
-def _get_products_by_tag(tag_like: str, page: int = 1, page_size: int = 12):
-    offset = (max(page, 1) - 1) * page_size
+def _get_products_by_category(category: str, page: int = 1, page_size: int = 12):
+    offset = (page - 1) * page_size
 
     conn = get_db_connection()
     cur = conn.cursor()
@@ -147,31 +158,28 @@ def _get_products_by_tag(tag_like: str, page: int = 1, page_size: int = 12):
             """
             SELECT id, name, price, image_path
             FROM products
-            WHERE tag ILIKE %s
+            WHERE LOWER(category) = %s
             ORDER BY id DESC
             LIMIT %s OFFSET %s
             """,
-            (f"%{tag_like}%", page_size, offset),
+            (category.lower(), page_size, offset),
         )
         rows = _dict_rows(cur)
 
         cur.execute(
             """
-            SELECT COUNT(*) AS total
+            SELECT COUNT(*)
             FROM products
-            WHERE tag ILIKE %s
+            WHERE LOWER(category) = %s
             """,
-            (f"%{tag_like}%",),
+            (category.lower(),),
         )
-        total_row = cur.fetchone()
-        # total_row might be dict or tuple depending on cursor
-        total = total_row["total"] if isinstance(total_row, dict) else total_row[0]
+        total = _get_count(cur.fetchone())
 
         for r in rows:
-            if isinstance(r, dict):
-                r["image_path"] = _normalize_image_path(r.get("image_path"))
-        pages = (total + page_size - 1) // page_size
+            r["image_path"] = _normalize_image_path(r.get("image_path"))
 
+        pages = (total + page_size - 1) // page_size
         return rows, total, pages
     finally:
         cur.close()
@@ -187,7 +195,8 @@ def category_page(slug):
     page_title, tag_like = item
     page = int(request.args.get("page", 1) or 1)
 
-    products, total, pages = _get_products_by_tag(tag_like, page, page_size=24)
+    products, total, pages = _get_products_by_category(tag_like, page, page_size=24)
+
 
     banner_file = BANNER_MAP.get(slug.lower(), "images/banners/default.jpg")
     page_subtitle = SUBTITLE_MAP.get(slug.lower(), f"Explore our best-in-class {page_title}.")
@@ -623,6 +632,82 @@ Please prepare the voucher and send it to the recipient email above.
 
 
 # =========================================================
+# Product Finder (ALL products)
+# =========================================================
+@routes.route("/product-finder", endpoint="product_finder")
+def product_finder():
+    q = (request.args.get("q") or "").strip()
+    page = max(int(request.args.get("page", 1) or 1), 1)
+
+    PER_PAGE = 24
+    offset = (page - 1) * PER_PAGE
+
+    params = []
+    where_sql = ""
+
+    if q:
+        like = f"%{q}%"
+        where_sql = """
+            WHERE name ILIKE %s
+               OR COALESCE(description, '') ILIKE %s
+               OR COALESCE(tag, '') ILIKE %s
+        """
+        params = [like, like, like]
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    try:
+        # 🔢 TOTAL ALL PRODUCTS
+        cur.execute("SELECT COUNT(*) FROM products")
+        total_all = _get_count(cur.fetchone())
+
+        # 🔍 TOTAL FILTERED
+        if q:
+            cur.execute(f"SELECT COUNT(*) FROM products {where_sql}", params)
+            total = _get_count(cur.fetchone())
+        else:
+            total = total_all
+
+        # 📦 PRODUCTS
+        cur.execute(
+            f"""
+            SELECT
+            id,
+            name,
+            price,
+            image_path,
+            description,
+            tag,
+
+            FROM products
+            {where_sql}
+            ORDER BY id DESC
+            LIMIT %s OFFSET %s
+            """,
+            params + [PER_PAGE, offset],
+        )
+        products = _dict_rows(cur)
+
+    finally:
+        cur.close()
+        conn.close()
+
+    for p in products:
+        p["image_path"] = _normalize_image_path(p.get("image_path"))
+
+    pages = max(1, ceil(total / PER_PAGE))
+
+    return render_template(
+        "product_finder.html",
+        products=products,
+        q=q,
+        total=total,
+        total_all=total_all,
+        page=page,
+        pages=pages,
+    )
+
+# =========================================================
 # Search (Render-safe)
 # =========================================================
 # =========================================================
@@ -632,8 +717,9 @@ Please prepare the voucher and send it to the recipient email above.
 def search():
     q = (request.args.get("q") or "").strip()
     page = max(int(request.args.get("page", 1) or 1), 1)
-    page_size = 12
-    offset = (page - 1) * page_size
+
+    PER_PAGE = 12
+    offset = (page - 1) * PER_PAGE
 
     if not q:
         flash("Please enter a search term.", "error")
@@ -644,48 +730,44 @@ def search():
     conn = get_db_connection()
     cur = conn.cursor()
     try:
-        # ✅ COUNT QUERY
+        # 🔢 TOTAL MATCHING RESULTS
         cur.execute(
             """
             SELECT COUNT(*) AS count
             FROM products
             WHERE name ILIKE %s
-               OR review_summary ILIKE %s
-               OR tag ILIKE %s
+               OR COALESCE(review_summary, '') ILIKE %s
+               OR COALESCE(tag, '') ILIKE %s
             """,
             (like, like, like),
         )
+        total = _get_count(cur.fetchone())
 
-        row = cur.fetchone()
-        total = _get_count(row)
-
-
-        # ✅ RESULT QUERY
+        # 📦 PAGINATED RESULTS
         cur.execute(
             """
             SELECT id, name, price, image_path, review_summary, tag
             FROM products
             WHERE name ILIKE %s
-               OR review_summary ILIKE %s
-               OR tag ILIKE %s
+               OR COALESCE(review_summary, '') ILIKE %s
+               OR COALESCE(tag, '') ILIKE %s
             ORDER BY name ASC
             LIMIT %s OFFSET %s
             """,
-            (like, like, like, page_size, offset),
+            (like, like, like, PER_PAGE, offset),
         )
-
         results = _dict_rows(cur)
 
     finally:
         cur.close()
         conn.close()
 
-    # normalize images
+    # 🖼 Normalize image paths
     for r in results:
         if isinstance(r, dict):
             r["image_path"] = _normalize_image_path(r.get("image_path"))
 
-    pages = max(1, ceil(total / page_size))
+    pages = max(1, ceil(total / PER_PAGE))
 
     return render_template(
         "search.html",
@@ -694,87 +776,6 @@ def search():
         total=total,
         page=page,
         pages=pages,
-    )
-
-
-
-# =========================================================
-# Product Finder (Render-safe)
-# =========================================================
-
-@routes.route("/product-finder", methods=["GET"])
-def product_finder():
-    q = (request.args.get("q") or "").strip()
-    page = max(int(request.args.get("page", 1) or 1), 1)
-
-    PER_PAGE = 16
-    offset = (page - 1) * PER_PAGE
-
-    where_sql = ""
-    params = []
-
-    if q:
-        where_sql = """
-            WHERE name ILIKE %s
-               OR description ILIKE %s
-               OR tag ILIKE %s
-        """
-        like = f"%{q}%"
-        params = [like, like, like]
-
-    conn = get_db_connection()
-    cur = conn.cursor()
-    try:
-        cur.execute("SELECT COUNT(*) AS count FROM products")
-        row = cur.fetchone()
-        total_all = _get_count(row)
-
-
-        cur.execute(f"SELECT COUNT(*) AS count FROM products {where_sql}", params)
-        row = cur.fetchone()
-        total = _get_count(row)
-
-        total_pages = max(1, ceil(total / PER_PAGE))
-
-        cur.execute(
-            f"""
-            SELECT id, name, price, image_path, description,
-                   COALESCE(stock_quantity, 0) AS stock_quantity
-            FROM products
-            {where_sql}
-            ORDER BY name ASC
-            LIMIT %s OFFSET %s
-            """,
-            params + [PER_PAGE, offset],
-        )
-        products = _dict_rows(cur)
-    finally:
-        cur.close()
-        conn.close()
-
-    for p in products:
-        if isinstance(p, dict):
-            p["image_path"] = _normalize_image_path(p.get("image_path"))
-
-    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
-        html = render_template(
-            "_pf_results.html",
-            products=products,
-            page=page,
-            total=total,
-            total_pages=total_pages,
-            q=q,
-        )
-        return jsonify({"html": html, "total": total, "total_all": total_all, "q": q})
-
-    return render_template(
-        "product_finder.html",
-        products=products,
-        page=page,
-        total=total,
-        total_all=total_all,
-        total_pages=total_pages,
-        q=q,
     )
 
 
@@ -899,20 +900,6 @@ def contact_support():
         flash("Thanks! Your support request has been received. We'll get back to you ASAP.", "success")
         return redirect(url_for("routes.contact_support"))
     return render_template("contact_support.html")
-
-
-# =========================================================
-# TEST EMAIL (keep if you want; you can remove later)
-# =========================================================
-@routes.route("/send-test-email")
-def send_test_email():
-    msg = Message(
-        subject="ElectroZone Test Email",
-        recipients=["test@example.com"],
-        body="This is a test email from ElectroZone!"
-    )
-    mail.send(msg)
-    return "<h2>Test email sent!</h2>"
 
 
 # =========================================================

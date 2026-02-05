@@ -14,8 +14,6 @@ import stripe
 from datetime import datetime
 import uuid
 
-raise Exception("ROUTES_PAYMENTS VERSION CHECK")
-
 bp_pay = Blueprint("payments", __name__)  # registered with url_prefix="/pay"
 
 

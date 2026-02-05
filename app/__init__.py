@@ -20,7 +20,18 @@ def create_app():
     # Values in .env override shell environment by default here.
     load_dotenv(override=True)
 
-    app = Flask(__name__)
+    app = Flask(__name__)   
+
+    app.config["BASE_URL"] = os.environ.get(
+    "BASE_URL",
+    "http://127.0.0.1:5000"
+)
+
+
+    app.config["MAIL_SUPPRESS_SEND"] = (
+    os.environ.get("MAIL_SUPPRESS_SEND", "false").lower() == "true"
+)
+
 
     # ------------------------------------------------------------------
     # Core Flask secret key
@@ -69,19 +80,21 @@ def create_app():
     #   MAIL_USERNAME=your_email@gmail.com
     #   MAIL_PASSWORD=your_app_password
     #   MAIL_DEFAULT_SENDER="ElectroZone <your_email@gmail.com>"
-    app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER", "smtp.gmail.com")
-    app.config["MAIL_PORT"] = int(os.environ.get("MAIL_PORT", 587))
-    app.config["MAIL_USE_TLS"] = (
-        os.environ.get("MAIL_USE_TLS", "true").lower() == "true"
-    )
-    app.config["MAIL_USE_SSL"] = (
-        os.environ.get("MAIL_USE_SSL", "false").lower() == "true"
-    )
-    app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
-    app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
-    app.config["MAIL_DEFAULT_SENDER"] = os.environ.get(
-        "MAIL_DEFAULT_SENDER", os.environ.get("MAIL_USERNAME")
-    )
+    # ------------------------------------------------------------------
+# Email configuration (Flask-Mail)
+# ------------------------------------------------------------------
+app.config["MAIL_SUPPRESS_SEND"] = os.getenv("MAIL_SUPPRESS_SEND") == "1"
+
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USE_SSL"] = False
+app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
+app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
+app.config["MAIL_DEFAULT_SENDER"] = (
+    f"ElectroZone <{os.environ.get('MAIL_USERNAME')}>"
+)
+
 
     # ------------------------------------------------------------------
     # Initialise extensions
