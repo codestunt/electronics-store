@@ -1,3 +1,4 @@
+{% set total_pages = pages %}
 
 {% extends "layout.html" %}
 {% set page_title = 'Product Finder' %}
@@ -9,64 +10,73 @@
   <h1 class="pf-title">Product Finder</h1>
 
   <form id="pfForm" class="pf-search" method="GET" action="{{ url_for('routes.product_finder') }}">
-    <input type="text" name="q" id="pf-q" placeholder="Search by keyword (e.g., TV, Bluetooth, 4K)…" value="{{ q|default('') }}" autocomplete="off">
+    <input
+      type="text"
+      name="q"
+      id="pf-q"
+      placeholder="Search by keyword (e.g., TV, Bluetooth, 4K)…"
+      value="{{ q|default('') }}"
+      autocomplete="off">
     <button type="submit" class="pf-btn">Search</button>
   </form>
 
   <div class="pf-meta">
-  {% set display_total = (total_all if (not q) else total) %}
-  {% if display_total is not none %}
-    <span id="pfCount">{{ display_total }}</span>
-    <span id="pfCountLabel">result{{ '' if display_total==1 else 's' }}</span>
-  {% endif %}
-</div>
-
+    {% set display_total = (total_all if not q else total) %}
+    {% if display_total is not none %}
+      <span id="pfCount">{{ display_total }}</span>
+      <span id="pfCountLabel">
+        result{{ '' if display_total == 1 else 's' }}
+      </span>
+    {% endif %}
+  </div>
 
   <div id="pfResults">
-    {% include "_pf_results.html" %}
+    {# 🔑 pass the correct variable name #}
+    {% include "_pf_results.html" with context %}
   </div>
 </section>
 
 <script>
-(function(){
+(function () {
   const form = document.getElementById('pfForm');
   const input = document.getElementById('pf-q');
   const results = document.getElementById('pfResults');
 
-  // Progressive enhancement: AJAX search with debounce
   let t = null;
-  function doSearch(page=1) {
+
+  function doSearch(page = 1) {
     const params = new URLSearchParams(new FormData(form));
     params.set('page', page);
+
     fetch(form.action + '?' + params.toString(), {
-      headers: {'X-Requested-With': 'XMLHttpRequest'}
-    }).then(r => r.json()).then(data => {
-      results.innerHTML = data.html;
-      // ✅ Update total count (all items when q empty, filtered count when searching)
-      const countEl = document.getElementById('pfCount');
-      const labelEl = document.getElementById('pfCountLabel');
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+      .then(r => r.json())
+      .then(data => {
+        results.innerHTML = data.html;
 
-if (countEl && labelEl) {
-  const qNow = (data.q || '').trim();
-  const n = qNow ? Number(data.total || 0) : Number(data.total_all || 0);
-  countEl.textContent = n;
-  labelEl.textContent = 'result' + (n === 1 ? '' : 's');
-}
+        const countEl = document.getElementById('pfCount');
+        const labelEl = document.getElementById('pfCountLabel');
 
-      attachPagination();        // rebind
+        if (countEl && labelEl) {
+          const qNow = (data.q || '').trim();
+          const n = qNow ? Number(data.total || 0) : Number(data.total_all || 0);
+          countEl.textContent = n;
+          labelEl.textContent = 'result' + (n === 1 ? '' : 's');
+        }
 
-      // 🔹 NEW: after loading a new page, scroll back to the top of results
-      const headerOffset = 140;  // adjust if your nav is taller/shorter
-      const rect = results.getBoundingClientRect();
-      const targetY = window.pageYOffset + rect.top - headerOffset;
-      window.scrollTo({ top: targetY, behavior: 'smooth' });
-      // 🔹 END NEW
-    });
+        attachPagination();
+
+        const headerOffset = 140;
+        const rect = results.getBoundingClientRect();
+        const targetY = window.pageYOffset + rect.top - headerOffset;
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+      });
   }
 
-  function attachPagination(){
-    document.querySelectorAll('.pf-pager [data-page]').forEach(a=>{
-      a.addEventListener('click', (e)=>{
+  function attachPagination() {
+    document.querySelectorAll('.pf-pager [data-page]').forEach(a => {
+      a.addEventListener('click', e => {
         e.preventDefault();
         const p = parseInt(a.getAttribute('data-page'), 10);
         doSearch(p);
@@ -74,14 +84,12 @@ if (countEl && labelEl) {
     });
   }
 
-  // Debounced typing
-  input.addEventListener('input', function(){
+  input.addEventListener('input', function () {
     clearTimeout(t);
-    t = setTimeout(()=>doSearch(1), 300);
+    t = setTimeout(() => doSearch(1), 300);
   });
 
-  // Normal submit still works without JS
-  form.addEventListener('submit', function(e){
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
     doSearch(1);
   });

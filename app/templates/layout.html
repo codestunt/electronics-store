@@ -718,6 +718,10 @@
   }
 }
 
+body.cart-page {
+  padding-top: 150px;
+}
+
 /* =========================================================
    FINAL OVERRIDE (DESKTOP) — keeps navbars stationary + removes gap
    Paste at END. Do NOT delete other CSS.
@@ -1444,6 +1448,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   </script>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const flashes = document.querySelectorAll(".flash-message, .alert");
+
+    flashes.forEach(flash => {
+      setTimeout(() => {
+        flash.style.transition = "opacity 0.6s ease";
+        flash.style.opacity = "0";
+        setTimeout(() => flash.remove(), 600);
+      }, 3500);
+    });
+  });
+</script>
+
 
 </body>
 </html>

@@ -700,14 +700,16 @@ def product_finder():
     pages = max(1, ceil(total / PER_PAGE))
 
     return render_template(
-        "product_finder.html",
-        products=products,
-        q=q,
-        total=total,
-        total_all=total_all,
-        page=page,
-        pages=pages,
-    )
+    "product_finder.html",
+    products=products,
+    q=q,
+    total=total,
+    total_all=total_all,
+    page=page,
+    pages=pages,
+    total_pages=pages,   # ← compatibility shim
+)
+
 
 # =========================================================
 # Search (Render-safe)
