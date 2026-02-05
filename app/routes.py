@@ -656,6 +656,7 @@ def product_finder():
 
     conn = get_db_connection()
     cur = conn.cursor()
+
     try:
         # 🔢 TOTAL ALL PRODUCTS
         cur.execute("SELECT COUNT(*) FROM products")
@@ -668,17 +669,17 @@ def product_finder():
         else:
             total = total_all
 
-        # 📦 PRODUCTS
+        # 📦 PRODUCTS (FIXED + COMPLETE)
         cur.execute(
             f"""
             SELECT
-            id,
-            name,
-            price,
-            image_path,
-            description,
-            tag,
-
+                id,
+                name,
+                price,
+                image_path,
+                description,
+                tag,
+                stock_quantity
             FROM products
             {where_sql}
             ORDER BY id DESC
@@ -686,6 +687,7 @@ def product_finder():
             """,
             params + [PER_PAGE, offset],
         )
+
         products = _dict_rows(cur)
 
     finally:
