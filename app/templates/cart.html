@@ -1,9 +1,6 @@
 {% extends "layout.html" %}
 {% set body_class = "edge-hero" %}
 
-{% set body_class = "edge-hero" %}
-
-
 {% block content %}
 
 <div class="custom-cart-container">
@@ -36,7 +33,7 @@
                   class="quantity-form">
               <input type="hidden" name="product_id" value="{{ item.id }}">
               <button type="submit" name="action" value="decrease">−</button>
-              <input type="text" name="quantity" value="{{ item.quantity or 1 }}" readonly>
+              <input type="text" value="{{ item.quantity or 1 }}" readonly>
               <button type="submit" name="action" value="increase">+</button>
             </form>
           </td>
@@ -53,11 +50,7 @@
     <div class="checkout-card">
       <h3>Billing Information</h3>
 
-      <!-- Billing form -->
-      <form id="billing-form"
-            method="POST"
-            action="{{ url_for('routes.checkout') }}">
-
+      <form id="billing-form">
         <label>Full Name</label>
         <input type="text" name="full_name" required>
 
@@ -71,12 +64,10 @@
         <select name="payment_method" id="payment-method" required>
           <option disabled selected>Select payment method</option>
           <option value="card">Credit / Debit Card</option>
-          <!-- NEW: Google Pay option -->
           <option value="gpay">Google Pay</option>
-          <option value="paypal">PayPal</option>
+          <option value="paypal">PayPal (coming soon)</option>
         </select>
 
-        <!-- TYPE=BUTTON so we control submit in JS -->
         <button type="button"
                 class="checkout-btn"
                 id="place-order-btn"
@@ -85,12 +76,10 @@
         </button>
 
         <div class="checkout-legal">
-            By selecting <strong>Place Order</strong>, I agree to the
-            <a href="{{ url_for('routes.terms') }}" target="_blank">ElectroZone Terms of Service</a>
-            and
-            <a href="{{ url_for('routes.privacy') }}" target="_blank">Privacy Policy</a>.
+          By selecting <strong>Place Order</strong>, you agree to our
+          <a href="{{ url_for('routes.terms') }}" target="_blank">Terms</a> and
+          <a href="{{ url_for('routes.privacy') }}" target="_blank">Privacy Policy</a>.
         </div>
-
       </form>
 
       <div class="summary">
@@ -106,632 +95,60 @@
   {% else %}
     <div class="empty-cart">
       <h4>Your cart is currently empty.</h4>
-      <a href="{{ url_for('routes.home') }}" class="continue-link">Continue Shopping</a>
+      <a href="{{ url_for('routes.home') }}" class="continue-link">
+        Continue Shopping
+      </a>
     </div>
   {% endif %}
 </div>
 
-<style>
-  :root{
-    --brand-red:#B23850;
-    --brand-red-dark:#962c42;
-    --brand-blue:#3B8BEB;
-    --ink:#111;
-    --muted:#666;
-    --border:#e8e8e8;
-    --bg:#fafafa;
-  }
-
-  .custom-cart-container{
-    max-width: 1100px;
-    margin: 40px auto 80px;
-    padding: 0 20px;
-  }
-
-  .cart-title{
-    font-weight: 800;
-    font-size: 28px;
-    letter-spacing: .2px;
-    color: var(--ink);
-    margin-bottom: 18px;
-  }
-
-  /* Table wrapper */
-  .cart-table{
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 8px 24px rgba(0,0,0,.06);
-    table-layout: fixed;
-  }
-
-  .cart-table thead th{
-    text-align: left;
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: .4px;
-    color: var(--muted);
-    background: var(--bg);
-    padding: 24px 26px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .cart-table tbody td{
-    padding: 16px;
-    vertical-align: middle;
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* Product image */
-  .product-image{
-    width: 140px;
-    height: 140px;
-    object-fit: contain;
-    border-radius: 10px;
-    background: #fff;
-    border: 1px solid var(--border);
-    box-shadow: 0 3px 10px rgba(0,0,0,.04);
-  }
-
-  .cart-table td:nth-child(3),
-  .cart-table td:nth-child(5){
-    font-weight: 700;
-    color: var(--ink);
-  }
-
-  /* Quantity control */
-  .quantity-form{
-    display: inline-flex;
-    align-items: center;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    overflow: hidden;
-    background:#fff;
-  }
-
-  .quantity-form button{
-    width: 34px;
-    height: 34px;
-    border: none;
-    background: var(--bg);
-    font-size: 16px;
-    line-height: 1;
-    cursor: pointer;
-    transition: background .2s ease, transform .05s ease;
-  }
-  .quantity-form button:hover{ background:#f1f1f1; }
-  .quantity-form button:active{ transform: scale(.98); }
-
-  .quantity-form input[type="text"]{
-    width: 52px;
-    border: none;
-    text-align: center;
-    font-weight: 700;
-    outline: none;
-    background: #fff;
-  }
-
-  /* Remove icon */
-  .remove-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    font-size: 20px;
-    line-height: 1;
-    color: var(--brand-red);
-    background: transparent;
-    border-radius: 50%;
-    text-decoration: none;
-    transition: color 0.2s ease, transform 0.15s ease;
-  }
-  .remove-link:hover {
-    color: steelblue;
-    transform: translateY(-1px);
-  }
-  .remove-link:active{ transform: scale(.96); }
-
-  /* Checkout / summary card */
-  .checkout-card{
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 28px;
-    margin-top: 24px;
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 22px;
-    box-shadow: 0 8px 24px rgba(0,0,0,.05);
-  }
-
-  .checkout-card h3{
-    grid-column: 1 / -1;
-    margin: 0 0 10px;
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--ink);
-  }
-
-  .checkout-card form{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px 16px;
-    align-content: start;
-  }
-
-  .checkout-card label{
-    font-size: 14px;
-    font-weight: 700;
-    color: #222;
-    letter-spacing:.2px;
-  }
-
-  .checkout-card input,
-  .checkout-card select,
-  .checkout-card textarea{
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    outline: none;
-    background: #fff;
-    transition: border-color .2s ease, box-shadow .2s ease;
-    font-size: 14px;
-  }
-
-  .checkout-card textarea{
-    min-height: 70px;
-    resize: vertical;
-  }
-
-  .checkout-card input:focus,
-  .checkout-card select:focus,
-  .checkout-card textarea:focus{
-    border-color: var(--brand-blue);
-    box-shadow: 0 0 0 3px rgba(59,139,235,.15);
-  }
-
-  .checkout-btn{
-    grid-column: 2 / 3;
-    justify-self: end;
-    padding: 12px 22px;
-    border: none;
-    border-radius: 999px;
-    background: linear-gradient(135deg,var(--brand-red),var(--brand-red-dark));
-    color: #fff;
-    font-weight: 800;
-    cursor: pointer;
-    transition: transform .05s ease, box-shadow .2s ease, opacity .2s ease;
-    box-shadow: 0 8px 18px rgba(178,56,80,.28);
-  }
-  .checkout-btn:hover{ opacity:.95; }
-  .checkout-btn:active{ transform: translateY(1px); }
-
-  .summary{
-    border-left: 1px solid var(--border);
-    padding-left: 18px;
-  }
-  .summary p{
-    margin: 6px 0;
-    color: var(--ink);
-  }
-  .summary .price{
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--brand-red);
-  }
-
-  .continue-link{
-    display: inline-block;
-    margin-top: 6px;
-    text-decoration: none;
-    color: var(--brand-blue);
-    font-weight: 700;
-  }
-  .summary .continue-link{
-    display:inline-block;
-    margin-top: 18px;
-    font-weight: 700;
-    font-size: 16px;
-  }
-  .continue-link:hover{ text-decoration: underline; }
-
-  .empty-cart{
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 28px;
-    text-align: center;
-    box-shadow: 0 8px 24px rgba(0,0,0,.05);
-  }
-  .empty-cart h4{ margin-bottom: 8px; }
-
-  @media (max-width: 992px){
-    .product-image{ width: 120px; height:120px; }
-    .checkout-card{ grid-template-columns: 1fr; }
-    .checkout-card form{ grid-template-columns: 1fr; }
-    @media (max-width: 992px){
-
-  .checkout-btn{
-    grid-column: 1;
-    justify-self: end !important;   /* ✅ push to the right */
-    margin-left: auto;             /* ✅ extra guarantee */
-    width: auto !important;
-    min-width: 100px;
-    max-width: 140px;
-    padding: 12px 20px;
-    font-size: 12px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-}
-
-
-
-    .summary{
-      border-left: 0;
-      border-top: 1px solid var(--border);
-      padding-left:0;
-      padding-top:16px;
-    }
-  }
-
-  .order-agreement{
-  
-  font-size: 12px;
-  color: #777;
-  margin-top: 6px;
-  line-height: 1.4;
-}
-.order-agreement a{
-  color: var(--brand-blue);
-  text-decoration: underline;
-}
-
-.checkout-legal a {
-  color: var(--brand-blue);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.checkout-legal a:hover {
-  text-decoration: underline;
-}
-
-.checkout-card form{
-  display: grid;
-
-  /* Fixed-ish label column, nice wide input column */
-  gap: 14px 16px;
-  align-content: start;
-}
-/* =========================
-   MOBILE FIX PACK (Cart + Billing)
-   Paste at VERY BOTTOM of <style>
-   ========================= */
-
-/* Desktop-only: keep your nice 2-col label/input grid */
-@media (min-width: 993px){
-  .checkout-card form{
-    display: grid;
-    grid-template-columns: 180px minmax(0, 1fr);
-    gap: 14px 16px;
-    align-content: start;
-  }
-}
-
-/* Mobile improvements */
-@media (max-width: 520px){
-
-  .custom-cart-container{
-    margin: 18px auto 60px;
-    padding: 0 14px;
-  }
-
-  .cart-title{
-    font-size: 22px;
-    margin-bottom: 12px;
-  }
-
-  /* --- Make table rows become mobile cards --- */
-  .cart-table{
-    display: block;
-    border-radius: 14px;
-    overflow: hidden;
-  }
-
-  .cart-table thead{
-    display: none; /* hide headers on mobile */
-  }
-
-  .cart-table tbody,
-  .cart-table tr,
-  .cart-table td{
-    display: block;
-    width: 100%;
-  }
-
-  .cart-table tbody tr{
-    border-bottom: 1px solid var(--border);
-    padding: 14px 14px 12px;
-  }
-
-  /* remove default cell borders on mobile */
-  .cart-table tbody td{
-    border-bottom: 0;
-    padding: 0;
-  }
-
-  /* Build a clean grid inside each row */
-  .cart-table tbody tr{
-    display: grid;
-    grid-template-columns: 92px 1fr;
-    grid-template-areas:
-      "img  name"
-      "img  price"
-      "qty  subtotal"
-      "rm   rm";
-    gap: 10px 12px;
-  }
-
-  /* Product image cell (1st td) */
-  .cart-table tbody tr td:nth-child(1){ grid-area: img; }
-  .product-image{
-    width: 92px;
-    height: 92px;
-    border-radius: 12px;
-  }
-
-  /* Name (2nd td) */
-  .cart-table tbody tr td:nth-child(2){
-    grid-area: name;
-    font-weight: 800;
-    font-size: 14px;
-    line-height: 1.25;
-  }
-
-  /* Price (3rd td) */
-  .cart-table tbody tr td:nth-child(3){
-    grid-area: price;
-    font-weight: 800;
-    color: var(--ink);
-    margin-top: -2px;
-  }
-
-  /* Qty (4th td) */
-  .cart-table tbody tr td:nth-child(4){
-    grid-area: qty;
-    margin-top: 6px;
-  }
-  .quantity-form{
-    width: 100%;
-    justify-content: space-between;
-  }
-  .quantity-form button{
-    width: 40px;
-    height: 38px;
-  }
-  .quantity-form input[type="text"]{
-    width: 56px;
-  }
-
-  /* Subtotal (5th td) */
-  .cart-table tbody tr td:nth-child(5){
-    grid-area: subtotal;
-    text-align: right;
-    font-weight: 900;
-    font-size: 16px;
-    color: var(--brand-red);
-    margin-top: 12px;
-  }
-
-  /* Remove (6th td) */
-  .cart-table tbody tr td:nth-child(6){
-    grid-area: rm;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 4px;
-  }
-
-  /* --- Billing card layout on mobile --- */
-  .checkout-card{
-    grid-template-columns: 1fr !important;
-    padding: 16px;
-    gap: 16px;
-  }
-
-  .checkout-card h3{
-    font-size: 18px;
-    margin-bottom: 6px;
-  }
-
-  /* Stack form fields neatly */
-  .checkout-card form{
-    display: grid;
-    grid-template-columns: 1fr !important;
-    gap: 10px;
-  }
-
-  .checkout-card label{
-    margin-top: 6px;
-  }
-
-  
-  /* Terms line: allow wrapping, prevent ugly cut-off */
-  .checkout-legal{
-    white-space: normal !important;
-    font-size: 12.5px;
-    line-height: 1.5;
-    margin-top: 10px;
-    color: #666;
-  }
-
-  /* Summary spacing */
-  .summary{
-    border-top: 1px solid var(--border);
-    padding-top: 14px;
-    margin-top: 6px;
-  }
-}
-/* Legal text (ALL screens) */
-.checkout-legal{
-  grid-column: 1 / -1;     /* take full row in the form grid */
-  font-size: 13px;
-  margin-top: 10px;
-  color: #555;
-  line-height: 1.6;
-  white-space: normal;     /* ✅ allow wrapping (fixes desktop cramp) */
-  max-width: 560px;        /* ✅ keeps it readable on desktop */
-}
-
-.checkout-legal a{
-  color: var(--brand-blue);
-  font-weight: 600;
-  text-decoration: none;
-}
-.checkout-legal a:hover{
-  text-decoration: underline;
-}
-
-
-
-</style>
-
-<!-- Stripe.js (only once) -->
 <script src="https://js.stripe.com/v3/"></script>
 
 <script>
-  // Single Stripe instance using publishable key from Flask
   const stripe = Stripe("{{ stripe_pk }}");
 
-  // Helper: start Stripe Checkout with billing data
   async function startStripeCheckout(button, billingData) {
-    if (!button) return;
-
     button.disabled = true;
-    const original = button.textContent;
-    button.textContent = 'Redirecting…';
+    button.textContent = "Redirecting…";
 
-    try {
-      const res = await fetch("{{ url_for('payments.create_checkout_session') }}", {
-        method: 'POST',
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(billingData || {})
-      });
+    const res = await fetch("{{ url_for('payments.create_checkout_session') }}", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(billingData)
+    });
 
-      const text = await res.text();
-      let data;
+    const data = await res.json();
 
-      try {
-        data = JSON.parse(text);
-      } catch (e) {
-        alert('Server did not return JSON:\n\n' + text);
-        button.disabled = false;
-        button.textContent = original;
-        return;
-      }
-
-      if (!res.ok || !data.id) {
-        alert(data.error || 'Could not start checkout.');
-        button.disabled = false;
-        button.textContent = original;
-        return;
-      }
-
-      const { error } = await stripe.redirectToCheckout({ sessionId: data.id });
-
-      if (error) {
-        alert(error.message || String(error));
-        button.disabled = false;
-        button.textContent = original;
-      }
-    } catch (err) {
-      alert((err && err.message) ? err.message : String(err));
+    if (!data.id) {
+      alert(data.error || "Unable to start checkout.");
       button.disabled = false;
-      button.textContent = original;
-    }
-  }
-
-  // Helper: start PayPal flow and redirect to approval URL
-  async function startPaypalCheckout(button, billingData) {
-    if (!button) return;
-
-    button.disabled = true;
-    const original = button.textContent;
-    button.textContent = 'Redirecting…';
-
-    try {
-      const resp = await fetch("{{ url_for('payments.paypal_start') }}", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(billingData || {})
-      });
-
-      const data = await resp.json();
-
-      if (!resp.ok || !data.approval_url) {
-        alert(data.error || "Could not start PayPal payment.");
-        button.disabled = false;
-        button.textContent = original;
-        return;
-      }
-
-      // Redirect browser to PayPal
-      window.location.href = data.approval_url;
-
-    } catch (err) {
-      console.error("PayPal start error", err);
-      alert("Something went wrong starting PayPal payment.");
-      button.disabled = false;
-      button.textContent = original;
-    }
-  }
-
-  // Called by Place Order button
-  function handlePlaceOrder() {
-    const form         = document.getElementById('billing-form');
-    const button       = document.getElementById('place-order-btn');
-    const methodSelect = document.getElementById('payment-method');
-
-    if (!form || !button || !methodSelect) return;
-
-    // HTML5 validation
-    if (!form.reportValidity()) {
+      button.textContent = "Place Order";
       return;
     }
 
-    const method = methodSelect.value;
+    await stripe.redirectToCheckout({ sessionId: data.id });
+  }
 
-    const fullName = form.elements['full_name'].value.trim();
-    const email    = form.elements['email'].value.trim();
-    const address  = form.elements['address'].value.trim();
+  function handlePlaceOrder() {
+    const form = document.getElementById("billing-form");
+    const btn = document.getElementById("place-order-btn");
+    const method = document.getElementById("payment-method").value;
 
-    const billingData = {
-      full_name: fullName,
-      email: email,
-      address: address
+    if (!form.reportValidity()) return;
+
+    if (method === "paypal") {
+      alert("PayPal payments are coming very soon. Please use Card or Google Pay for now.");
+      return;
+    }
+
+    const data = {
+      full_name: form.full_name.value,
+      email: form.email.value,
+      address: form.address.value,
+      payment_method: method
     };
 
-    // Stripe Checkout (card or Google Pay)
-    if (method === 'card' || method === 'gpay') {
-      // Optional: mark which path user chose for metadata
-      billingData.payment_method = (method === 'gpay') ? 'google_pay' : 'card';
-      startStripeCheckout(button, billingData);
-    }
-    // PayPal
-    else if (method === 'paypal') {
-      startPaypalCheckout(button, billingData);
-    }
+    startStripeCheckout(btn, data);
   }
 </script>
 
