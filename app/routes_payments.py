@@ -14,6 +14,8 @@ import stripe
 from datetime import datetime
 import uuid
 
+from app.extensions import send_receipt_email_html
+
 bp_pay = Blueprint("payments", __name__)  # registered with url_prefix="/pay"
 
 
@@ -69,14 +71,13 @@ def create_checkout_session():
         customer_email=email,
         success_url=current_app.config["BASE_URL"] + "/pay/success",
         cancel_url=current_app.config["BASE_URL"] + "/pay/cancel",
-
     )
 
     return jsonify({"id": checkout_session.id})
 
 
 # -------------------------------------------------
-# Stripe Success (FINAL LANDING PAGE)
+# Stripe Success (ORDER COMPLETE + RECEIPT EMAIL)
 # -------------------------------------------------
 
 @bp_pay.route("/success")
@@ -103,6 +104,7 @@ def pay_success():
         count += qty
 
     order_id = generate_order_id()
+    est_date = datetime.now().strftime("%d %b %Y")
 
     session.update({
         "last_order_items": items,
@@ -115,18 +117,41 @@ def pay_success():
 
     flash("Payment successful. Thank you for your order!", "success")
 
-    # ⚠️ IMPORTANT:
-    # No email sending here.
-    # No redirects after this.
-    # Page MUST render immediately.
+    # -------------------------------------------------
+    # SEND HTML RECEIPT EMAIL (SENDGRID)
+    # -------------------------------------------------
+    try:
+        customer_email = session.get("user_email")
 
+        if customer_email:
+            html_receipt = render_template(
+                "emails/email_order_receipt.html",  
+                order_id=order_id,
+                order_items=items,
+                order_total=total,
+                est_delivery_date=est_date,
+            )
+
+            send_receipt_email_html(
+                to_email=customer_email,
+                subject=f"Your ElectroZone Receipt – {order_id}",
+                html_content=html_receipt,
+            )
+
+    except Exception as e:
+        # 🚨 NEVER break checkout
+        current_app.logger.error(f"Receipt email failed: {e}")
+
+    # -------------------------------------------------
+    # FINAL PAGE RENDER 
+    # -------------------------------------------------
     return render_template(
         "order_complete.html",
         order_id=order_id,
         order_items=items,
         order_total=total,
         order_items_count=count,
-        est_delivery_date=datetime.now().strftime("%d %b %Y"),
+        est_delivery_date=est_date,
     )
 
 
