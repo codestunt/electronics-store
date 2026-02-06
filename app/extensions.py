@@ -1,14 +1,25 @@
 import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from flask_mail import Mail as FlaskMail
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail as SendGridMail
 from flask import current_app
 
-# -----------------------------------
+# Flask-Mail (renamed safely)
+from flask_mail import Mail as FlaskMail
+
+# SendGrid (renamed safely)
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail as SendGridMail
+
+
+# -------------------------------------------------
+# Flask-Mail extension (used by app factory)
+# -------------------------------------------------
+mail = FlaskMail()
+
+
+# -------------------------------------------------
 # SendGrid HTML receipt sender
-# -----------------------------------
+# -------------------------------------------------
 def send_receipt_email_html(to_email: str, subject: str, html_content: str):
     """
     Send HTML receipt via SendGrid.
@@ -39,15 +50,9 @@ def send_receipt_email_html(to_email: str, subject: str, html_content: str):
         current_app.logger.error(f"SENDGRID FAILED: {e}")
 
 
-# -----------------------------------
-# Flask-Mail extension (still needed)
-# -----------------------------------
-mail = FlaskMail()
-
-
-# -----------------------------------
+# -------------------------------------------------
 # Database helper (unchanged)
-# -----------------------------------
+# -------------------------------------------------
 def get_db_connection():
     database_url = os.environ.get("DATABASE_URL")
 
