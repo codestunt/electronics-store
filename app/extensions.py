@@ -32,7 +32,7 @@ def send_receipt_email_html(to_email: str, subject: str, html_content: str):
         message = SendGridMail(
             from_email=current_app.config.get(
                 "MAIL_DEFAULT_SENDER",
-                "ElectroZone <no-reply@electrozone.com>"
+                "ElectroZone <joemtaika@gmail.com>"
             ),
             to_emails=to_email,
             subject=subject,

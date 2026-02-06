@@ -18,6 +18,25 @@ from flask import get_flashed_messages
 # Helpers
 # =========================================================
 
+def send_order_receipt_email(order, items, user_email):
+    subject = f"Your ElectroZone Receipt – Order #{order['order_id']}"
+
+    # 🔥 Render your EXISTING receipt HTML
+    html_body = render_template(
+        "receipt.html",   # ← use your real template name
+        order=order,
+        items=items
+    )
+
+    msg = Message(
+        subject=subject,
+        recipients=[user_email],
+        html=html_body
+    )
+
+    mail.send(msg)
+
+
 def _send_form_email(subject: str, to_email: str, body: str, reply_to: str | None = None):
     msg = Message(subject=subject, recipients=[to_email], body=body)
     if reply_to:
@@ -53,6 +72,48 @@ def _consume_flashes():
     Consume flash messages so they don't reappear on reload.
     """
     get_flashed_messages(with_categories=True)
+
+
+def send_order_receipt_email(to_email, order):
+    """
+    Sends an order receipt email.
+    This MUST NEVER break checkout if it fails.
+    """
+    try:
+        subject = f"Your ElectroZone Receipt – Order #{order['id']}"
+
+        body = f"""
+Thank you for your purchase at ElectroZone!
+
+Order ID: {order['id']}
+Total: ${order['total']}
+Date: {order['created_at']}
+
+Items:
+"""
+
+        for item in order["items"]:
+            body += f"- {item['name']} x {item['quantity']} (${item['price']})\n"
+
+        body += """
+
+If you have any questions, reply to this email.
+
+— ElectroZone
+"""
+
+        msg = Message(
+            subject=subject,
+            recipients=[to_email],
+            body=body
+        )
+
+        mail.send(msg)
+
+    except Exception as e:
+        # 🚨 NEVER break checkout
+        current_app.logger.error(f"Receipt email failed: {e}")
+
 
 # =========================================================
 # Blueprint
@@ -1015,3 +1076,5 @@ Message:
         flash("Sorry — we couldn't send your request right now. Please try again.", "error")
 
     return redirect(url_for("routes.contact_support"))
+
+

@@ -1,5 +1,6 @@
 
-# app/__init__.py
+# VERSION: 2026-02-05-RENDER-CACHE-BUST
+
 
 from flask import Flask
 from dotenv import load_dotenv
@@ -52,7 +53,8 @@ def create_app():
     # -------------------------------------------------
     # Email configuration (Flask-Mail)
     # -------------------------------------------------
-    app.config["MAIL_SUPPRESS_SEND"] = os.getenv("MAIL_SUPPRESS_SEND") == "1"
+    app.config["MAIL_SUPPRESS_SEND"] = False
+
 
     app.config["MAIL_SERVER"] = "smtp.gmail.com"
     app.config["MAIL_PORT"] = 587

@@ -120,27 +120,32 @@ def pay_success():
     # -------------------------------------------------
     # SEND HTML RECEIPT EMAIL (SENDGRID)
     # -------------------------------------------------
-    try:
-        customer_email = session.get("user_email")
+    # -------------------------------------------------
+# SEND HTML RECEIPT EMAIL (SENDGRID)
+# -------------------------------------------------
+try:
+    customer_email = session.get("user_email")
 
-        if customer_email:
-            html_receipt = render_template(
-                "emails/email_order_receipt.html",  
-                order_id=order_id,
-                order_items=items,
-                order_total=total,
-                est_delivery_date=est_date,
-            )
+    if customer_email and not session.get("receipt_email_sent"):
+        html_receipt = render_template(
+            "emails/email_order_receipt.html",
+            order_id=order_id,
+            order_items=items,
+            order_total=total,
+            est_delivery_date=est_date,
+        )
 
-            send_receipt_email_html(
-                to_email=customer_email,
-                subject=f"Your ElectroZone Receipt – {order_id}",
-                html_content=html_receipt,
-            )
+        send_receipt_email_html(
+            to_email=customer_email,
+            subject=f"Your ElectroZone Receipt – {order_id}",
+            html_content=html_receipt,
+        )
 
-    except Exception as e:
-        # 🚨 NEVER break checkout
-        current_app.logger.error(f"Receipt email failed: {e}")
+        session["receipt_email_sent"] = True
+        session.modified = True
+
+except Exception as e:
+    current_app.logger.error(f"Receipt email failed: {e}")
 
     # -------------------------------------------------
     # FINAL PAGE RENDER 
