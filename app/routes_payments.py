@@ -162,7 +162,29 @@ def pay_success():
 # Stripe Cancel
 # -------------------------------------------------
 
+# -------------------------------------------------
+# Stripe Cancel
+# -------------------------------------------------
+
 @bp_pay.route("/cancel")
 def pay_cancel():
     flash("Payment cancelled.", "error")
     return redirect(url_for("routes.cart"))
+
+
+# -------------------------------------------------
+# SENDGRID TEST ROUTE (DEBUG ONLY)
+# -------------------------------------------------
+
+@bp_pay.route("/test-sendgrid")
+def test_sendgrid():
+    try:
+        send_receipt_email_html(
+            to_email="mtaikaj@gmail.com",
+            subject="ElectroZone SendGrid Test",
+            html_content="<h1>SendGrid is WORKING ✅</h1>"
+        )
+        return "SendGrid test email sent", 200
+    except Exception as e:
+        current_app.logger.error(f"TEST SENDGRID FAILED: {e}")
+        return "SendGrid test failed", 500
