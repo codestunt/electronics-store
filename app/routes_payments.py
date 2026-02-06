@@ -128,7 +128,7 @@ try:
 
     if customer_email and not session.get("receipt_email_sent"):
         html_receipt = render_template(
-            "emails/email_order_receipt.html",
+            "email_order_receipt.html",
             order_id=order_id,
             order_items=items,
             order_total=total,
