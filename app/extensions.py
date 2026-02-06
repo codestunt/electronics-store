@@ -23,14 +23,14 @@ mail = FlaskMail()
 def send_receipt_email_html(to_email: str, subject: str, html_content: str):
     """
     Send HTML receipt via SendGrid.
-    NEVER raises — logs only.
+    Returns SendGrid status code.
     """
     try:
         current_app.logger.warning("SENDGRID: Attempting to send receipt")
         current_app.logger.warning(f"SENDGRID: To={to_email}")
 
         message = SendGridMail(
-            from_email="ElectroZone <electrozoneg@gmail.com>",  # ✅ COMMA FIXED
+            from_email="ElectroZone <electrozoneg@gmail.com>",
             to_emails=to_email,
             subject=subject,
             html_content=html_content,
@@ -43,8 +43,11 @@ def send_receipt_email_html(to_email: str, subject: str, html_content: str):
             f"SENDGRID RESPONSE STATUS: {response.status_code}"
         )
 
+        return response.status_code  # 👈 THIS IS THE KEY LINE
+
     except Exception as e:
         current_app.logger.error(f"SENDGRID FAILED: {e}")
+        return None
 
 
 # -------------------------------------------------
