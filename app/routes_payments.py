@@ -112,43 +112,41 @@ def pay_success():
         "last_order_item_count": count,
         "last_order_ref": order_id,
         "cart": [],
+        "receipt_email_sent": False,  # reset per order
     })
     session.modified = True
 
     flash("Payment successful. Thank you for your order!", "success")
 
     # -------------------------------------------------
-    # SEND HTML RECEIPT EMAIL (SENDGRID)
+    # SEND HTML RECEIPT EMAIL (SAFE — NEVER BREAKS CHECKOUT)
     # -------------------------------------------------
-    # -------------------------------------------------
-# SEND HTML RECEIPT EMAIL (SENDGRID)
-# -------------------------------------------------
-try:
-    customer_email = session.get("user_email")
+    try:
+        customer_email = session.get("user_email")
 
-    if customer_email and not session.get("receipt_email_sent"):
-        html_receipt = render_template(
-            "email_order_receipt.html",
-            order_id=order_id,
-            order_items=items,
-            order_total=total,
-            est_delivery_date=est_date,
-        )
+        if customer_email and not session.get("receipt_email_sent"):
+            html_receipt = render_template(
+                "email_order_receipt.html",
+                order_id=order_id,
+                order_items=items,
+                order_total=total,
+                est_delivery_date=est_date,
+            )
 
-        send_receipt_email_html(
-            to_email=customer_email,
-            subject=f"Your ElectroZone Receipt – {order_id}",
-            html_content=html_receipt,
-        )
+            send_receipt_email_html(
+                to_email=customer_email,
+                subject=f"Your ElectroZone Receipt – {order_id}",
+                html_content=html_receipt,
+            )
 
-        session["receipt_email_sent"] = True
-        session.modified = True
+            session["receipt_email_sent"] = True
+            session.modified = True
 
-except Exception as e:
-    current_app.logger.error(f"Receipt email failed: {e}")
+    except Exception as e:
+        current_app.logger.error(f"Receipt email failed: {e}")
 
     # -------------------------------------------------
-    # FINAL PAGE RENDER 
+    # FINAL PAGE RENDER (ALWAYS EXECUTES)
     # -------------------------------------------------
     return render_template(
         "order_complete.html",
