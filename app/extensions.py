@@ -30,10 +30,8 @@ def send_receipt_email_html(to_email: str, subject: str, html_content: str):
         current_app.logger.warning(f"SENDGRID: To={to_email}")
 
         message = SendGridMail(
-            from_email=current_app.config.get(
-                "MAIL_DEFAULT_SENDER",
-                "ElectroZone <joemtaika@gmail.com>"
-            ),
+            from_email="ElectroZone <electrozoneg@gmail.com>"
+
             to_emails=to_email,
             subject=subject,
             html_content=html_content,
