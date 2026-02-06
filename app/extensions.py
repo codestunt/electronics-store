@@ -12,11 +12,10 @@ from flask import current_app
 # SendGrid HTML receipt sender
 # -------------------------------------------------
 def send_receipt_email_html(to_email: str, subject: str, html_content: str):
-    """
-    Send HTML receipt via SendGrid.
-    NEVER raises — logs only.
-    """
     try:
+        current_app.logger.warning("SENDGRID: Attempting to send receipt email")
+        current_app.logger.warning(f"SENDGRID: To = {to_email}")
+
         message = SendGridMail(
             from_email=current_app.config.get(
                 "MAIL_DEFAULT_SENDER",
@@ -28,16 +27,14 @@ def send_receipt_email_html(to_email: str, subject: str, html_content: str):
         )
 
         sg = SendGridAPIClient(os.environ.get("SENDGRID_API_KEY"))
-        sg.send(message)
+        response = sg.send(message)
+
+        current_app.logger.warning(
+            f"SENDGRID RESPONSE: status={response.status_code}"
+        )
 
     except Exception as e:
-        current_app.logger.error(f"SendGrid receipt failed: {e}")
-
-
-# -------------------------------------------------
-# Flask-Mail extension (kept for other forms)
-# -------------------------------------------------
-mail = FlaskMail()
+        current_app.logger.error(f"SENDGRID FAILED: {e}")
 
 
 # -------------------------------------------------
