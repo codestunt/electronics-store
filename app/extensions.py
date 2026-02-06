@@ -1,4 +1,3 @@
-# app/extensions.py
 import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -7,14 +6,17 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail as SendGridMail
 from flask import current_app
 
-
-# -------------------------------------------------
+# -----------------------------------
 # SendGrid HTML receipt sender
-# -------------------------------------------------
+# -----------------------------------
 def send_receipt_email_html(to_email: str, subject: str, html_content: str):
+    """
+    Send HTML receipt via SendGrid.
+    NEVER raises — logs only.
+    """
     try:
-        current_app.logger.warning("SENDGRID: Attempting to send receipt email")
-        current_app.logger.warning(f"SENDGRID: To = {to_email}")
+        current_app.logger.warning("SENDGRID: Attempting to send receipt")
+        current_app.logger.warning(f"SENDGRID: To={to_email}")
 
         message = SendGridMail(
             from_email=current_app.config.get(
@@ -30,24 +32,23 @@ def send_receipt_email_html(to_email: str, subject: str, html_content: str):
         response = sg.send(message)
 
         current_app.logger.warning(
-            f"SENDGRID RESPONSE: status={response.status_code}"
+            f"SENDGRID RESPONSE STATUS: {response.status_code}"
         )
 
     except Exception as e:
         current_app.logger.error(f"SENDGRID FAILED: {e}")
 
 
-# -------------------------------------------------
-# Database connection
-# -------------------------------------------------
-def get_db_connection():
-    """
-    Create and return a PostgreSQL connection.
+# -----------------------------------
+# Flask-Mail extension (still needed)
+# -----------------------------------
+mail = FlaskMail()
 
-    - Uses Render's DATABASE_URL
-    - Uses RealDictCursor
-    - Enforces SSL (Render requirement)
-    """
+
+# -----------------------------------
+# Database helper (unchanged)
+# -----------------------------------
+def get_db_connection():
     database_url = os.environ.get("DATABASE_URL")
 
     if not database_url:
