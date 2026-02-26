@@ -1,7 +1,6 @@
 
 # VERSION: 2026-02-05-RENDER-CACHE-BUST
 
-
 from flask import Flask
 from dotenv import load_dotenv
 import os
@@ -16,8 +15,8 @@ def create_app():
     Application factory: creates and configures the Flask app.
     """
 
-    # Load environment variables
-    load_dotenv(override=True)
+    # Load .env locally ONLY (Render ignores .env)
+    load_dotenv()
 
     app = Flask(__name__)
 
@@ -51,18 +50,17 @@ def create_app():
     app.config["PAYPAL_MODE"] = os.environ.get("PAYPAL_MODE", "sandbox")
 
     # -------------------------------------------------
-    # Email configuration (Flask-Mail)
+    # Email configuration (Flask-Mail / Gmail SMTP)
     # -------------------------------------------------
     app.config["MAIL_SUPPRESS_SEND"] = False
-
-
-    app.config["MAIL_SERVER"] = "smtp.gmail.com"
-    app.config["MAIL_PORT"] = 587
-    app.config["MAIL_USE_TLS"] = True
+    app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER", "smtp.gmail.com")
+    app.config["MAIL_PORT"] = int(os.environ.get("MAIL_PORT", 587))
+    app.config["MAIL_USE_TLS"] = os.environ.get("MAIL_USE_TLS", "true") == "true"
     app.config["MAIL_USE_SSL"] = False
     app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
     app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
-    app.config["MAIL_DEFAULT_SENDER"] = (
+    app.config["MAIL_DEFAULT_SENDER"] = os.environ.get(
+        "MAIL_DEFAULT_SENDER",
         f"ElectroZone <{os.environ.get('MAIL_USERNAME')}>"
     )
 

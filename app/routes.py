@@ -1,6 +1,6 @@
 from flask import (
     Blueprint, render_template, request, redirect, url_for,
-    flash, session, jsonify, current_app
+    flash, session, jsonify, current_app, get_flashed_messages
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Message
@@ -10,34 +10,18 @@ from math import ceil
 from datetime import datetime
 import os
 import re
-from flask import get_flashed_messages
 
 
+# =========================================================
+# Blueprint
+# =========================================================
+routes = Blueprint("routes", __name__)
 
 # =========================================================
 # Helpers
 # =========================================================
 
-def send_order_receipt_email(order, items, user_email):
-    subject = f"Your ElectroZone Receipt – Order #{order['order_id']}"
-
-    # 🔥 Render your EXISTING receipt HTML
-    html_body = render_template(
-        "receipt.html",   # ← use your real template name
-        order=order,
-        items=items
-    )
-
-    msg = Message(
-        subject=subject,
-        recipients=[user_email],
-        html=html_body
-    )
-
-    mail.send(msg)
-
-
-def _send_form_email(subject: str, to_email: str, body: str, reply_to: str | None = None):
+def _send_form_email(subject: str, to_email: str, body: str, reply_to: str | None = None) -> None:
     msg = Message(subject=subject, recipients=[to_email], body=body)
     if reply_to:
         msg.reply_to = reply_to
@@ -65,23 +49,9 @@ def _get_count(row):
     return row[0]
 
 
-
-
-def _consume_flashes():
-    """
-    Consume flash messages so they don't reappear on reload.
-    """
-    get_flashed_messages(with_categories=True)
-
-
 def send_order_receipt_email(to_email, order):
-    """
-    Sends an order receipt email.
-    This MUST NEVER break checkout if it fails.
-    """
     try:
         subject = f"Your ElectroZone Receipt – Order #{order['id']}"
-
         body = f"""
 Thank you for your purchase at ElectroZone!
 
@@ -91,65 +61,17 @@ Date: {order['created_at']}
 
 Items:
 """
-
         for item in order["items"]:
             body += f"- {item['name']} x {item['quantity']} (${item['price']})\n"
 
-        body += """
+        body += "\nIf you have any questions, reply to this email.\n\n— ElectroZone"
 
-If you have any questions, reply to this email.
-
-— ElectroZone
-"""
-
-        msg = Message(
-            subject=subject,
-            recipients=[to_email],
-            body=body
-        )
-
+        msg = Message(subject=subject, recipients=[to_email], body=body)
         mail.send(msg)
 
     except Exception as e:
-        # 🚨 NEVER break checkout
         current_app.logger.error(f"Receipt email failed: {e}")
 
-
-# =========================================================
-# Blueprint
-# =========================================================
-routes = Blueprint("routes", __name__)
-
-# =========================================================
-# Helpers
-# =========================================================
-
-def _send_form_email(subject: str, to_email: str, body: str, reply_to: str | None = None) -> None:
-    """
-    Send an email using Flask-Mail.
-    """
-    msg = Message(subject=subject, recipients=[to_email], body=body)
-    if reply_to:
-        msg.reply_to = reply_to
-    mail.send(msg)
-
-
-def _normalize_image_path(path: str | None) -> str:
-    """Ensure image paths work with url_for('static', filename=...)."""
-    if not path:
-        return "images/placeholder.jpg"
-    p = str(path).replace("\\", "/").lstrip("/")
-    if p.startswith("static/"):
-        p = p[len("static/"):]
-    return p or "images/placeholder.jpg"
-
-
-def _dict_rows(cursor):
-    """
-    psycopg2 RealDictCursor returns dict rows already.
-    If yours returns tuples, you MUST update get_db_connection() to use RealDictCursor.
-    """
-    return cursor.fetchall()
 
 
 # =========================================================
@@ -171,14 +93,7 @@ def inject_stripe_pk():
 # =========================================================
 # Category config
 # =========================================================
-CATEGORY_MAP = {
-    "tvs":        ("TVs", "tvs"),
-    "audio":      ("Audio", "audio"),
-    "phones":     ("Phones", "phones"),
-    "projectors": ("Projectors", "visual"),
-    "fridges":    ("Fridges", "appliances"),
-    "microwaves": ("Microwaves", "appliance"),
-}
+
 
 
 BANNER_MAP = {
@@ -188,6 +103,7 @@ BANNER_MAP = {
     "projectors": "images/banners/projector.jpg",
     "fridges":    "images/banners/fridge.jpg",
     "microwaves": "images/banners/microwave.jpg",
+    "cameras":     "images/banners/camera.png"
 }
 
 SUBTITLE_MAP = {
@@ -197,6 +113,7 @@ SUBTITLE_MAP = {
     "projectors": "Big-screen experiences at home.",
     "fridges":    "Smart cooling, efficient living.",
     "microwaves": "Fast, even heating every time.",
+    "cameras":     "Capture every moment in stunning detail."
 }
 
 HERO_BG_MAP = {
@@ -206,34 +123,46 @@ HERO_BG_MAP = {
     "projectors": "#ffffff",
     "fridges": "#f6f6f6",
     "microwaves": "#ffffff",
+    "cameras":     "#ffffff"
 }
 
 
-def _get_products_by_category(category: str, page: int = 1, page_size: int = 12):
+def _get_products_by_category(category_slug: str, page: int = 1, page_size: int = 12):
     offset = (page - 1) * page_size
 
     conn = get_db_connection()
     cur = conn.cursor()
+
     try:
+        # First get category ID from slug
+        cur.execute(
+            "SELECT id FROM categories WHERE LOWER(name) = %s",
+            (category_slug.lower(),)
+        )
+        cat = cur.fetchone()
+
+        if not cat:
+            return [], 0, 0
+
+        category_id = cat["id"] if isinstance(cat, dict) else cat[0]
+
+        # Get products using category_id
         cur.execute(
             """
             SELECT id, name, price, image_path
             FROM products
-            WHERE LOWER(category) = %s
+            WHERE category_id = %s
             ORDER BY id DESC
             LIMIT %s OFFSET %s
             """,
-            (category.lower(), page_size, offset),
+            (category_id, page_size, offset),
         )
         rows = _dict_rows(cur)
 
+        # Count total
         cur.execute(
-            """
-            SELECT COUNT(*)
-            FROM products
-            WHERE LOWER(category) = %s
-            """,
-            (category.lower(),),
+            "SELECT COUNT(*) FROM products WHERE category_id = %s",
+            (category_id,),
         )
         total = _get_count(cur.fetchone())
 
@@ -242,25 +171,57 @@ def _get_products_by_category(category: str, page: int = 1, page_size: int = 12)
 
         pages = (total + page_size - 1) // page_size
         return rows, total, pages
+
     finally:
         cur.close()
         conn.close()
 
 
+
 @routes.route("/category/<slug>")
 def category_page(slug):
-    item = CATEGORY_MAP.get(slug.lower())
-    if not item:
-        return redirect(url_for("routes.home"))
-
-    page_title, tag_like = item
     page = int(request.args.get("page", 1) or 1)
 
-    products, total, pages = _get_products_by_category(tag_like, page, page_size=24)
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM categories")
+    print("Total categories in app DB:", cur.fetchone())
 
+
+    try:
+        print("Incoming slug:", slug)
+
+        cur.execute(
+            "SELECT id, name FROM categories WHERE LOWER(name) = %s",
+            (slug.lower(),)
+        )
+        category = cur.fetchone()
+
+        print("Query result:", category)
+
+    finally:
+        cur.close()
+        conn.close()
+
+    if not category:
+        print("No category found — redirecting home.")
+        return redirect(url_for("routes.home"))
+
+    category_id = category["id"] if isinstance(category, dict) else category[0]
+    raw_name = category["name"] if isinstance(category, dict) else category[1]
+
+    if raw_name.lower() == "tvs":
+        page_title = "TVs"
+    else:
+        page_title = raw_name.title()
+
+    products, total, pages = _get_products_by_category(slug, page, page_size=24)
 
     banner_file = BANNER_MAP.get(slug.lower(), "images/banners/default.jpg")
-    page_subtitle = SUBTITLE_MAP.get(slug.lower(), f"Explore our best-in-class {page_title}.")
+    page_subtitle = SUBTITLE_MAP.get(
+        slug.lower(),
+        f"Explore our best-in-class {page_title}."
+    )
 
     return render_template(
         "categories/grid.html",
@@ -272,7 +233,6 @@ def category_page(slug):
         page=page,
         pages=pages,
     )
-
 
 # =========================================================
 # Newsletter
@@ -695,6 +655,9 @@ Please prepare the voucher and send it to the recipient email above.
 # =========================================================
 # Product Finder (ALL products)
 # =========================================================
+from flask import request, render_template, jsonify
+from math import ceil
+
 @routes.route("/product-finder", endpoint="product_finder")
 def product_finder():
     q = (request.args.get("q") or "").strip()
@@ -719,18 +682,18 @@ def product_finder():
     cur = conn.cursor()
 
     try:
-        # 🔢 TOTAL ALL PRODUCTS
+        # TOTAL ALL
         cur.execute("SELECT COUNT(*) FROM products")
         total_all = _get_count(cur.fetchone())
 
-        # 🔍 TOTAL FILTERED
+        # TOTAL FILTERED
         if q:
             cur.execute(f"SELECT COUNT(*) FROM products {where_sql}", params)
             total = _get_count(cur.fetchone())
         else:
             total = total_all
 
-        # 📦 PRODUCTS (FIXED + COMPLETE)
+        # PRODUCTS
         cur.execute(
             f"""
             SELECT
@@ -755,22 +718,51 @@ def product_finder():
         cur.close()
         conn.close()
 
+    # Normalize image paths
     for p in products:
         p["image_path"] = _normalize_image_path(p.get("image_path"))
 
     pages = max(1, ceil(total / PER_PAGE))
 
-    return render_template(
-    "product_finder.html",
-    products=products,
-    q=q,
-    total=total,
-    total_all=total_all,
-    page=page,
-    pages=pages,
-    total_pages=pages,   # ← compatibility shim
-)
+    # Render partial results HTML (for AJAX)
+    results_html = render_template(
+        "_pf_results.html",
+        products=products,
+        q=q,
+        total=total,
+        total_all=total_all,
+        page=page,
+        pages=pages,
+        total_pages=pages,
+    )
 
+    # ✅ Detect fetch/AJAX safely (without relying on X-Requested-With)
+    wants_json = (
+        request.headers.get("X-Requested-With") == "XMLHttpRequest"
+        or "application/json" in (request.headers.get("Accept") or "")
+    )
+
+    if wants_json:
+        return jsonify(
+            html=results_html,
+            q=q,
+            total=total,
+            total_all=total_all,
+            page=page,
+            pages=pages,
+        )
+
+    # Normal full page load
+    return render_template(
+        "product_finder.html",
+        products=products,
+        q=q,
+        total=total,
+        total_all=total_all,
+        page=page,
+        pages=pages,
+        total_pages=pages,
+    )
 
 # =========================================================
 # Search (Render-safe)
@@ -862,7 +854,9 @@ def add_product():
     image_path = _normalize_image_path(request.form.get("image_path") or "")
     tag = (request.form.get("tag") or "").strip()
     review_summary = (request.form.get("review_summary") or "").strip()
+    category_id = request.form.get("category_id")
 
+    # Basic validation
     if not name or not price_raw:
         flash("Name and price are required.", "error")
         return redirect(url_for("routes.admin"))
@@ -875,22 +869,29 @@ def add_product():
 
     conn = get_db_connection()
     cur = conn.cursor()
+
     try:
         cur.execute(
             """
-            INSERT INTO products (name, price, image_path, tag, review_summary)
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO products 
+            (name, price, image_path, tag, review_summary, category_id)
+            VALUES (%s, %s, %s, %s, %s, %s)
             """,
-            (name, price, image_path, tag, review_summary),
+            (name, price, image_path, tag, review_summary, category_id),
         )
         conn.commit()
+
+    except Exception as e:
+        current_app.logger.error(f"Add product failed: {e}")
+        flash("Failed to add product.", "error")
+        return redirect(url_for("routes.admin"))
+
     finally:
         cur.close()
         conn.close()
 
     flash("Product added successfully.", "success")
     return redirect(url_for("routes.admin"))
-
 
 # =========================================================
 # Account page

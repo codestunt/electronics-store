@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% set body_class = "edge-hero" %}
+
+{% set page_title = 'Cameras' %}
+{% set page_subtitle = 'Capture every moment in stunning clarity.' %}
+
+{% block content %}
+<section class="ez-category-hero ez-hero-split">
+
+  <!-- LEFT -->
+  <div class="ez-hero-left">
+    <h1 class="ez-category-title">{{ page_title }}</h1>
+    <p class="ez-category-subtitle">{{ page_subtitle }}</p>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="ez-hero-right">
+    <img
+      src="{{ url_for('static', filename='images/banners/camera.png') }}"
+      alt="Camera"
+      class="ez-hero-img"
+      loading="lazy"
+    >
+  </div>
+
+</section>
+
+<div class="ez-grid">
+  {% for p in products %}
+    <div class="ez-card">
+      <img class="ez-card-img"
+           src="{{ url_for('static', filename=p.image_path) }}"
+           alt="{{ p.name }}" loading="lazy">
+      <div class="ez-card-body">
+        <h3 class="ez-card-title">{{ p.name }}</h3>
+        <div class="ez-card-price">${{ '%.2f'|format(p.price) }}</div>
+      </div>
+    </div>
+  {% else %}
+    <p>No products found in this category.</p>
+  {% endfor %}
+</div>
+{% endblock %}

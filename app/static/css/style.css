@@ -3365,3 +3365,10 @@ body.edge-hero .ez-hero-img{
 #profileWrapper:hover .email-tooltip{
   display: block !important;
 }
+
+.ez-category-hero{
+  background-image: var(--ez-hero-bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

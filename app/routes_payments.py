@@ -10,61 +10,58 @@ from flask import (
     flash,
     render_template,
 )
+from flask_mail import Message
+from app.extensions import mail
 import stripe
 from datetime import datetime
 import uuid
 
-from app.extensions import send_receipt_email_html
-
-bp_pay = Blueprint("payments", __name__)  # registered with url_prefix="/pay"
+bp_pay = Blueprint("payments", __name__)
 
 
 # -------------------------------------------------
 # Helpers
 # -------------------------------------------------
-
 def generate_order_id():
     return "EZ-" + uuid.uuid4().hex[:10].upper()
 
 
 def _cart_to_line_items(cart):
-    line_items = []
+    items = []
     for item in cart or []:
+        price = int(float(item.get("price", 0)) * 100)
         qty = int(item.get("quantity", 1))
-        price = float(item.get("price", 0))
-        line_items.append({
+        items.append({
             "quantity": qty,
             "price_data": {
                 "currency": "aud",
-                "unit_amount": int(price * 100),
+                "unit_amount": price,
                 "product_data": {
-                    "name": item.get("name", "Item")
+                    "name": item.get("name", "Item"),
                 },
             },
         })
-    return line_items
+    return items
 
 
 # -------------------------------------------------
-# Stripe Checkout
+# Create Stripe Checkout
 # -------------------------------------------------
-
 @bp_pay.route("/create-checkout-session", methods=["POST"])
 def create_checkout_session():
-    stripe.api_key = current_app.config.get("STRIPE_SECRET_KEY")
+    stripe.api_key = current_app.config["STRIPE_SECRET_KEY"]
 
     cart = session.get("cart", [])
     if not cart:
-        return jsonify({"error": "Your cart is empty"}), 400
+        return jsonify({"error": "Cart empty"}), 400
 
     data = request.get_json(silent=True) or {}
-    email = session.get("user_email") or data.get("email")
+    email = data.get("email") or session.get("user_email")
 
     if email:
         session["user_email"] = email
-        session.modified = True
 
-    checkout_session = stripe.checkout.Session.create(
+    checkout = stripe.checkout.Session.create(
         mode="payment",
         payment_method_types=["card"],
         line_items=_cart_to_line_items(cart),
@@ -73,118 +70,94 @@ def create_checkout_session():
         cancel_url=current_app.config["BASE_URL"] + "/pay/cancel",
     )
 
-    return jsonify({"id": checkout_session.id})
+    return jsonify({"id": checkout.id})
 
 
 # -------------------------------------------------
-# Stripe Success (ORDER COMPLETE + RECEIPT EMAIL)
+# SUCCESS — SEND GMAIL RECEIPT
 # -------------------------------------------------
-
 @bp_pay.route("/success")
 def pay_success():
     cart = session.get("cart", [])
 
     items = []
     total = 0
-    count = 0
 
-    for item in cart:
-        qty = int(item.get("quantity", 1))
-        price = float(item.get("price", 0))
+    for it in cart:
+        qty = int(it.get("quantity", 1))
+        price = float(it.get("price", 0))
         subtotal = qty * price
-
         items.append({
-            "name": item.get("name"),
+            "name": it.get("name"),
             "qty": qty,
             "price": price,
             "subtotal": subtotal,
         })
-
         total += subtotal
-        count += qty
 
     order_id = generate_order_id()
-    est_date = datetime.now().strftime("%d %b %Y")
+    date = datetime.now().strftime("%d %b %Y")
 
-    session.update({
-        "last_order_items": items,
-        "last_order_total": total,
-        "last_order_item_count": count,
-        "last_order_ref": order_id,
-        "cart": [],
-        "receipt_email_sent": False,  # reset per order
-    })
-    session.modified = True
-
-    flash("Payment successful. Thank you for your order!", "success")
+    # Clear cart
+    session["cart"] = []
 
     # -------------------------------------------------
-    # SEND HTML RECEIPT EMAIL (SAFE — NEVER BREAKS CHECKOUT)
+    # Gmail receipt (SAFE)
     # -------------------------------------------------
     try:
-        customer_email = session.get("user_email")
-
-        if customer_email and not session.get("receipt_email_sent"):
-            html_receipt = render_template(
+        email = session.get("user_email")
+        if email:
+            html = render_template(
                 "email_order_receipt.html",
                 order_id=order_id,
                 order_items=items,
                 order_total=total,
-                est_delivery_date=est_date,
+                est_delivery_date=date,
             )
 
-            send_receipt_email_html(
-                to_email=customer_email,
+            msg = Message(
                 subject=f"Your ElectroZone Receipt – {order_id}",
-                html_content=html_receipt,
+                recipients=[email],
+                html=html,
             )
-
-            session["receipt_email_sent"] = True
-            session.modified = True
+            mail.send(msg)
 
     except Exception as e:
-        current_app.logger.error(f"Receipt email failed: {e}")
+        current_app.logger.error(f"GMAIL RECEIPT FAILED: {e}")
 
-    # -------------------------------------------------
-    # FINAL PAGE RENDER (ALWAYS EXECUTES)
-    # -------------------------------------------------
+    flash("Payment successful. Thank you!", "success")
+
     return render_template(
         "order_complete.html",
         order_id=order_id,
         order_items=items,
         order_total=total,
-        order_items_count=count,
-        est_delivery_date=est_date,
+        est_delivery_date=date,
     )
 
 
 # -------------------------------------------------
-# Stripe Cancel
+# Cancel
 # -------------------------------------------------
-
-# -------------------------------------------------
-# Stripe Cancel
-# -------------------------------------------------
-
 @bp_pay.route("/cancel")
 def pay_cancel():
     flash("Payment cancelled.", "error")
     return redirect(url_for("routes.cart"))
 
 
-# -------------------------------------------------
-# SENDGRID TEST ROUTE (DEBUG ONLY)
-# -------------------------------------------------
-
-@bp_pay.route("/test-sendgrid")
-def test_sendgrid():
+@bp_pay.route("/test-gmail")
+def test_gmail():
     try:
-        send_receipt_email_html(
-            to_email="mtaikaj@gmail.com",
-            subject="ElectroZone SendGrid Test",
-            html_content="<h1>SendGrid is WORKING ✅</h1>"
+        msg = Message(
+            subject="✅ ElectroZone Gmail Test",
+            recipients=["joemtaika@gmail.com"],
+            body="If you received this email, Gmail + Flask-Mail is working."
         )
-        return "SendGrid test email sent", 200
+        mail.send(msg)
+        return "✅ Gmail test email SENT", 200
     except Exception as e:
-        current_app.logger.error(f"TEST SENDGRID FAILED: {e}")
-        return "SendGrid test failed", 500
+        current_app.logger.error(f"GMAIL TEST FAILED: {e}")
+        return f"❌ Gmail test failed: {e}", 500
+
+
+

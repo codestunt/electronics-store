@@ -1,68 +1,56 @@
 import os
+from flask import current_app
+from flask_mail import Mail, Message
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from flask import current_app
 
-# Flask-Mail (renamed safely)
-from flask_mail import Mail as FlaskMail
-
-# SendGrid (renamed safely)
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail as SendGridMail
+# -------------------------------------------------
+# Flask-Mail extension
+# -------------------------------------------------
+mail = Mail()
 
 
 # -------------------------------------------------
-# Flask-Mail extension (used by app factory)
-# -------------------------------------------------
-mail = FlaskMail()
-
-
-# -------------------------------------------------
-# SendGrid HTML receipt sender
+# Email sender (HTML receipts)
 # -------------------------------------------------
 def send_receipt_email_html(to_email: str, subject: str, html_content: str):
     """
-    Send HTML receipt via SendGrid.
-    Returns SendGrid status code.
+    Send HTML email using Gmail SMTP.
+    NEVER crashes checkout.
     """
     try:
-        current_app.logger.warning("SENDGRID: Attempting to send receipt")
-        current_app.logger.warning(f"SENDGRID: To={to_email}")
-
-        message = SendGridMail(
-            from_email="ElectroZone <electrozoneg@gmail.com>",
-            to_emails=to_email,
+        msg = Message(
             subject=subject,
-            html_content=html_content,
+            recipients=[to_email],
+            html=html_content
         )
-
-        sg = SendGridAPIClient(os.environ.get("SENDGRID_API_KEY"))
-        response = sg.send(message)
+        mail.send(msg)
 
         current_app.logger.warning(
-            f"SENDGRID RESPONSE STATUS: {response.status_code}"
+            f"EMAIL SENT SUCCESSFULLY → {to_email}"
         )
 
-        return response.status_code  # 👈 THIS IS THE KEY LINE
+        return True
 
     except Exception as e:
-        current_app.logger.error(f"SENDGRID FAILED: {e}")
-        return None
+        current_app.logger.error(f"EMAIL FAILED: {e}")
+        return False
 
 
 # -------------------------------------------------
-# Database helper (unchanged)
+# Database helper
 # -------------------------------------------------
 def get_db_connection():
     database_url = os.environ.get("DATABASE_URL")
 
+    print("DEBUG → DATABASE_URL =", database_url)
+
     if not database_url:
-        raise RuntimeError(
-            "DATABASE_URL environment variable is not set."
-        )
+        raise RuntimeError("DATABASE_URL is not set.")
 
     return psycopg2.connect(
-        database_url,
+        dsn=database_url,
         cursor_factory=RealDictCursor,
-        sslmode="require",
+        sslmode="require"
     )
+
