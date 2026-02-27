@@ -123,7 +123,12 @@ def pay_success():
             )
 
             sg = SendGridAPIClient(current_app.config["SENDGRID_API_KEY"])
-            sg.send(message)
+            response = sg.send(message)
+
+            print("SENDGRID STATUS:", response.status_code)
+            print("SENDGRID BODY:", response.body)
+            print("SENDGRID HEADERS:", response.headers)
+           
 
         except Exception as e:
             current_app.logger.error(f"SENDGRID ERROR: {e}")
