@@ -3372,3 +3372,10 @@ body.edge-hero .ez-hero-img{
   background-position: center;
   background-repeat: no-repeat;
 }
+
+/* FIX: Prevent Font Awesome from hijacking gift card text */
+.ez-gift,
+.ez-gift * {
+  font-family: -apple-system, BlinkMacSystemFont,
+               "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}
