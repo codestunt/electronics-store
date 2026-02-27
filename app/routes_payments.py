@@ -76,6 +76,9 @@ def create_checkout_session():
 # -------------------------------------------------
 # SUCCESS — SAFE EMAIL RECEIPT
 # -------------------------------------------------
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
 @bp_pay.route("/success")
 def pay_success():
     cart = session.get("cart", [])
@@ -98,12 +101,8 @@ def pay_success():
     order_id = generate_order_id()
     date = datetime.now().strftime("%d %b %Y")
 
-    # Clear cart immediately (important)
     session["cart"] = []
 
-    # -------------------------------------------------
-    # SAFE EMAIL SEND (Non-crashing)
-    # -------------------------------------------------
     email = session.get("user_email")
 
     if email:
@@ -116,18 +115,18 @@ def pay_success():
                 est_delivery_date=date,
             )
 
-            msg = Message(
+            message = Mail(
+                from_email="ElectroZone <joemtaika@gmail.com>",
+                to_emails=email,
                 subject=f"Your ElectroZone Receipt – {order_id}",
-                recipients=[email],
-                html=html,
+                html_content=html,
             )
 
-            # Add timeout protection
-            with mail.connect() as conn:
-                conn.send(msg)
+            sg = SendGridAPIClient(current_app.config["SENDGRID_API_KEY"])
+            sg.send(message)
 
         except Exception as e:
-            current_app.logger.error(f"EMAIL RECEIPT FAILED: {e}")
+            current_app.logger.error(f"SENDGRID ERROR: {e}")
 
     flash("Payment successful. Thank you!", "success")
 
@@ -138,7 +137,6 @@ def pay_success():
         order_total=total,
         est_delivery_date=date,
     )
-
 
 # -------------------------------------------------
 # Cancel
