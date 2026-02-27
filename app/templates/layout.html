@@ -235,14 +235,16 @@
 
     /* Mobile logo image (your class is on the img) */
     .ezm-logo{
-      height:32px;
-      max-height:32px;
+      height:44px;
+      max-height:44px;
       width:auto;
       display:block;
-      max-width:160px;
+      max-width:200px;
+
     }
     @media (max-width: 360px){
-      .ezm-logo{ height:28px; max-height:28px; }
+      .ezm-logo{ height:36px; max-height:36px; }
+
     }
 
     .ezm-icons{ display:flex; align-items:center; gap:12px; }
@@ -303,8 +305,11 @@
       padding:14px 14px;
       border-bottom:1px solid #eee;
     }
-    .ezm-drawer-head .ezm-logo img{ height:24px; }
-
+    .ezm-drawer-head .ezm-logo img{
+      height:43px;          /* increased */
+      max-height:43px;
+      width:auto;
+    }
     .ezm-search{
       display:flex;
       align-items:center;
@@ -1127,6 +1132,17 @@ body.cart-page {
   display: block !important;
 }
 
+
+/* =========================================
+   MOBILE ONLY: Add breathing space under navbar
+   ========================================= */
+@media (max-width: 600px){
+
+  main > :first-child{
+    margin-top: 56px !important;
+  }
+
+}
 </style>
 {% block styles %}{% endblock %}
 </head>

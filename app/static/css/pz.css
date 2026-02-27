@@ -1582,3 +1582,93 @@ main {
     max-width: 100%;
   }
 }
+
+/* ============================= */
+/* MOBILE TYPOGRAPHY IMPROVEMENT */
+/* ============================= */
+@media (max-width: 768px) {
+
+  body {
+    font-size: 16px;
+  }
+
+  h1 {
+    font-size: 28px !important;
+  }
+
+  h2 {
+    font-size: 22px !important;
+  }
+
+  h3 {
+    font-size: 18px !important;
+  }
+
+  p {
+    font-size: 16px !important;
+    line-height: 1.6;
+  }
+
+  .btn,
+  .btn-primary,
+  .btn-danger {
+    font-size: 15px !important;
+    padding: 10px 18px !important;
+  }
+}
+
+/* ============================= */
+/* MOBILE LOGO SIZE IMPROVEMENT */
+/* ============================= */
+@media (max-width: 768px) {
+
+  .ezm-logo {
+    height: 48px !important;   /* Increase from tiny size */
+    width: auto;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE ONLY: Make product cards stack vertically
+   ========================================= */
+@media (max-width: 1024px){
+
+  /* Disable horizontal scrolling */
+  .pz-scrolling-wrapper{
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    gap: 18px !important;
+  }
+
+  /* Remove side padding from wrapper */
+  .pz-carousel-wrapper{
+    padding: 0 16px !important;
+  }
+
+  /* Hide scroll buttons on mobile */
+  .pz-scroll-btn{
+    display: none !important;
+  }
+
+  /* Make cards full width */
+  .pz-product-card{
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+
+/* =========================================
+   MOBILE ONLY: Add breathing space under navbar
+   ========================================= */
+@media (max-width: 600px){
+
+  main > :first-child{
+    margin-top: 18px !important;
+  }
+
+}
