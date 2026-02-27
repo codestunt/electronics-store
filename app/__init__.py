@@ -64,6 +64,13 @@ def create_app():
         f"ElectroZone <{os.environ.get('MAIL_USERNAME')}>"
     )
 
+
+
+    # -------------------------------------------------
+    # SendGrid configuration
+    # -------------------------------------------------
+    app.config["SENDGRID_API_KEY"] = os.environ.get("SENDGRID_API_KEY")
+
     # -------------------------------------------------
     # Initialise extensions
     # -------------------------------------------------
