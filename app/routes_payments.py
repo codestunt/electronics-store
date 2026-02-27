@@ -74,7 +74,7 @@ def create_checkout_session():
 
 
 # -------------------------------------------------
-# SUCCESS — SEND GMAIL RECEIPT
+# SUCCESS — SAFE EMAIL RECEIPT
 # -------------------------------------------------
 @bp_pay.route("/success")
 def pay_success():
@@ -98,15 +98,16 @@ def pay_success():
     order_id = generate_order_id()
     date = datetime.now().strftime("%d %b %Y")
 
-    # Clear cart
+    # Clear cart immediately (important)
     session["cart"] = []
 
     # -------------------------------------------------
-    # Gmail receipt (SAFE)
+    # SAFE EMAIL SEND (Non-crashing)
     # -------------------------------------------------
-    try:
-        email = session.get("user_email")
-        if email:
+    email = session.get("user_email")
+
+    if email:
+        try:
             html = render_template(
                 "email_order_receipt.html",
                 order_id=order_id,
@@ -120,10 +121,13 @@ def pay_success():
                 recipients=[email],
                 html=html,
             )
-            mail.send(msg)
 
-    except Exception as e:
-        current_app.logger.error(f"GMAIL RECEIPT FAILED: {e}")
+            # Add timeout protection
+            with mail.connect() as conn:
+                conn.send(msg)
+
+        except Exception as e:
+            current_app.logger.error(f"EMAIL RECEIPT FAILED: {e}")
 
     flash("Payment successful. Thank you!", "success")
 
@@ -145,19 +149,23 @@ def pay_cancel():
     return redirect(url_for("routes.cart"))
 
 
-@bp_pay.route("/test-gmail")
-def test_gmail():
+# -------------------------------------------------
+# Test Email Route
+# -------------------------------------------------
+@bp_pay.route("/test-mail")
+def test_mail():
     try:
         msg = Message(
-            subject="✅ ElectroZone Gmail Test",
+            subject="✅ ElectroZone Mail Test",
             recipients=["joemtaika@gmail.com"],
-            body="If you received this email, Gmail + Flask-Mail is working."
+            body="If you received this email, mail configuration is working."
         )
-        mail.send(msg)
-        return "✅ Gmail test email SENT", 200
+
+        with mail.connect() as conn:
+            conn.send(msg)
+
+        return "✅ Mail test sent successfully", 200
+
     except Exception as e:
-        current_app.logger.error(f"GMAIL TEST FAILED: {e}")
-        return f"❌ Gmail test failed: {e}", 500
-
-
-
+        current_app.logger.error(f"MAIL TEST FAILED: {e}")
+        return f"❌ Mail test failed: {e}", 500
