@@ -53,7 +53,7 @@ def create_app():
     # Email configuration (Flask-Mail / Gmail SMTP)
     # -------------------------------------------------
     app.config["MAIL_SUPPRESS_SEND"] = False
-    app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER", "smtp.gmail.com")
+    app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER")
     app.config["MAIL_PORT"] = int(os.environ.get("MAIL_PORT", 587))
     app.config["MAIL_USE_TLS"] = os.environ.get("MAIL_USE_TLS", "true") == "true"
     app.config["MAIL_USE_SSL"] = False
