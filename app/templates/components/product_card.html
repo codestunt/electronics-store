@@ -1,0 +1,32 @@
+<article class="ezsr-card">
+
+  <div class="ezsr-imgbox">
+    <img src="{{ url_for('static', filename=product.image_path) }}" alt="{{ product.name }}">
+  </div>
+
+  <h3 class="ezsr-title">{{ product.name }}</h3>
+
+  {% set rating = product.rating or 0 %}
+{% set review_count = product.review_count or 0 %}
+
+<div class="ezsr-rating">
+  {% for i in range(1, 6) %}
+    {% if i <= rating|int %}
+      <i class="fas fa-star"></i>
+    {% else %}
+      <i class="far fa-star"></i>
+    {% endif %}
+  {% endfor %}
+  <span class="ezsr-reviews">{{ review_count }} Reviews</span>
+</div>
+
+  <div class="ezsr-price">
+    ${{ '%.2f'|format(product.price|float) }}
+  </div>
+
+  <form action="{{ url_for('routes.add_to_cart') }}" method="POST" class="ezsr-actions">
+    <input type="hidden" name="product_id" value="{{ product.id }}">
+    <button type="submit" class="ezsr-btn ezsr-btn-primary">Add to Cart</button>
+  </form>
+
+</article>

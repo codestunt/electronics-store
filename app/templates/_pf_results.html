@@ -3,9 +3,11 @@
 
 {% if products and products|length > 0 %}
   <div class="pf-grid">
-    {% for p in products %}
+
+    {% for p in products %}   {# ← THIS LOOP IS REQUIRED #}
+
       <article class="pf-card">
-        <!-- Fixed-ratio media box to prevent cropping -->
+
         <div class="pf-media">
           <img
             class="pf-img"
@@ -16,22 +18,47 @@
         </div>
 
         <div class="pf-body">
+
           <h3 class="pf-name">{{ p.name }}</h3>
+
+          {% set rating = p.rating or 0 %}
+          {% set review_count = p.review_count or 0 %}
+
+          <div class="pf-rating">
+            {% for i in range(1, 6) %}
+              {% if i <= rating|int %}
+                <i class="fas fa-star"></i>
+              {% else %}
+                <i class="far fa-star"></i>
+              {% endif %}
+            {% endfor %}
+            <span class="pf-reviews">{{ review_count }} Reviews</span>
+          </div>
+
           <p class="pf-snippet">
             {{ (p.description or '')[:100] ~ ('…' if (p.description or '')|length > 100 else '') }}
           </p>
+
           <div class="pf-row">
             <span class="pf-price">${{ '%.2f'|format(p.price) }}</span>
+
             <form method="POST" action="{{ url_for('routes.add_to_cart') }}">
               <input type="hidden" name="product_id" value="{{ p.id }}">
               <button class="pf-add" {% if p.stock_quantity|int <= 0 %}disabled{% endif %}>
-                {% if p.stock_quantity|int <= 0 %}Out of stock{% else %}Add to Cart{% endif %}
+                {% if p.stock_quantity|int <= 0 %}
+                  Out of stock
+                {% else %}
+                  Add to Cart
+                {% endif %}
               </button>
             </form>
           </div>
+
         </div>
       </article>
-    {% endfor %}
+
+    {% endfor %}   {# ← LOOP ENDS HERE #}
+
   </div>
 
   <nav class="pf-pager">
@@ -39,6 +66,7 @@
     <span class="pf-page-num">Page {{ page }} of {{ total_pages }}</span>
     <a href="#" class="pf-page {% if page >= total_pages %}is-disabled{% endif %}" data-page="{{ page + 1 }}">Next</a>
   </nav>
+
 {% else %}
   <div class="pf-empty">No matching products found.</div>
 {% endif %}

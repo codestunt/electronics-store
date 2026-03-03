@@ -31,8 +31,10 @@
         <button type="submit" class="signin-btn-red">Sign In</button>
       </form>
 
-      <div class="signin-forgot">
-        <a href="#" class="text-muted">Forgot your password?</a>
+      <div class="signin-link">
+        <a href="{{ url_for('routes.forgot_password') }}">
+            Forgot your password?
+        </a>
       </div>
     </div>
 

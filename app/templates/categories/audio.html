@@ -6,6 +6,7 @@
 {% set page_bg = 'images/banners/speakers.jpg' %}
 
 {% block content %}
+
 <section class="ez-category-hero">
   <div class="ez-category-hero-inner">
     <h1 class="ez-category-title">{{ page_title }}</h1>
@@ -13,33 +14,17 @@
   </div>
 </section>
 
-<div class="ez-grid">
-  {% for p in products %}
-    <div class="ez-card">
-      <img class="ez-card-img"
-           src="{{ url_for('static', filename=p.image_path) }}"
-           alt="{{ p.name }}" loading="lazy">
-      <div class="ez-card-body">
-        <h3 class="ez-card-title">{{ p.name }}</h3>
-        <div class="ez-card-price">${{ '%.2f'|format(p.price) }}</div>
-      </div>
+<div class="ezsr-wrap">
+  {% if products %}
+    <div class="ezsr-grid">
+      <p style="color:red;">TEST COMPONENT LOADED</p>
+      {% for p in products %}
+        {% include "components/product_card.html" with product=p %}
+      {% endfor %}
     </div>
   {% else %}
-    <p>No products found in this category.</p>
-  {% endfor %}
+    <p class="ezsr-muted">No products found in this category.</p>
+  {% endif %}
 </div>
 
-{# Optional simple pager #}
-{% if pages and pages > 1 %}
-<nav class="pager">
-  {% if page > 1 %}
-    <a href="{{ url_for(request.endpoint, page=page-1) }}">&laquo; Prev</a>
-  {% endif %}
-  <span>Page {{ page }} of {{ pages }}</span>
-  {% if page < pages %}
-    <a href="{{ url_for(request.endpoint, page=page+1) }}">Next &raquo;</a>
-  {% endif %}
-</nav>
-{% endif %}
 {% endblock %}
-

@@ -10,6 +10,8 @@ from math import ceil
 from datetime import datetime
 import os
 import re
+from itsdangerous import URLSafeTimedSerializer
+from flask import current_app
 
 
 # =========================================================
@@ -20,6 +22,22 @@ routes = Blueprint("routes", __name__)
 # =========================================================
 # Helpers
 # =========================================================
+
+def generate_reset_token(email):
+    serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
+    return serializer.dumps(email, salt="password-reset-salt")
+
+def verify_reset_token(token, expiration=3600):
+    serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
+    try:
+        email = serializer.loads(
+            token,
+            salt="password-reset-salt",
+            max_age=expiration
+        )
+    except Exception:
+        return None
+    return email
 
 def _send_form_email(subject: str, to_email: str, body: str, reply_to: str | None = None) -> None:
     msg = Message(subject=subject, recipients=[to_email], body=body)
@@ -149,7 +167,7 @@ def _get_products_by_category(category_slug: str, page: int = 1, page_size: int 
         # Get products using category_id
         cur.execute(
             """
-            SELECT id, name, price, image_path
+            SELECT id, name, price, image_path, rating, review_count
             FROM products
             WHERE category_id = %s
             ORDER BY id DESC
@@ -697,14 +715,16 @@ def product_finder():
         cur.execute(
             f"""
             SELECT
-                id,
-                name,
-                price,
-                image_path,
-                description,
-                tag,
-                stock_quantity
-            FROM products
+            id,
+            name,
+            price,
+            image_path,
+            rating,
+            review_count,
+            description,
+            tag,
+            stock_quantity
+        FROM products
             {where_sql}
             ORDER BY id DESC
             LIMIT %s OFFSET %s
@@ -803,7 +823,7 @@ def search():
         # 📦 PAGINATED RESULTS
         cur.execute(
             """
-            SELECT id, name, price, image_path, review_summary, tag
+            SELECT id, name, price, image_path, rating, review_count, review_summary, tag
             FROM products
             WHERE name ILIKE %s
                OR COALESCE(review_summary, '') ILIKE %s
@@ -1080,6 +1100,60 @@ Message:
 
 
 
+@routes.route("/forgot-password", methods=["GET", "POST"])
+def forgot_password():
+    if request.method == "POST":
+        email = request.form.get("email")
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT id FROM users WHERE email = %s", (email,))
+        user = cur.fetchone()
+        cur.close()
+        conn.close()
+
+        if user:
+            token = generate_reset_token(email)
+            reset_url = url_for("routes.reset_password", token=token, _external=True)
+
+            msg = Message(
+                subject="Password Reset Request",
+                recipients=[email],
+                body=f"Click the link to reset your password:\n\n{reset_url}"
+            )
+            mail.send(msg)
+
+        flash("If that email exists, a reset link has been sent.", "info")
+        return redirect(url_for("routes.login"))
+
+    return render_template("forgot_password.html")
 
 
 
+
+@routes.route("/reset-password/<token>", methods=["GET", "POST"])
+def reset_password(token):
+    email = verify_reset_token(token)
+
+    if not email:
+        flash("Reset link is invalid or expired.", "danger")
+        return redirect(url_for("routes.login"))
+
+    if request.method == "POST":
+        new_password = request.form.get("password")
+        hashed_pw = generate_password_hash(new_password)
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute(
+            "UPDATE users SET password = %s WHERE email = %s",
+            (hashed_pw, email)
+        )
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        flash("Your password has been updated!", "success")
+        return redirect(url_for("routes.login"))
+
+    return render_template("reset_password.html")

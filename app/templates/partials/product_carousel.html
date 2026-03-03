@@ -1,31 +1,58 @@
-{# expects: items=list of products, heading=str, carousel_id=str #}
-<div class="ezc" id="{{ carousel_id }}">
-  <div class="ezc-head">
-    <h2 class="ezc-title">{{ heading }}</h2>
-  </div>
+<div class="ez-carousel-wrapper">
 
-  <button class="ezc-btn ezc-prev" aria-label="Previous">&#10094;</button>
+  <button class="ez-scroll-btn ez-scroll-left" onclick="scrollCarousel('{{ carousel_id }}', -1)">
+    ‹
+  </button>
 
-  <div class="ezc-track">
-    {# 4 cards per slide #}
-    {% for group in items|batch(4, None) %}
-      <div class="ezc-slide">
-        {% for p in group %}
-          {% if p %}
-          <a class="ez-card" href="#" aria-label="{{ p.name }}">
-            <img class="ez-card-img"
-                 src="{{ url_for('static', filename=p.image_path) }}"
-                 alt="{{ p.name }}" loading="lazy">
-            <div class="ez-card-body">
-              <h3 class="ez-card-title">{{ p.name }}</h3>
-              <div class="ez-card-price">${{ '%.2f'|format(p.price) }}</div>
-            </div>
-          </a>
-          {% endif %}
-        {% endfor %}
+  <div class="ez-carousel" id="{{ carousel_id }}">
+
+    {% for product in items %}
+    <article class="ez-card">
+
+      <div class="ez-card-img-wrap">
+        <img src="{{ url_for('static', filename=product.image_path) }}"
+             alt="{{ product.name }}"
+             loading="lazy">
       </div>
+
+      <div class="ez-card-body">
+
+        <h3 class="ez-card-title">{{ product.name }}</h3>
+
+        {# ⭐ Dynamic Stars #}
+        <div class="ez-rating">
+          {% set rating = product.rating or 0 %}
+          {% for i in range(1,6) %}
+            {% if i <= rating|round(0, 'floor') %}
+              <span class="star filled">★</span>
+            {% else %}
+              <span class="star">★</span>
+            {% endif %}
+          {% endfor %}
+          <span class="review-count">
+            {{ product.review_count or 0 }} Reviews
+          </span>
+        </div>
+
+        <div class="ez-card-price">
+          ${{ '%.2f'|format(product.price) }}
+        </div>
+
+        <form action="{{ url_for('routes.add_to_cart') }}" method="POST">
+          <input type="hidden" name="product_id" value="{{ product.id }}">
+          <button type="submit" class="ez-btn">
+            Add to Cart
+          </button>
+        </form>
+
+      </div>
+    </article>
     {% endfor %}
+
   </div>
 
-  <button class="ezc-btn ezc-next" aria-label="Next">&#10095;</button>
+  <button class="ez-scroll-btn ez-scroll-right" onclick="scrollCarousel('{{ carousel_id }}', 1)">
+    ›
+  </button>
+
 </div>

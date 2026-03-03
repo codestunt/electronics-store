@@ -3379,3 +3379,157 @@ body.edge-hero .ez-hero-img{
   font-family: -apple-system, BlinkMacSystemFont,
                "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
+
+.ez-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 6px 0;
+}
+
+.star {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.star.filled {
+  color: #f5a623;
+}
+
+.review-count {
+  font-size: 13px;
+  color: #666;
+  margin-left: 6px;
+}
+
+.ez-btn {
+  background: #4e79a7;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.pf-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.pf-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.pf-row {
+  margin-top: auto;
+}
+
+/* Make Product Finder stars gold like Search */
+.pf-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0 6px;
+}
+
+.pf-rating i {
+  color: #f4b400;
+  font-size: 14px;
+}
+
+.pf-reviews {
+  font-size: 13px;
+  opacity: .8;
+}
+
+.signin-title-light{
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin: 6px 0 14px;
+    letter-spacing: .2px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .signin-btn-match{
+  font-weight: 600 !important;   /* match Sign In */
+  font-size: 16px;
+  width: 100%;                   /* same full width */
+  white-space: nowrap;           /* prevent wrap */
+}
+
+.signin-full-input{
+  width: 100% !important;
+  height: 48px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.signin-link{
+  margin-top: 18px;
+}
+
+.signin-link a{
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.signin-link a:hover{
+  color: #e25822;
+  text-decoration: underline;
+}
+
+.signin-btn-red.signin-btn-match {
+    width: 240px !important;       /* smaller width */
+    margin: 20px auto 0 !important;
+    display: block !important;
+    font-weight: 600 !important;   /* lighter weight */
+}
+
+/* =========================
+   MOBILE FONT OPTIMIZATION
+   ========================= */
+@media (max-width: 768px) {
+
+  body {
+    font-size: 16px; /* Standard readable mobile base */
+    line-height: 1.6;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  h3 {
+    font-size: 1.4rem;
+  }
+
+  h4 {
+    font-size: 1.2rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+
+  .btn,
+  button {
+    font-size: 1rem;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 1rem;
+  }
+
+}
