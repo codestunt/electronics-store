@@ -10,11 +10,13 @@ from flask import (
     flash,
     render_template,
 )
-from flask_mail import Message
-from app.extensions import mail
+
 import stripe
 from datetime import datetime
 import uuid
+
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 bp_pay = Blueprint("payments", __name__)
 
@@ -28,9 +30,11 @@ def generate_order_id():
 
 def _cart_to_line_items(cart):
     items = []
+
     for item in cart or []:
         price = int(float(item.get("price", 0)) * 100)
         qty = int(item.get("quantity", 1))
+
         items.append({
             "quantity": qty,
             "price_data": {
@@ -41,6 +45,7 @@ def _cart_to_line_items(cart):
                 },
             },
         })
+
     return items
 
 
@@ -49,9 +54,11 @@ def _cart_to_line_items(cart):
 # -------------------------------------------------
 @bp_pay.route("/create-checkout-session", methods=["POST"])
 def create_checkout_session():
+
     stripe.api_key = current_app.config["STRIPE_SECRET_KEY"]
 
     cart = session.get("cart", [])
+
     if not cart:
         return jsonify({"error": "Cart empty"}), 400
 
@@ -74,13 +81,11 @@ def create_checkout_session():
 
 
 # -------------------------------------------------
-# SUCCESS — SAFE EMAIL RECEIPT
+# SUCCESS PAGE + EMAIL RECEIPT
 # -------------------------------------------------
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
-
 @bp_pay.route("/success")
 def pay_success():
+
     cart = session.get("cart", [])
 
     items = []
@@ -89,24 +94,33 @@ def pay_success():
     for it in cart:
         qty = int(it.get("quantity", 1))
         price = float(it.get("price", 0))
+
         subtotal = qty * price
+
         items.append({
             "name": it.get("name"),
             "qty": qty,
             "price": price,
             "subtotal": subtotal,
         })
+
         total += subtotal
 
     order_id = generate_order_id()
     date = datetime.now().strftime("%d %b %Y")
 
+    # clear cart
     session["cart"] = []
 
     email = session.get("user_email")
 
+    # -------------------------------------------------
+    # Send receipt email via SendGrid
+    # -------------------------------------------------
     if email:
+
         try:
+
             html = render_template(
                 "email_order_receipt.html",
                 order_id=order_id,
@@ -116,21 +130,36 @@ def pay_success():
             )
 
             message = Mail(
-                from_email="ElectroZone <joemtaika@gmail.com>",
+                from_email="info@adgetech.com",
                 to_emails=email,
                 subject=f"Your ElectroZone Receipt – {order_id}",
                 html_content=html,
             )
 
-            sg = SendGridAPIClient(current_app.config["SENDGRID_API_KEY"])
+            key = current_app.config.get("SENDGRID_API_KEY")
+
+            # -------------------------------------------------
+            # DEBUG INFORMATION
+            # -------------------------------------------------
+            print("DEBUG SENDGRID KEY present?:", bool(key))
+            print("DEBUG SENDGRID KEY startswith SG?:", str(key or "").startswith("SG."))
+            print("DEBUG SENDGRID KEY length:", len(key or ""))
+
+            sg = SendGridAPIClient(key)
+
             response = sg.send(message)
 
             print("SENDGRID STATUS:", response.status_code)
             print("SENDGRID BODY:", response.body)
             print("SENDGRID HEADERS:", response.headers)
-           
 
         except Exception as e:
+
+            body = getattr(e, "body", None)
+
+            print("SENDGRID EXCEPTION:", str(e))
+            print("SENDGRID ERROR BODY:", body)
+
             current_app.logger.error(f"SENDGRID ERROR: {e}")
 
     flash("Payment successful. Thank you!", "success")
@@ -143,32 +172,13 @@ def pay_success():
         est_delivery_date=date,
     )
 
+
 # -------------------------------------------------
 # Cancel
 # -------------------------------------------------
 @bp_pay.route("/cancel")
 def pay_cancel():
+
     flash("Payment cancelled.", "error")
+
     return redirect(url_for("routes.cart"))
-
-
-# -------------------------------------------------
-# Test Email Route
-# -------------------------------------------------
-@bp_pay.route("/test-mail")
-def test_mail():
-    try:
-        msg = Message(
-            subject="✅ ElectroZone Mail Test",
-            recipients=["joemtaika@gmail.com"],
-            body="If you received this email, mail configuration is working."
-        )
-
-        with mail.connect() as conn:
-            conn.send(msg)
-
-        return "✅ Mail test sent successfully", 200
-
-    except Exception as e:
-        current_app.logger.error(f"MAIL TEST FAILED: {e}")
-        return f"❌ Mail test failed: {e}", 500
