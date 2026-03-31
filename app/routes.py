@@ -14,6 +14,8 @@ from itsdangerous import URLSafeTimedSerializer
 from flask import current_app
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, ReplyTo
+from itsdangerous import URLSafeTimedSerializer
+from datetime import datetime, timezone
 
 # =========================================================
 # Blueprint
@@ -24,20 +26,117 @@ routes = Blueprint("routes", __name__)
 # Helpers
 # =========================================================
 
-def generate_reset_token(email):
-    serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
-    return serializer.dumps(email, salt="password-reset-salt")
+def _send_password_reset_link(email):
+    from datetime import datetime, timezone
 
-def verify_reset_token(token, expiration=3600):
-    serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
+    print("STEP 1: starting reset link helper")
+    print("STEP 1A: email =", email)
+
+    issued_at = datetime.now(timezone.utc).replace(microsecond=0)
+    issued_at_iso = issued_at.isoformat()
+    print("STEP 2: issued_at_iso =", issued_at_iso)
+
+    conn = get_db_connection()
+    cur = conn.cursor()
     try:
-        email = serializer.loads(
+        cur.execute(
+            "UPDATE users SET reset_token_issued_at = %s WHERE LOWER(email) = %s",
+            (issued_at.replace(tzinfo=None), email.lower())
+        )
+        conn.commit()
+        print("STEP 3: database timestamp updated")
+    finally:
+        cur.close()
+        conn.close()
+
+    token = generate_reset_token(email, issued_at_iso)
+    print("STEP 4: token generated")
+
+    reset_url = f"{current_app.config['BASE_URL']}{url_for('routes.reset_password', token=token)}"
+    print("STEP 5: reset_url =", reset_url)
+
+    body = f"""PASSWORD RESET REQUEST — ElectroZone
+
+We received a request to reset the password for your ElectroZone account.
+
+Use the link below to create a new password:
+
+{reset_url}
+
+This link expires in 30 minutes.
+
+If you did not request this change, you can safely ignore this email.
+
+— ElectroZone
+"""
+
+    print("STEP 6: about to send email")
+    _send_form_email(
+        subject="Reset Your ElectroZone Password",
+        to_email=email,
+        body=body
+    )
+    print("STEP 7: email send helper finished")
+
+
+def generate_reset_token(email, issued_at_iso):
+    serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
+    return serializer.dumps(
+        {
+            "email": email,
+            "issued_at": issued_at_iso
+        },
+        salt="password-reset-salt"
+    )
+
+
+def verify_reset_token(token, expiration=1800):
+    serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
+
+    try:
+        data = serializer.loads(
             token,
             salt="password-reset-salt",
             max_age=expiration
         )
     except Exception:
         return None
+
+    email = (data.get("email") or "").strip().lower()
+    issued_at = data.get("issued_at")
+
+    if not email or not issued_at:
+        return None
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    try:
+        cur.execute(
+            "SELECT reset_token_issued_at FROM users WHERE LOWER(email) = %s",
+            (email,)
+        )
+        row = cur.fetchone()
+    finally:
+        cur.close()
+        conn.close()
+
+    if not row:
+        return None
+
+    if isinstance(row, dict):
+        db_issued_at = row.get("reset_token_issued_at")
+    else:
+        db_issued_at = row[0]
+
+    if not db_issued_at:
+        return None
+
+    db_issued_at_iso = db_issued_at.replace(tzinfo=timezone.utc).isoformat()
+
+    if db_issued_at_iso != issued_at:
+        return None
+
     return email
 
 def _send_form_email(subject: str, to_email: str, body: str, reply_to: str | None = None) -> None:
@@ -1129,57 +1228,70 @@ Message:
 @routes.route("/forgot-password", methods=["GET", "POST"])
 def forgot_password():
     if request.method == "POST":
-        email = request.form.get("email")
+        email = (request.form.get("email") or "").strip().lower()
+
+        if not email:
+            flash("Please enter your email address.", "error")
+            return redirect(url_for("routes.forgot_password"))
 
         conn = get_db_connection()
         cur = conn.cursor()
-        cur.execute("SELECT id FROM users WHERE email = %s", (email,))
-        user = cur.fetchone()
-        cur.close()
-        conn.close()
+
+        try:
+            cur.execute("SELECT id FROM users WHERE LOWER(email) = %s", (email,))
+            user = cur.fetchone()
+        finally:
+            cur.close()
+            conn.close()
 
         if user:
-            token = generate_reset_token(email)
-            reset_url = url_for("routes.reset_password", token=token, _external=True)
+            try:
+                _send_password_reset_link(email)
+            except Exception as e:
+                print("PASSWORD RESET EMAIL ERROR:", repr(e))
+                current_app.logger.exception("PASSWORD RESET EMAIL ERROR")
+                flash("We could not send the reset link right now. Please try again shortly.", "error")
+                return redirect(url_for("routes.forgot_password"))
 
-            msg = Message(
-                subject="Password Reset Request",
-                recipients=[email],
-                body=f"Click the link to reset your password:\n\n{reset_url}"
-            )
-            mail.send(msg)
-
-        flash("If that email exists, a reset link has been sent.", "info")
+        flash("If that email exists, a reset link has been sent.", "success")
         return redirect(url_for("routes.login"))
 
     return render_template("forgot_password.html")
 
 
-
-
 @routes.route("/reset-password/<token>", methods=["GET", "POST"])
 def reset_password(token):
-    email = verify_reset_token(token)
+    try:
+        email = verify_reset_token(token, expiration=1800)
+    except Exception as e:
+        current_app.logger.error(f"RESET TOKEN VERIFY ERROR: {e}")
+        email = None
 
     if not email:
-        flash("Reset link is invalid or expired.", "danger")
-        return redirect(url_for("routes.login"))
+        return render_template("reset_link_invalid.html")
 
     if request.method == "POST":
-        new_password = request.form.get("password")
+        new_password = request.form.get("password") or ""
         hashed_pw = generate_password_hash(new_password)
 
         conn = get_db_connection()
         cur = conn.cursor()
-        cur.execute(
-            "UPDATE users SET password = %s WHERE email = %s",
-            (hashed_pw, email)
-        )
-        conn.commit()
-        cur.close()
-        conn.close()
+        try:
+            cur.execute(
+                """
+                UPDATE users
+                SET password = %s,
+                    reset_token_issued_at = NULL
+                WHERE LOWER(email) = %s
+                """,
+                (hashed_pw, email.lower())
+            )
+            conn.commit()
+        finally:
+            cur.close()
+            conn.close()
 
-        flash("Your password has been updated!", "success")
+        flash("Your password has been updated successfully. You can now sign in with your new password.", "success")
         return redirect(url_for("routes.login"))
 
     return render_template("reset_password.html")
