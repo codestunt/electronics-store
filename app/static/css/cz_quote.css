@@ -648,3 +648,42 @@ img.czq-hero-img{
     display: block !important;
   }
 }
+
+.form-confirmation{
+  max-width: 900px;
+  margin: 30px auto 20px;
+  padding: 20px 24px;
+  border-radius: 14px;
+
+  background: linear-gradient(135deg, #0b6b2c, #0f7a35);
+  color: #fff;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+
+  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: slideFadeIn 0.6s ease forwards;
+}
+
+/* Icon */
+.form-confirmation .confirm-icon{
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+/* Animation */
+@keyframes slideFadeIn{
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

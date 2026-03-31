@@ -12,7 +12,8 @@ import os
 import re
 from itsdangerous import URLSafeTimedSerializer
 from flask import current_app
-
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail, ReplyTo
 
 # =========================================================
 # Blueprint
@@ -40,10 +41,29 @@ def verify_reset_token(token, expiration=3600):
     return email
 
 def _send_form_email(subject: str, to_email: str, body: str, reply_to: str | None = None) -> None:
-    msg = Message(subject=subject, recipients=[to_email], body=body)
+    """
+    Send plain-text form emails using the same SendGrid setup that is already
+    working for receipts.
+    """
+    key = current_app.config.get("SENDGRID_API_KEY")
+    if not key:
+        raise RuntimeError("SENDGRID_API_KEY is missing")
+
+    message = Mail(
+        from_email="info@adgetech.com",
+        to_emails=to_email,
+        subject=subject,
+        plain_text_content=body,
+    )
+
     if reply_to:
-        msg.reply_to = reply_to
-    mail.send(msg)
+        message.reply_to = ReplyTo(reply_to)
+
+    sg = SendGridAPIClient(key)
+    response = sg.send(message)
+
+    current_app.logger.warning(f"FORM SENDGRID STATUS: {response.status_code}")
+    current_app.logger.warning(f"FORM EMAIL SENT TO: {to_email}")
 
 
 def _normalize_image_path(path: str | None) -> str:
@@ -91,6 +111,10 @@ Items:
         current_app.logger.error(f"Receipt email failed: {e}")
 
 
+BUSINESS_EMAIL = "joemtaika@gmail.com"
+SALES_TEAM_EMAIL = BUSINESS_EMAIL
+SUPPORT_TEAM_EMAIL = BUSINESS_EMAIL
+QUOTE_TEAM_EMAIL = BUSINESS_EMAIL
 
 # =========================================================
 # Global template injections
@@ -994,13 +1018,13 @@ def contact_support():
 
 @routes.route("/forms/quote/send", methods=["POST"])
 def ez_send_quote_form_to_gmail():
-    company  = (request.form.get("company") or "").strip()
-    contact  = (request.form.get("contact") or "").strip()
-    email    = (request.form.get("email") or "").strip()
-    phone    = (request.form.get("phone") or "").strip()
+    company = (request.form.get("company") or "").strip()
+    contact = (request.form.get("contact") or "").strip()
+    email = (request.form.get("email") or "").strip()
+    phone = (request.form.get("phone") or "").strip()
     category = (request.form.get("category") or "").strip()
-    qty      = (request.form.get("qty") or "").strip()
-    message  = (request.form.get("message") or "").strip()
+    qty = (request.form.get("qty") or "").strip()
+    message = (request.form.get("message") or "").strip()
 
     body = f"""NEW QUOTE REQUEST — ElectroZone
 
@@ -1017,7 +1041,7 @@ Message:
     try:
         _send_form_email(
             subject="New Quote Request — ElectroZone",
-            to_email="joemtaika@gmail.com",
+            to_email=QUOTE_TEAM_EMAIL,
             body=body,
             reply_to=email or None
         )
@@ -1026,18 +1050,18 @@ Message:
         print("QUOTE FORM EMAIL ERROR:", e)
         flash("Sorry — we couldn't send your request right now. Please try again.", "error")
 
-    return redirect(url_for("routes.request_quote"))
+    return redirect(url_for("routes.request_quote", success="1"))
 
 
 @routes.route("/forms/sales/send", methods=["POST"])
 def ez_send_sales_form_to_gmail():
-    contact  = (request.form.get("contact") or "").strip()
-    company  = (request.form.get("company") or "").strip()
-    email    = (request.form.get("email") or "").strip()
-    phone    = (request.form.get("phone") or "").strip()
+    contact = (request.form.get("contact") or "").strip()
+    company = (request.form.get("company") or "").strip()
+    email = (request.form.get("email") or "").strip()
+    phone = (request.form.get("phone") or "").strip()
     category = (request.form.get("category") or "").strip()
-    qty      = (request.form.get("qty") or "").strip()
-    message  = (request.form.get("message") or "").strip()
+    qty = (request.form.get("qty") or "").strip()
+    message = (request.form.get("message") or "").strip()
 
     body = f"""NEW SALES ENQUIRY — ElectroZone
 
@@ -1054,7 +1078,7 @@ Message:
     try:
         _send_form_email(
             subject="New Sales Enquiry — ElectroZone",
-            to_email="joemtaika@gmail.com",
+            to_email=SALES_TEAM_EMAIL,
             body=body,
             reply_to=email or None
         )
@@ -1063,15 +1087,16 @@ Message:
         print("SALES FORM EMAIL ERROR:", e)
         flash("Sorry — we couldn't send your message right now. Please try again.", "error")
 
-    return redirect(url_for("routes.contact_sales"))
+    return redirect(url_for("routes.contact_sales", success="1"))
 
 
 @routes.route("/forms/support/send", methods=["POST"])
 def ez_send_support_form_to_gmail():
-    name    = (request.form.get("name") or request.form.get("contact") or "").strip()
-    email   = (request.form.get("email") or "").strip()
-    phone   = (request.form.get("phone") or "").strip()
+    name = (request.form.get("name") or request.form.get("contact") or "").strip()
+    email = (request.form.get("email") or "").strip()
+    phone = (request.form.get("phone") or "").strip()
     subject = (request.form.get("subject") or "Support Request").strip()
+    order_number = (request.form.get("order_number") or "").strip()
     message = (request.form.get("message") or "").strip()
 
     body = f"""NEW SUPPORT REQUEST — ElectroZone
@@ -1080,6 +1105,7 @@ Name: {name}
 Email: {email}
 Phone: {phone}
 Subject: {subject}
+Order Number: {order_number or "Not provided"}
 
 Message:
 {message}
@@ -1087,7 +1113,7 @@ Message:
     try:
         _send_form_email(
             subject=f"Support: {subject} — ElectroZone",
-            to_email="joemtaika@gmail.com",
+            to_email=SUPPORT_TEAM_EMAIL,
             body=body,
             reply_to=email or None
         )
@@ -1096,7 +1122,7 @@ Message:
         print("SUPPORT FORM EMAIL ERROR:", e)
         flash("Sorry — we couldn't send your request right now. Please try again.", "error")
 
-    return redirect(url_for("routes.contact_support"))
+    return redirect(url_for("routes.contact_support", success="1"))
 
 
 

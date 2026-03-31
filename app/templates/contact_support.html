@@ -1,7 +1,22 @@
 {% extends "layout.html" %}
 {% set page_title = "Contact Support" %}
-
 {% block content %}
+{% if request.args.get('success') %}
+<div class="form-confirmation" id="confirmBox">
+
+  <!-- Tick Icon -->
+  <svg class="confirm-icon" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10" fill="white" opacity="0.2"/>
+    <path d="M7 12l3 3 7-7" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+
+  <div>
+    Your support request has been submitted successfully. Our support team will review your message and contact you as soon as possible.
+  </div>
+
+</div>
+{% endif %}
+
 <link rel="stylesheet" href="{{ url_for('static', filename='css/cz_support.css') }}?v=999">
 
 <section class="czp-hero">
@@ -50,7 +65,7 @@
         <div class="czp-row">
           <div class="czp-field">
             <label>Topic</label>
-            <select name="topic">
+            <select name="subject">
               <option value="Order Issue">Order Issue</option>
               <option value="Delivery Issue">Delivery Issue</option>
               <option value="Refund / Return">Refund / Return</option>
@@ -101,5 +116,17 @@
   </div>
 </section>
 
-
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const box = document.getElementById("confirmBox");
+  if (box) {
+    setTimeout(() => {
+      box.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+      box.style.opacity = "0";
+      box.style.transform = "translateY(-10px)";
+      setTimeout(() => box.remove(), 500);
+    }, 4500);
+  }
+});
+</script>
 {% endblock %}
