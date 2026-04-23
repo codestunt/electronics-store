@@ -426,9 +426,27 @@ def signup():
         full_name = (request.form.get("full_name") or "").strip()
         email = (request.form.get("email") or "").strip().lower()
         password = request.form.get("password") or ""
+        confirm_password = request.form.get("confirm_password") or ""
 
-        if not full_name or not email or not password:
+        if not full_name or not email or not password or not confirm_password:
             flash("Please fill in all required fields.", "error")
+            return redirect(url_for("routes.signup")) 
+
+        if " " in password or " " in confirm_password:
+            flash("Password must not contain spaces.", "error")
+            return redirect(url_for("routes.signup"))
+
+        email_pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+        if not re.match(email_pattern, email):
+            flash("Please enter a valid email address.", "error")
+            return redirect(url_for("routes.signup"))
+
+        if password != confirm_password:
+            flash("Passwords do not match.", "error")
+            return redirect(url_for("routes.signup"))
+
+        if len(password) < 8:
+            flash("Password must be at least 8 characters long.", "error")
             return redirect(url_for("routes.signup"))
 
         hashed_password = generate_password_hash(password)
@@ -436,7 +454,7 @@ def signup():
         conn = get_db_connection()
         cur = conn.cursor()
         try:
-            cur.execute("SELECT 1 FROM users WHERE email = %s", (email,))
+            cur.execute("SELECT 1 FROM users WHERE LOWER(email) = %s", (email,))
             exists = cur.fetchone()
             if exists:
                 flash("Email already exists!", "error")
@@ -466,7 +484,7 @@ def login():
         conn = get_db_connection()
         cur = conn.cursor()
         try:
-            cur.execute("SELECT id, full_name, email, password FROM users WHERE email = %s", (email,))
+            cur.execute("SELECT id, full_name, email, password FROM users WHERE LOWER(email) = %s",(email,))
             user = cur.fetchone()
         finally:
             cur.close()
@@ -1272,6 +1290,20 @@ def reset_password(token):
 
     if request.method == "POST":
         new_password = request.form.get("password") or ""
+        confirm_password = request.form.get("confirm_password") or ""
+
+        if not new_password or not confirm_password:
+            flash("Please complete both password fields.", "error")
+            return redirect(url_for("routes.reset_password", token=token))
+
+        if new_password != confirm_password:
+            flash("Passwords do not match.", "error")
+            return redirect(url_for("routes.reset_password", token=token))
+
+        if len(new_password) < 8:
+            flash("Password must be at least 8 characters long.", "error")
+            return redirect(url_for("routes.reset_password", token=token))
+
         hashed_pw = generate_password_hash(new_password)
 
         conn = get_db_connection()
@@ -1291,7 +1323,7 @@ def reset_password(token):
             cur.close()
             conn.close()
 
-        flash("Your password has been updated successfully. You can now sign in with your new password.", "success")
+        flash("Your password has been updated successfully. You can now sign in.", "success")
         return redirect(url_for("routes.login"))
 
     return render_template("reset_password.html")

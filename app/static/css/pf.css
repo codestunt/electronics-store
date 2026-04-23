@@ -100,12 +100,3 @@
   cursor: not-allowed;
 }
 
-.signin-title-light{
-    font-size: 30px;
-    font-weight: 700;
-    line-height: 1.2;
-    margin: 6px 0 14px;
-    letter-spacing: .2px;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }

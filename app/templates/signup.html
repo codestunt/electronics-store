@@ -1,10 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<!-- ✅ Use new stylesheet -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/redsignup.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/redsignup.mobile.css') }}">
-
 
 <div class="redsignup-container">
   <div class="redsignup-row">
@@ -13,27 +11,62 @@
     <div class="redsignup-col-left">
       <h2 class="redsignup-title">Create an Account</h2>
       
-      <!-- ✅ Signup Form -->
       <form method="POST" action="{{ url_for('routes.signup') }}">
         <label for="full_name">Username</label>
         <input type="text" id="full_name" name="full_name" required>
 
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" required>
-
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          required
+          maxlength="254"
+          autocomplete="email"
+          inputmode="email"
+          pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+          title="Please enter a valid email address."
+        >
         <label for="password">Password</label>
         <div class="redsignup-input-group">
           <input 
             type="password" 
             id="password" 
             name="password" 
-            required 
+            required
             autocomplete="new-password" 
-            autocorrect="off">
+            autocorrect="off"
+            onkeydown="blockSpace(event)"
+            oninput="removeSpaces(this); checkPasswordStrength(); checkPasswordMatch()"
+          >
           <button type="button" onclick="togglePassword()">
             <i class="fa fa-eye" id="eyeIcon"></i>
           </button>
         </div>
+
+        <div class="redsignup-password-help">
+          Use 8 or more characters with a mix of letters, numbers and special characters.
+        </div>
+        <div id="passwordStrengthMessage" class="redsignup-password-strength"></div>
+
+        <label for="confirm_password">Confirm Password</label>
+        <div class="redsignup-input-group">
+          <input 
+            type="password" 
+            id="confirm_password" 
+            name="confirm_password" 
+            required 
+            autocomplete="new-password" 
+            autocorrect="off"
+            onkeydown="blockSpace(event)"
+            oninput="removeSpaces(this); checkPasswordMatch()"
+        >
+          <button type="button" onclick="toggleConfirmPassword()">
+            <i class="fa fa-eye" id="confirmEyeIcon"></i>
+          </button>
+        </div>
+
+        <div id="passwordMatchMessage" class="redsignup-password-strength"></div>
 
         <button type="submit" class="redsignup-btn-red">Sign Up</button>
       </form>
@@ -62,6 +95,16 @@
 </div>
 
 <script>
+
+  function blockSpace(event) {
+  if (event.key === " ") {
+    event.preventDefault();
+  }
+}
+
+  function removeSpaces(input) {
+    input.value = input.value.replace(/\s/g, "");
+}
   function togglePassword() {
     const passwordInput = document.getElementById("password");
     const eyeIcon = document.getElementById("eyeIcon");
@@ -76,11 +119,83 @@
       eyeIcon.classList.add("fa-eye");
     }
   }
+
+  function toggleConfirmPassword() {
+    const passwordInput = document.getElementById("confirm_password");
+    const eyeIcon = document.getElementById("confirmEyeIcon");
+
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      eyeIcon.classList.remove("fa-eye");
+      eyeIcon.classList.add("fa-eye-slash");
+    } else {
+      passwordInput.type = "password";
+      eyeIcon.classList.remove("fa-eye-slash");
+      eyeIcon.classList.add("fa-eye");
+    }
+  }
+
+  function checkPasswordStrength() {
+    const password = document.getElementById("password").value;
+    const message = document.getElementById("passwordStrengthMessage");
+
+    const hasLetters = /[A-Za-z]/.test(password);
+    const hasNumbers = /\d/.test(password);
+    const hasSpecial = /[^A-Za-z0-9]/.test(password);
+
+    message.className = "redsignup-password-strength";
+
+    if (password.length === 0) {
+      message.textContent = "";
+      return;
+    }
+
+    if (password.length < 8) {
+      message.textContent = "Password is too short.";
+      message.classList.add("weak");
+      return;
+    }
+
+    let score = 0;
+    if (hasLetters) score++;
+    if (hasNumbers) score++;
+    if (hasSpecial) score++;
+
+    if (score === 1) {
+      message.textContent = "Weak password.";
+      message.classList.add("weak");
+    } else if (score === 2) {
+      message.textContent = "Medium password.";
+      message.classList.add("medium");
+    } else {
+      message.textContent = "Strong password.";
+      message.classList.add("strong");
+    }
+  }
+
+  function checkPasswordMatch() {
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirm_password").value;
+    const message = document.getElementById("passwordMatchMessage");
+
+    message.className = "redsignup-password-strength";
+
+    if (confirmPassword.length === 0) {
+      message.textContent = "";
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      message.textContent = "Passwords do not match.";
+      message.classList.add("weak");
+    } else {
+      message.textContent = "Passwords match.";
+      message.classList.add("strong");
+    }
+  }
 </script>
 
 <style>
-
-  /* Create Account */
   .redsignup-title{
     font-size: 30px;
     font-weight: 700;
@@ -89,155 +204,187 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
+
   .redsignup-subtitle{
     font-size: 24px;
     font-weight: 700;
     margin: 6px 0 10px;
   }
+
   .redsignup-col-left label{
     font-size: 12px;
     font-weight: 600;
     color: #6b7280;
     letter-spacing: .3px;
   }
+
   .redsignup-col-left input,
   .redsignup-input-group input{
     height: 48px;
     font-size: 16px;
     border-radius: 8px;
   }
+
   .redsignup-input-group button{
-    width: 42px; height: 42px;
+    width: 42px;
+    height: 42px;
   }
+
   .redsignup-btn-red{
     height: 48px;
     font-size: 17px;
     font-weight: 700;
     border-radius: 10px;
   }
-  .redsignup-list{ margin-top: 8px; }
-  .redsignup-list li{ margin: 6px 0; }
 
-
-
-.flash-banner {
-  padding: 16px 24px;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 500;
-  text-align: center;
-  margin-bottom: 25px;
-  color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-}
-
-.flash-banner.success {
-  background-color: var(--red);
-}
-
-.flash-banner.error {
-  background-color: #dc3545;
-}
-
-
-/* ===== Create Account – desktop polish only (>= 901px) ===== */
-@media (min-width: 901px){
-  /* layout & column spacing */
-  .redsignup-container{ max-width: 1100px; margin: 0 auto; padding: 0 16px; }
-  .redsignup-row{ display: flex; align-items: flex-start; gap: 48px; } /* space between columns */
-
-  .redsignup-col-left{ flex: 1 1 520px; }
-  .redsignup-col-right{
-    flex: 1 1 420px;
-    background: #f6f7f8;
-    border-radius: 10px;
-    padding: 20px 24px;             /* inner breathing room */
+  .redsignup-list{
+    margin-top: 8px;
   }
 
-  /* Left form: smaller, centered primary CTA */
-  .redsignup-col-left .redsignup-btn-red{
-    width: 280px;                   /* reduce size */
-    height: 46px;
-    font-size: 17px;
-    border-radius: 10px;
-    display: block;
-    margin: 16px auto 0;            /* center */
+  .redsignup-list li{
+    margin: 6px 0;
   }
 
-  /* Right card: space before the button */
-  .redsignup-col-right .redsignup-list{
-    margin: 8px 0 16px;             /* gap after "Wishlist management" */
+  .redsignup-password-help{
+    margin-top: 8px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #6b7280;
   }
-  .redsignup-col-right .redsignup-btn-red{
-    width: auto;
-    height: 42px;
+
+  .redsignup-password-strength{
+    min-height: 20px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .redsignup-password-strength.weak{
+    color: #dc3545;
+  }
+
+  .redsignup-password-strength.medium{
+    color: #d97706;
+  }
+
+  .redsignup-password-strength.strong{
+    color: #15803d;
+  }
+
+  .flash-banner {
+    padding: 16px 24px;
+    border-radius: 6px;
     font-size: 16px;
-    padding: 10px 18px;
-    border-radius: 10px;
-    margin-top: 18px;               /* extra space below the list */
-    align-self: flex-start;         /* keep it left-aligned in the card */
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 25px;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
   }
-}
 
-/* Extra space below the login link so it doesn't touch the footer */
-.redsignup-login-link{
-  text-align: center;
-  margin: 18px 0 42px;   /* bottom space bumped */
-}
+  .flash-banner.success {
+    background-color: var(--red);
+  }
 
-/* Ensure the whole signup section has a little bottom padding, too */
-.redsignup-container{
-  padding-bottom: 56px;
-}
+  .flash-banner.error {
+    background-color: #dc3545;
+  }
 
-/* Nudge the password-eye a bit upward (signin + signup) */
-.redsignup-input-group button,
-.signin-input-group .signin-eye-icon{
-  top: 40%;
-  transform: translateY(-54%); /* was -50%; move ~2–3px up */
-}
+  @media (min-width: 901px){
+    .redsignup-container{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
 
-/* If you still see it a hair low on some devices, add this tiny extra: */
-/* .redsignup-input-group button i,
-   .signin-input-group .signin-eye-icon i { transform: translateY(-1px); } */
+    .redsignup-row{
+      display: flex;
+      align-items: flex-start;
+      gap: 48px;
+    }
 
-/* Light, subtle borders for all auth inputs (signin + signup) */
-.redsignup-col-left input,
-.redsignup-input-group input,
-.signin-col-left input,
-.signin-input-group input{
-  border: 1px solid #d1d5db !important;   /* light gray, thin */
-  border-radius: 8px;                      /* keep the soft corners */
-  box-shadow: none;                        /* remove any heavy inset shadows */
-}
+    .redsignup-col-left{
+      flex: 1 1 520px;
+    }
 
-/* Optional: slightly darker on hover so it feels interactive */
-.redsignup-col-left input:hover,
-.redsignup-input-group input:hover,
-.signin-col-left input:hover,
-.signin-input-group input:hover{
-  border-color: #c5cbd3;
-}
+    .redsignup-col-right{
+      flex: 1 1 420px;
+      background: #f6f7f8;
+      border-radius: 10px;
+      padding: 20px 24px;
+    }
 
-/* Clear, accessible focus state (subtle glow) */
-.redsignup-col-left input:focus,
-.redsignup-input-group input:focus,
-.signin-col-left input:focus,
-.signin-input-group input:focus{
-  border-color: #94a3b8;                           /* slate-400 */
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(59,139,235,0.15);     /* soft blue ring */
-}
+    .redsignup-col-left .redsignup-btn-red{
+      width: 280px;
+      height: 46px;
+      font-size: 17px;
+      border-radius: 10px;
+      display: block;
+      margin: 16px auto 0;
+    }
 
-/* Placeholders a touch lighter for polish */
-.redsignup-col-left input::placeholder,
-.redsignup-input-group input::placeholder,
-.signin-col-left input::placeholder,
-.signin-input-group input::placeholder{
-  color: #9aa3ad;
-}
+    .redsignup-col-right .redsignup-list{
+      margin: 8px 0 16px;
+    }
 
+    .redsignup-col-right .redsignup-btn-red{
+      width: auto;
+      height: 42px;
+      font-size: 16px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      margin-top: 18px;
+      align-self: flex-start;
+    }
+  }
 
+  .redsignup-login-link{
+    text-align: center;
+    margin: 18px 0 42px;
+  }
+
+  .redsignup-container{
+    padding-bottom: 56px;
+  }
+
+  .redsignup-input-group button,
+  .signin-input-group .signin-eye-icon{
+    top: 40%;
+    transform: translateY(-54%);
+  }
+
+  .redsignup-col-left input,
+  .redsignup-input-group input,
+  .signin-col-left input,
+  .signin-input-group input{
+    border: 1px solid #d1d5db !important;
+    border-radius: 8px;
+    box-shadow: none;
+  }
+
+  .redsignup-col-left input:hover,
+  .redsignup-input-group input:hover,
+  .signin-col-left input:hover,
+  .signin-input-group input:hover{
+    border-color: #c5cbd3;
+  }
+
+  .redsignup-col-left input:focus,
+  .redsignup-input-group input:focus,
+  .signin-col-left input:focus,
+  .signin-input-group input:focus{
+    border-color: #94a3b8;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59,139,235,0.15);
+  }
+
+  .redsignup-col-left input::placeholder,
+  .redsignup-input-group input::placeholder,
+  .signin-col-left input::placeholder,
+  .signin-input-group input::placeholder{
+    color: #9aa3ad;
+  }
 </style>
 
 {% endblock %}

@@ -1635,32 +1635,32 @@ main {
    ========================================= */
 @media (max-width: 1024px){
 
-  /* Disable horizontal scrolling */
+  /* Mobile products should scroll vertically with the page, not fight touch */
   .pz-scrolling-wrapper{
     display: flex !important;
     flex-direction: column !important;
     overflow-x: hidden !important;
     overflow-y: visible !important;
     gap: 18px !important;
+    touch-action: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: auto !important;
   }
 
-  /* Remove side padding from wrapper */
   .pz-carousel-wrapper{
     padding: 0 16px !important;
+    overflow: visible !important;
   }
 
-  /* Hide scroll buttons on mobile */
   .pz-scroll-btn{
     display: none !important;
   }
 
-  /* Make cards full width */
   .pz-product-card{
     width: 100% !important;
     max-width: 100% !important;
   }
 }
-
 
 /* =========================================
    MOBILE ONLY: Add breathing space under navbar
