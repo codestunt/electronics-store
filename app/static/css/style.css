@@ -3533,3 +3533,241 @@ body.edge-hero .ez-hero-img{
   }
 
 }
+
+
+/* FINAL MOBILE PRODUCT PRICE FIX */
+@media (max-width: 1024px) {
+
+  .pz-product-card .pz-price,
+  .pz-price {
+    color: #B23850 !important;
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    margin: 8px 0 12px !important;
+  }
+
+}
+
+/* =====================================================
+   FINAL MOBILE PRODUCT GRID FIX
+   Home/category + Product Finder + Search
+   CSS ONLY — desktop untouched
+   ===================================================== */
+
+/* Portrait: 2 columns */
+@media (max-width: 768px) and (orientation: portrait) {
+
+  .pz-scrolling-wrapper,
+  .pf-grid,
+  .ezsr-results,
+  .ezsr-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 20px 12px !important;
+    width: 100% !important;
+    padding: 0 10px !important;
+    overflow: visible !important;
+  }
+
+  .pz-product-card,
+  .ez-card,
+  .pf-card,
+  .ezsr-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    flex: none !important;
+  }
+
+  .pz-product-image img,
+  .ez-card-img,
+  .ez-card img,
+  .pf-img,
+  .ezsr-imgbox img {
+    width: 100% !important;
+    height: 115px !important;
+    object-fit: contain !important;
+  }
+
+  .pz-price,
+  .ez-card-price,
+  .pf-price,
+  .ezsr-price {
+    color: #B23850 !important;
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+  }
+
+  .pz-product-name,
+  .ez-card-title,
+  .pf-name,
+  .ezsr-title {
+    font-size: 14px !important;
+    line-height: 1.25 !important;
+  }
+}
+
+/* Landscape: 3 columns */
+@media (max-width: 1024px) and (orientation: landscape) {
+
+  .pz-scrolling-wrapper,
+  .pf-grid,
+  .ezsr-results,
+  .ezsr-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 20px 14px !important;
+    width: 100% !important;
+    padding: 0 12px !important;
+    overflow: visible !important;
+  }
+
+  .pz-product-card,
+  .ez-card,
+  .pf-card,
+  .ezsr-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    flex: none !important;
+  }
+
+  .pz-product-image img,
+  .ez-card-img,
+  .ez-card img,
+  .pf-img,
+  .ezsr-imgbox img {
+    width: 100% !important;
+    height: 120px !important;
+    object-fit: contain !important;
+  }
+
+  .pz-price,
+  .ez-card-price,
+  .pf-price,
+  .ezsr-price {
+    color: #B23850 !important;
+    font-size: 19px !important;
+    font-weight: 800 !important;
+  }
+
+  .pz-product-name,
+  .ez-card-title,
+  .pf-name,
+  .ezsr-title {
+    font-size: 14px !important;
+    line-height: 1.25 !important;
+  }
+}
+
+/* =====================================================
+   FINAL MOBILE CATEGORY PRODUCT GRID
+   Uses real classes from partials/product_carousel.html
+   Desktop untouched
+   ===================================================== */
+
+/* Portrait mobile: 2 columns */
+@media (max-width: 768px) and (orientation: portrait) {
+
+  .ez-carousel-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 10px !important;
+    margin: 0 auto !important;
+    overflow: visible !important;
+  }
+
+  .ez-carousel {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 18px 12px !important;
+    width: 100% !important;
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+
+  .ez-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    flex: none !important;
+  }
+
+  .ez-card-img-wrap img {
+    width: 100% !important;
+    height: 115px !important;
+    object-fit: contain !important;
+  }
+
+  .ez-card-title {
+    font-size: 14px !important;
+    line-height: 1.25 !important;
+  }
+
+  .ez-card-price {
+    color: #B23850 !important;
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+  }
+
+  .ez-scroll-btn {
+    display: none !important;
+  }
+}
+
+
+/* Landscape mobile: 3 columns */
+@media (max-width: 1024px) and (orientation: landscape) {
+
+  .ez-carousel-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 12px !important;
+    margin: 0 auto !important;
+    overflow: visible !important;
+  }
+
+  .ez-carousel {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 18px 14px !important;
+    width: 100% !important;
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+
+  .ez-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    flex: none !important;
+  }
+
+  .ez-card-img-wrap img {
+    width: 100% !important;
+    height: 120px !important;
+    object-fit: contain !important;
+  }
+
+  .ez-card-title {
+    font-size: 14px !important;
+    line-height: 1.25 !important;
+  }
+
+  .ez-card-price {
+    color: #B23850 !important;
+    font-size: 19px !important;
+    font-weight: 800 !important;
+  }
+
+  .ez-scroll-btn {
+    display: none !important;
+  }
+}

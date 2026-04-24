@@ -9,7 +9,7 @@
   <!-- External stylesheets -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/pz.css') }}?v=20251226">
 
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=1003">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=1007">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -1143,6 +1143,748 @@ body.cart-page {
   }
 
 }
+
+/* =========================================
+   KILL CAROUSEL → ENABLE GRID ON MOBILE
+   ========================================= */
+@media (max-width: 1024px){
+
+  /* 🔴 THIS is the key fix */
+  .pz-scrolling-wrapper{
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important; /* portrait default */
+    gap: 18px 12px !important;
+
+    overflow: visible !important;  /* ❌ kill horizontal scroll */
+    padding: 0 10px !important;
+  }
+
+  /* Landscape → 3 columns */
+  @media (orientation: landscape){
+    .pz-scrolling-wrapper{
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 18px 14px !important;
+    }
+  }
+
+  /* Cards fill grid properly */
+  .pz-product-card,
+  .ez-card{
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    flex: none !important;
+  }
+
+  /* Images scale nicely */
+  .pz-product-card img,
+  .ez-card img{
+    width: 100% !important;
+    height: 120px !important;
+    object-fit: contain !important;
+  }
+
+  /* ❌ Remove arrows on mobile */
+  .pz-scroll-btn{
+    display: none !important;
+  }
+}
+
+/* =====================================================
+   FINAL: MOBILE PRODUCT GRID FOR LIVE pz PRODUCT CARDS
+   Portrait = 2 columns, Landscape = 3 columns
+   ===================================================== */
+
+@media (max-width: 768px) and (orientation: portrait) {
+  main .pz-carousel-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 10px !important;
+    margin: 0 auto !important;
+    overflow: visible !important;
+  }
+
+  main #carousel.pz-scrolling-wrapper,
+  main .pz-scrolling-wrapper {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 22px 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  main .pz-product-card {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    flex: unset !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  main .pz-product-image img {
+    width: 100% !important;
+    height: 120px !important;
+    object-fit: contain !important;
+    display: block !important;
+  }
+
+  main .pz-scroll-btn {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1024px) and (orientation: landscape) {
+  main .pz-carousel-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 12px !important;
+    margin: 0 auto !important;
+    overflow: visible !important;
+  }
+
+  main #carousel.pz-scrolling-wrapper,
+  main .pz-scrolling-wrapper {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 22px 14px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  main .pz-product-card {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    flex: unset !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  main .pz-product-image img {
+    width: 100% !important;
+    height: 125px !important;
+    object-fit: contain !important;
+    display: block !important;
+  }
+
+  main .pz-scroll-btn {
+    display: none !important;
+  }
+}
+
+/* =====================================================
+   MOBILE GRID POLISH
+   1) Align Add to Cart buttons
+   2) Fix landscape Products subtitle being eaten
+   ===================================================== */
+
+/* Portrait: make cards equal height and buttons align */
+@media (max-width: 768px) and (orientation: portrait) {
+  main .pz-product-card {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    min-height: 310px !important;
+  }
+
+  main .pz-product-card form {
+    margin-top: auto !important;
+  }
+
+  main .pz-product-card .pz-cart-btn,
+  main .pz-product-card button {
+    width: 100% !important;
+    max-width: 175px !important;
+    margin: 10px auto 0 !important;
+    display: block !important;
+  }
+}
+
+/* Landscape: give Products title/subtitle breathing room */
+@media (max-width: 1024px) and (orientation: landscape) {
+  main .pz-header,
+  main #bestsellers .pz-header,
+  main .products-section .pz-header {
+    margin-top: 26px !important;
+    margin-bottom: 26px !important;
+    padding-top: 18px !important;
+    padding-bottom: 12px !important;
+    overflow: visible !important;
+  }
+
+  main .pz-title,
+  main #bestsellers h2,
+  main .products-section h2 {
+    margin-bottom: 8px !important;
+    line-height: 1.2 !important;
+  }
+
+  main .pz-subtitle,
+  main #bestsellers p,
+  main .products-section p {
+    display: block !important;
+    margin-top: 0 !important;
+    margin-bottom: 18px !important;
+    line-height: 1.45 !important;
+    overflow: visible !important;
+  }
+}
+
+/* =====================================================
+   FIX EMPTY FIRST GRID SPACE ON MOBILE
+   Removes old carousel spacer pseudo-elements
+   ===================================================== */
+@media (max-width: 1024px) {
+
+  main .pz-scrolling-wrapper::before,
+  main .pz-scrolling-wrapper::after {
+    content: none !important;
+    display: none !important;
+    flex: 0 0 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  main .pz-scrolling-wrapper {
+    grid-auto-flow: row !important;
+  }
+}
+
+.pz-price,
+.ez-card-price {
+  color: #B23850 !important;
+
+  font-weight: 900 !important;
+  font-size: 24px !important;
+
+  letter-spacing: 0.6px !important;
+
+  text-shadow: 0 2px 4px rgba(178,56,80,0.15);
+
+  transform: scale(1.02);
+}
+
+/* =====================================================
+   PRODUCT FINDER MOBILE POLISH
+   Match main product card styling
+   ===================================================== */
+
+@media (max-width: 768px) and (orientation: portrait) {
+
+  .pf-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 18px 12px !important;
+    padding: 0 10px !important;
+  }
+
+  .pf-card {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 10px 8px 14px !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+    box-sizing: border-box !important;
+  }
+
+  .pf-media {
+    width: 100% !important;
+    height: 120px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .pf-img {
+    width: 100% !important;
+    height: 115px !important;
+    object-fit: contain !important;
+  }
+
+  .pf-body {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+    text-align: center !important;
+  }
+
+  .pf-name {
+    font-size: 14px !important;
+    line-height: 1.25 !important;
+    margin: 8px 0 6px !important;
+    min-height: 36px !important;
+  }
+
+  .pf-rating {
+    font-size: 13px !important;
+    justify-content: center !important;
+    margin-bottom: 6px !important;
+  }
+
+  .pf-reviews {
+    font-size: 12px !important;
+  }
+
+  .pf-snippet {
+    display: none !important;
+  }
+
+  .pf-row {
+    margin-top: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  .pf-price {
+    color: #B23850 !important;
+    font-size: 22px !important;
+    font-weight: 900 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.4px !important;
+  }
+
+  .pf-add {
+    width: 100% !important;
+    max-width: 150px !important;
+    height: 42px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+  }
+}
+
+@media (max-width: 1024px) and (orientation: landscape) {
+
+  .pf-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 18px 14px !important;
+    padding: 0 12px !important;
+  }
+
+  .pf-card {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    padding: 10px 8px 14px !important;
+    text-align: center !important;
+  }
+
+  .pf-media {
+    height: 120px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .pf-img {
+    height: 115px !important;
+    object-fit: contain !important;
+  }
+
+  .pf-snippet {
+    display: none !important;
+  }
+
+  .pf-row {
+    margin-top: auto !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  .pf-price {
+    color: #B23850 !important;
+    font-size: 21px !important;
+    font-weight: 900 !important;
+  }
+
+  .pf-add {
+    max-width: 150px !important;
+    height: 42px !important;
+    font-weight: 700 !important;
+  }
+}
+
+/* =====================================================
+   SEARCH RESULTS MOBILE POLISH
+   Match main product card layout
+   ===================================================== */
+
+@media (max-width: 768px) and (orientation: portrait) {
+
+  .ezsr-grid,
+  .ezsr-results {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 18px 12px !important;
+    padding: 0 10px !important;
+  }
+
+  .ezsr-card {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 10px 8px 14px !important;
+    border-radius: 14px !important;
+    box-sizing: border-box !important;
+    background: #fff !important;
+  }
+
+  .ezsr-imgbox {
+    height: 125px !important;
+    min-height: 125px !important;
+    max-height: 125px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-bottom: 10px !important;
+  }
+
+  .ezsr-imgbox img {
+    width: 100% !important;
+    height: 115px !important;
+    object-fit: contain !important;
+  }
+
+  .ezsr-title {
+    font-size: 14px !important;
+    line-height: 1.25 !important;
+    min-height: 38px !important;
+    margin: 6px 0 6px !important;
+    text-align: center !important;
+  }
+
+  .ezsr-rating {
+    font-size: 13px !important;
+    text-align: center !important;
+    margin: 0 0 8px !important;
+  }
+
+  .ezsr-reviews {
+    font-size: 12px !important;
+  }
+
+  .ezsr-price {
+    color: #B23850 !important;
+    font-size: 21px !important;
+    font-weight: 900 !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+    margin: auto 0 10px !important;
+  }
+
+  .ezsr-actions {
+    margin-top: 0 !important;
+    text-align: center !important;
+  }
+
+  .ezsr-btn,
+  .ezsr-btn-primary {
+    width: 100% !important;
+    max-width: 150px !important;
+    height: 42px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+  }
+}
+
+@media (max-width: 1024px) and (orientation: landscape) {
+
+  .ezsr-grid,
+  .ezsr-results {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 18px 14px !important;
+    padding: 0 12px !important;
+  }
+
+  .ezsr-card {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    padding: 10px 8px 14px !important;
+  }
+
+  .ezsr-imgbox {
+    height: 120px !important;
+    min-height: 120px !important;
+    max-height: 120px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .ezsr-imgbox img {
+    height: 110px !important;
+    object-fit: contain !important;
+  }
+
+  .ezsr-price {
+    color: #B23850 !important;
+    font-size: 20px !important;
+    font-weight: 900 !important;
+    text-align: center !important;
+    margin: auto 0 10px !important;
+  }
+
+  .ezsr-actions {
+    text-align: center !important;
+  }
+
+  .ezsr-btn,
+  .ezsr-btn-primary {
+    max-width: 150px !important;
+    height: 42px !important;
+    font-weight: 700 !important;
+  }
+}
+
+/* =====================================================
+   SEARCH MOBILE FINAL POLISH
+   Fix review text + align price and Add to Cart button
+   ===================================================== */
+
+@media (max-width: 768px) and (orientation: portrait) {
+
+  .ezsr-card {
+    min-height: 355px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .ezsr-rating {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    flex-wrap: nowrap !important;
+    white-space: nowrap !important;
+    margin: 6px 0 10px !important;
+  }
+
+  .ezsr-rating i {
+    font-size: 15px !important;
+  }
+
+  .ezsr-reviews {
+    display: inline-block !important;
+    font-size: 11px !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    margin-left: 4px !important;
+  }
+
+  .ezsr-price {
+    margin-top: auto !important;
+    margin-bottom: 10px !important;
+    text-align: center !important;
+    display: block !important;
+  }
+
+  .ezsr-actions {
+    margin-top: 0 !important;
+    text-align: center !important;
+  }
+
+  .ezsr-btn,
+  .ezsr-btn-primary {
+    display: block !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    max-width: 180px !important;
+  }
+}
+
+
+/* Landscape search card polish */
+@media (max-width: 1024px) and (orientation: landscape) {
+
+  .ezsr-card {
+    min-height: 330px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .ezsr-rating {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 3px !important;
+    flex-wrap: nowrap !important;
+    white-space: nowrap !important;
+    margin: 6px 0 10px !important;
+  }
+
+  .ezsr-reviews {
+    font-size: 12px !important;
+    white-space: nowrap !important;
+    margin-left: 5px !important;
+  }
+
+  .ezsr-price {
+    margin-top: auto !important;
+    margin-bottom: 10px !important;
+    text-align: center !important;
+  }
+
+  .ezsr-actions {
+    text-align: center !important;
+  }
+
+  .ezsr-btn,
+  .ezsr-btn-primary {
+    display: block !important;
+    margin: 0 auto !important;
+    max-width: 175px !important;
+  }
+}
+/* =====================================================
+   GLOBAL PRICE STYLE — APPLY TO ALL PRODUCT TYPES
+   (Search + Product Finder + Main Products)
+   ===================================================== */
+
+.pz-price,
+.ez-card-price,
+.ezsr-price,
+.pf-price {
+  color: #B23850 !important;
+
+  font-weight: 900 !important;
+  font-size: 24px !important;
+
+  letter-spacing: 0.6px !important;
+  line-height: 1.2 !important;
+
+  text-shadow: 0 2px 4px rgba(178,56,80,0.15);
+
+  -webkit-font-smoothing: antialiased;
+}
+
+
+/* =====================================================
+   ALIGN PRICE + BUTTON (ALL CARDS)
+   ===================================================== */
+
+.ezsr-card,
+.pf-card {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.ezsr-price,
+.pf-price {
+  margin-top: auto !important;
+  margin-bottom: 10px !important;
+  text-align: center !important;
+}
+
+.ezsr-actions,
+.pf-row {
+  text-align: center !important;
+}
+
+.ezsr-btn,
+.pf-add {
+  display: block !important;
+  margin: 0 auto !important;
+  max-width: 170px !important;
+}
+
+/* =====================================================
+   CLEAN REVIEW TEXT (Search + Product Finder)
+   ===================================================== */
+
+.ezsr-rating,
+.pf-rating {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  flex-wrap: nowrap !important;
+  white-space: nowrap !important;
+}
+
+.ezsr-reviews,
+.pf-reviews {
+  font-size: 12px !important;
+  margin-left: 6px !important;
+  white-space: nowrap !important;
+}
+
+/* Increase spacing between cards */
+.ezsr-grid,
+.pf-grid {
+  gap: 22px 16px !important;   /* was too tight */
+}
+
+/* Fix rating + reviews collision */
+.ezsr-rating,
+.pf-rating {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  gap: 6px !important;          /* more space between stars & text */
+  flex-wrap: wrap !important;   /* allow wrapping instead of overlap */
+  line-height: 1.3 !important;
+}
+
+.ezsr-reviews,
+.pf-reviews {
+  font-size: 12px !important;
+  margin-left: 6px !important;
+
+  display: block !important;    /* forces clean separation */
+  width: 100% !important;       /* moves below stars if tight */
+  text-align: center !important;
+}
+
+.ezsr-card,
+.pf-card {
+  padding: 12px 10px 16px !important; /* more inner space */
+}
+
+/* PRODUCT FINDER: keep Add to Cart on one line */
+@media (max-width: 1024px) {
+  .pf-add {
+    width: 100% !important;
+    max-width: 170px !important;
+    min-width: 130px !important;
+    height: 46px !important;
+    padding: 0 14px !important;
+
+    white-space: nowrap !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    line-height: 46px !important;
+    text-align: center !important;
+  }
+
+  .pf-row {
+    align-items: center !important;
+  }
+}
+
 </style>
 {% block styles %}{% endblock %}
 </head>
@@ -1442,8 +2184,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if(!lane) return;
 
     // Force scrollable (in case CSS was overridden)
-    lane.style.overflowX = 'auto';
-    lane.style.overflowY = 'hidden';
+    if (window.innerWidth > 1024) {
+      lane.style.overflowX = 'auto';
+      lane.style.overflowY = 'hidden';
+    }
 
     const gapPx = () => parseFloat(getComputedStyle(lane).gap || '24') || 24;
 
@@ -1482,6 +2226,60 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 </script>
 
+<script>
+function forceMobileCategoryGrid() {
+  const isMobile = window.innerWidth <= 1024;
+  if (!isMobile) return;
 
+  const isLandscape = window.innerWidth > window.innerHeight;
+  const columns = isLandscape ? "repeat(3, 1fr)" : "repeat(2, 1fr)";
+
+  const cards = document.querySelectorAll(".ez-card");
+
+  cards.forEach(card => {
+    const parent = card.parentElement;
+    if (!parent) return;
+
+    parent.style.display = "grid";
+    parent.style.gridTemplateColumns = columns;
+    parent.style.gap = isLandscape ? "18px 14px" : "18px 12px";
+    parent.style.width = "100%";
+    parent.style.maxWidth = "100%";
+    parent.style.padding = isLandscape ? "0 12px" : "0 10px";
+    parent.style.boxSizing = "border-box";
+    parent.style.overflow = "visible";
+
+    card.style.width = "100%";
+    card.style.maxWidth = "none";
+    card.style.minWidth = "0";
+    card.style.margin = "0";
+    card.style.boxSizing = "border-box";
+    card.style.flex = "none";
+
+    const img = card.querySelector("img");
+    if (img) {
+      img.style.width = "100%";
+      img.style.height = isLandscape ? "125px" : "120px";
+      img.style.objectFit = "contain";
+      img.style.display = "block";
+    }
+  });
+
+  document.querySelectorAll(".ez-scroll-btn").forEach(btn => {
+    btn.style.display = "none";
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  forceMobileCategoryGrid();
+  setTimeout(forceMobileCategoryGrid, 300);
+  setTimeout(forceMobileCategoryGrid, 1000);
+});
+
+window.addEventListener("resize", forceMobileCategoryGrid);
+window.addEventListener("orientationchange", function () {
+  setTimeout(forceMobileCategoryGrid, 300);
+});
+</script>
 </body>
 </html>
