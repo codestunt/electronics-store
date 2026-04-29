@@ -392,6 +392,7 @@ def newsletter_join():
 
     conn = get_db_connection()
     cur = conn.cursor()
+
     try:
         # Postgres upsert
         cur.execute(
@@ -406,17 +407,45 @@ def newsletter_join():
             (email,),
         )
         conn.commit()
+
     finally:
         cur.close()
         conn.close()
 
+    # NEW: notify sales only for newsletter signup
+    # Uses the same SendGrid helper as quote/sales/support forms.
+    try:
+        body = f"""NEW NEWSLETTER SUBSCRIBER — ElectroZone
+
+A new customer has subscribed through the ElectroZone sign-up banner.
+
+Subscriber Email:
+{email}
+
+ACTION:
+Please follow up with this lead when convenient.
+
+— ElectroZone Website
+"""
+
+        _send_form_email(
+            subject="New Newsletter Subscriber — ElectroZone",
+            to_email=SALES_TEAM_EMAIL,
+            body=body,
+            reply_to=email
+        )
+
+    except Exception as e:
+        print("NEWSLETTER SALES NOTIFICATION ERROR:", e)
+
     ok_msg = "Thank you for signing up!"
     if is_ajax:
         return jsonify(ok=True, message=ok_msg)
+
     flash(ok_msg, "signup_success")
     return redirect(request.referrer or url_for("routes.home"))
 
-
+    
 # =========================================================
 # Auth
 # =========================================================
@@ -811,11 +840,6 @@ Please prepare the voucher and send it to the recipient email above.
     return render_template("gift_card.html")
 
 
-# =========================================================
-# Product Finder (ALL products)
-# =========================================================
-from flask import request, render_template, jsonify
-from math import ceil
 
 @routes.route("/product-finder", endpoint="product_finder")
 def product_finder():

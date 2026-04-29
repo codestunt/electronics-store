@@ -1885,6 +1885,161 @@ body.cart-page {
   }
 }
 
+/* =====================================================
+   DESKTOP — REAL FIX using your exact classes
+   ===================================================== */
+
+@media (min-width: 1025px) {
+
+  /* Add space BELOW price */
+  #bestsellers .pz-product-card .pz-price {
+    display: block !important;
+    margin-bottom: 16px !important;
+  }
+
+  /* Add space ABOVE button (backup spacing) */
+  #bestsellers .pz-product-card form {
+    margin-top: 6px !important;
+  }
+
+}
+
+/* DESKTOP ONLY: space between price and Add to Cart */
+@media (min-width: 1025px) {
+
+  body.home #bestsellers .pz-product-card .pz-price {
+    margin-bottom: 22px !important;
+    padding-bottom: 0 !important;
+  }
+
+  body.home #bestsellers .pz-product-card .pz-cart-btn {
+    margin-top: 34px !important;
+  }
+
+}
+
+/* DESKTOP ONLY: give product cards more vertical room */
+@media (min-width: 900px) {
+
+  #bestsellers .pz-product-card {
+    min-height: 420px !important;
+    padding-bottom: 24px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  #bestsellers .pz-product-image {
+    min-height: 170px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  #bestsellers .pz-price {
+    margin-bottom: 18px !important;
+  }
+
+  #bestsellers .pz-product-card form {
+    margin-top: 8px !important;
+  }
+}
+
+
+/* MOBILE ONLY — match Search / Product Finder Add to Cart buttons */
+@media (max-width: 768px) {
+
+  .pz-product-card .add-to-cart-btn,
+  .product-card .add-to-cart-btn {
+    width: 82% !important;
+    max-width: 300px !important;
+    min-height: 50px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    margin: 16px auto 0 !important;
+    padding: 0 18px !important;
+
+    background: #4b8fc3 !important;
+    color: #ffffff !important;
+
+    border: none !important;
+    border-radius: 10px !important;
+
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+
+    box-sizing: border-box !important;
+  }
+}
+
+/* FINAL MOBILE ONLY — make product buttons match Search/Product Finder */
+@media (max-width: 768px) {
+
+  main .pz-product-card form .pz-cart-btn {
+    width: auto !important;
+    min-width: 135px !important;
+    max-width: 140px !important;
+
+    height: 44px !important;
+    padding: 0 18px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    margin: 10px auto 0 !important;
+
+    background-color: #4682B4 !important;
+    color: #ffffff !important;
+
+    border: none !important;
+    border-radius: 6px !important;
+
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    line-height: 44px !important;
+    white-space: nowrap !important;
+  }
+
+  main .pz-product-card form {
+    text-align: center !important;
+  }
+}
+
+/* DESKTOP ONLY — product button breathing space + wider button */
+@media (min-width: 901px) {
+
+  main .pz-product-card .pz-price {
+    margin-bottom: 14px !important;
+  }
+
+  main .pz-product-card form {
+    margin-top: 0 !important;
+    text-align: center !important;
+  }
+
+  main .pz-product-card form .pz-cart-btn {
+    width: 165px !important;
+    max-width: 158px !important;
+    height: 35px !important;
+
+    padding: 0 18px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    font-size: 14px !important;
+    font-weight: 700 !important;
+
+    border-radius: 6px !important;
+    white-space: nowrap !important;
+  }
+}
 </style>
 {% block styles %}{% endblock %}
 </head>
@@ -2280,6 +2435,40 @@ window.addEventListener("resize", forceMobileCategoryGrid);
 window.addEventListener("orientationchange", function () {
   setTimeout(forceMobileCategoryGrid, 300);
 });
+</script>
+
+<script>
+function fixDesktopProductSpacing() {
+  if (window.innerWidth < 900) return;
+
+  document.querySelectorAll("#bestsellers .pz-product-card").forEach(card => {
+    const price = card.querySelector(".pz-price");
+    const form = card.querySelector("form");
+    const button = card.querySelector(".pz-cart-btn");
+
+    if (price) {
+      price.style.marginBottom = "18px";
+      price.style.display = "block";
+    }
+
+    if (form) {
+      form.style.marginTop = "14px";
+      form.style.display = "block";
+    }
+
+    if (button) {
+      button.style.marginTop = "8px";
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  fixDesktopProductSpacing();
+  setTimeout(fixDesktopProductSpacing, 300);
+  setTimeout(fixDesktopProductSpacing, 1000);
+});
+
+window.addEventListener("resize", fixDesktopProductSpacing);
 </script>
 </body>
 </html>
