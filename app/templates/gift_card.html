@@ -688,7 +688,101 @@ header + main > .ez-gift,
   top: 0px; /* fine vertical nudge to align buttons */
 }
 
+/* MOBILE ONLY — replace broken gift card thumbnail images with text */
+@media (max-width: 768px) {
 
+  .ez-gift-designs {
+    display: flex !important;
+    gap: 12px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .ez-gift-design {
+    width: 110px !important;
+    min-width: 110px !important;
+    height: 68px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 8px 10px !important;
+    overflow: visible !important;
+  }
+
+  .ez-gift-design img {
+    display: none !important;
+  }
+
+  .ez-gift-design:nth-child(1)::after {
+    content: "Dark design";
+  }
+
+  .ez-gift-design:nth-child(2)::after {
+    content: "Maroon design";
+  }
+
+  .ez-gift-design:nth-child(3)::after {
+    content: "Outline design";
+  }
+
+  .ez-gift-design::after {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    color: #111 !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+}
+
+/* DESKTOP ONLY — Gift Card design buttons text fit */
+@media (min-width: 901px) {
+
+  .ez-gift-designs {
+    display: flex !important;
+    gap: 14px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .ez-gift-design {
+    width: 135px !important;
+    min-width: 135px !important;
+    height: 64px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 8px 14px !important;
+    overflow: visible !important;
+  }
+
+  .ez-gift-design img {
+    display: none !important;
+  }
+
+  .ez-gift-design:nth-child(1)::after {
+    content: "Dark design";
+  }
+
+  .ez-gift-design:nth-child(2)::after {
+    content: "Maroon design";
+  }
+
+  .ez-gift-design:nth-child(3)::after {
+    content: "Outline design";
+  }
+
+  .ez-gift-design::after {
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    line-height: 1.25 !important;
+    color: #111 !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+}
 
 </style>
 
