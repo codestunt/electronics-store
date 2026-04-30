@@ -784,6 +784,96 @@ header + main > .ez-gift,
   }
 }
 
+/* FINAL CLEAN GIFT CARD FIX */
+
+/* Hide broken thumbnail images everywhere */
+.ez-gift-design img {
+  display: none !important;
+}
+
+/* Show text labels instead */
+.ez-gift-design:nth-child(1)::after {
+  content: "Dark design";
+}
+
+.ez-gift-design:nth-child(2)::after {
+  content: "Maroon design";
+}
+
+.ez-gift-design:nth-child(3)::after {
+  content: "Outline design";
+}
+
+/* Text styling */
+.ez-gift-design::after {
+  color: #111 !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  line-height: 1.1 !important;
+  white-space: nowrap !important;
+}
+
+/* DESKTOP ONLY */
+@media (min-width: 901px) {
+  .ez-gift-designs {
+    display: flex !important;
+    gap: 14px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .ez-gift-design {
+    width: 165px !important;
+    min-width: 165px !important;
+    height: 58px !important;
+    padding: 0 14px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}
+
+/* MOBILE + TABLET ONLY */
+@media (max-width: 900px) {
+  .ez-gift-wrap {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .ez-gift-right,
+  .ez-gift-left {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .ez-gift-designs {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  .ez-gift-design {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 64px !important;
+    padding: 0 6px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    overflow: hidden !important;
+  }
+
+  .ez-gift-design::after {
+    font-size: 13px !important;
+    white-space: nowrap !important;
+  }
+}
+
 </style>
 
 <script>
