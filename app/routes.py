@@ -813,7 +813,7 @@ def gift_card():
         cart = session.get("cart", [])
         cart.append({
             "id": f"gift-{datetime.now().strftime('%Y%m%d%H%M%S')}",
-            "name": "Digital Gift Card",
+            "name": "Gift Card",
             "price": float(amt_num),
             "image_path": "images/logored.png",
             "quantity": 1,
