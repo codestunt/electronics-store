@@ -815,7 +815,7 @@ def gift_card():
             "id": f"gift-{datetime.now().strftime('%Y%m%d%H%M%S')}",
             "name": "Digital Gift Card",
             "price": float(amt_num),
-            "image_path": f"images/giftcard-{design}.png",
+            "image_path": "images/logored.png",
             "quantity": 1,
             "type": "gift_card",
             "design": design,
