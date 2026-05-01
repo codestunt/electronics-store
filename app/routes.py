@@ -445,7 +445,7 @@ Please follow up with this lead when convenient.
     flash(ok_msg, "signup_success")
     return redirect(request.referrer or url_for("routes.home"))
 
-    
+
 # =========================================================
 # Auth
 # =========================================================
@@ -776,11 +776,22 @@ def gift_card():
         recipient_email = (request.form.get("recipient_email") or "").strip()
         recipient_email_confirm = (request.form.get("recipient_email_confirm") or "").strip()
 
+        recipient_address_line1 = (request.form.get("recipient_address_line1") or "").strip()
+        recipient_address_line2 = (request.form.get("recipient_address_line2") or "").strip()
+        recipient_city = (request.form.get("recipient_city") or "").strip()
+        recipient_state = (request.form.get("recipient_state") or "").strip()
+        recipient_postcode = (request.form.get("recipient_postcode") or "").strip()
+        recipient_country = (request.form.get("recipient_country") or "").strip()
+
         from_name = (request.form.get("from_name") or "").strip()
         message = (request.form.get("message") or "").strip()
 
         if recipient_email.lower() != recipient_email_confirm.lower():
             flash("Recipient emails do not match.", "error")
+            return redirect(url_for("routes.gift_card"))
+
+        if not recipient_address_line1 or not recipient_city or not recipient_state or not recipient_postcode or not recipient_country:
+            flash("Please complete the recipient shipping address.", "error")
             return redirect(url_for("routes.gift_card"))
 
         try:
@@ -803,6 +814,14 @@ def gift_card():
             "design": design,
             "recipient_name": recipient_name,
             "recipient_email": recipient_email,
+
+            "recipient_address_line1": recipient_address_line1,
+            "recipient_address_line2": recipient_address_line2,
+            "recipient_city": recipient_city,
+            "recipient_state": recipient_state,
+            "recipient_postcode": recipient_postcode,
+            "recipient_country": recipient_country,
+
             "from_name": from_name,
             "gift_message": message,
         })
@@ -820,6 +839,14 @@ RECIPIENT:
 - Name: {recipient_name}
 - Email: {recipient_email}
 
+SHIPPING ADDRESS:
+- Street: {recipient_address_line1}
+- Apartment/Unit: {recipient_address_line2 or "Not provided"}
+- City/Suburb: {recipient_city}
+- State/Province: {recipient_state}
+- Postcode/ZIP: {recipient_postcode}
+- Country: {recipient_country}
+
 SENDER:
 - Name: {from_name}
 
@@ -827,10 +854,15 @@ MESSAGE:
 {message or "(no message)"}
 
 ACTION:
-Please prepare the voucher and send it to the recipient email above.
+Please prepare the voucher and ship/send it to the recipient details above.
 """
         try:
-            _send_form_email(subject=subject, to_email=SALES_TEAM_EMAIL, body=body, reply_to=recipient_email or None)
+            _send_form_email(
+                subject=subject,
+                to_email=SALES_TEAM_EMAIL,
+                body=body,
+                reply_to=recipient_email or None
+            )
         except Exception as e:
             print("GIFT CARD EMAIL ERROR:", e)
 
@@ -838,7 +870,6 @@ Please prepare the voucher and send it to the recipient email above.
         return redirect(url_for("routes.cart"))
 
     return render_template("gift_card.html")
-
 
 
 @routes.route("/product-finder", endpoint="product_finder")
