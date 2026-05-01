@@ -786,12 +786,19 @@ def gift_card():
         from_name = (request.form.get("from_name") or "").strip()
         message = (request.form.get("message") or "").strip()
 
-        if recipient_email.lower() != recipient_email_confirm.lower():
-            flash("Recipient emails do not match.", "error")
+        # 1) Validate recipient email format first
+        email_pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+
+        if not re.fullmatch(email_pattern, recipient_email):
+            flash("Please enter a valid recipient email address.", "error")
             return redirect(url_for("routes.gift_card"))
 
-        if not recipient_address_line1 or not recipient_city or not recipient_state or not recipient_postcode or not recipient_country:
-            flash("Please complete the recipient shipping address.", "error")
+        if not re.fullmatch(email_pattern, recipient_email_confirm):
+            flash("Please enter a valid confirmation email address.", "error")
+            return redirect(url_for("routes.gift_card"))
+
+        if recipient_email != recipient_email_confirm:
+            flash("Recipient email and confirmation email must match exactly.", "error")
             return redirect(url_for("routes.gift_card"))
 
         try:

@@ -87,11 +87,31 @@
 
       <!-- Recipient -->
       <div class="ez-gift-group">
-        <label class="ez-gift-label">To:</label>
-        <input class="ez-gift-input" name="recipient_name" placeholder="Recipient Name" required>
-        <input class="ez-gift-input" type="email" name="recipient_email" placeholder="Recipient Email" required>
-        <input class="ez-gift-input" type="email" name="recipient_email_confirm" placeholder="Recipient Email Confirmation" required>
-      </div>
+  <label class="ez-gift-label">To:</label>
+
+  <!-- Recipient Name -->
+  <input class="ez-gift-input"
+         type="text"
+         name="recipient_name"
+         placeholder="Recipient Name"
+         required>
+
+  <!-- Recipient Email -->
+  <input class="ez-gift-input"
+         type="email"
+         id="recipientEmail"
+         name="recipient_email"
+         placeholder="Recipient Email"
+         required>
+
+  <!-- Confirm Email -->
+  <input class="ez-gift-input"
+         type="email"
+         id="recipientEmailConfirm"
+         name="recipient_email_confirm"
+         placeholder="Confirm Recipient Email"
+         required>
+</div>
 
       <!-- Recipient Physical Address -->
 <div class="ez-gift-group">
@@ -905,37 +925,38 @@ header + main > .ez-gift,
 
 <script>
 (function () {
-  const preview    = document.getElementById('giftPreview');
-  const valueTag   = document.getElementById('giftValue');
+  const preview = document.getElementById('giftPreview');
+  const valueTag = document.getElementById('giftValue');
   const customWrap = document.getElementById('customWrap');
-  const customInput  = document.getElementById('customAmount');
+  const customInput = document.getElementById('customAmount');
   const customHidden = document.getElementById('customAmountHidden');
   const cardContainer = document.querySelector('.ez-gift-card');
 
-  /* ---------- DESIGN SWITCH: change image + background ---------- */
+  const giftForm = document.querySelector('.ez-gift-right');
+  const recipientEmail = document.getElementById('recipientEmail');
+  const recipientEmailConfirm = document.getElementById('recipientEmailConfirm');
+
+  /* ---------- DESIGN SWITCH ---------- */
   document.querySelectorAll('input[name="design"]').forEach(radio => {
     radio.addEventListener('change', () => {
       const src = radio.getAttribute('data-preview');
-      if (src) preview.src = src;
+      if (src && preview) preview.src = src;
 
-      // reset: show image, remove red class
-      preview.style.display = 'block';
-      cardContainer.classList.remove('ez-gift-red');
+      if (preview) preview.style.display = 'block';
+      if (cardContainer) cardContainer.classList.remove('ez-gift-red');
 
       if (radio.value === 'dark') {
-        cardContainer.style.backgroundColor = '#111';
-
+        if (cardContainer) cardContainer.style.backgroundColor = '#111';
       } else if (radio.value === 'orange') {
-        // Use solid ElectroZone red instead of orange image
-        preview.style.display = 'none';
-        cardContainer.classList.add('ez-gift-red');
-        cardContainer.style.backgroundColor = '#B23850';
-
+        if (preview) preview.style.display = 'none';
+        if (cardContainer) {
+          cardContainer.classList.add('ez-gift-red');
+          cardContainer.style.backgroundColor = '#B23850';
+        }
       } else if (radio.value === 'outline') {
-        cardContainer.style.backgroundColor = 'steelblue';
-
+        if (cardContainer) cardContainer.style.backgroundColor = 'steelblue';
       } else {
-        cardContainer.style.backgroundColor = '#111'; // fallback
+        if (cardContainer) cardContainer.style.backgroundColor = '#111';
       }
     });
   });
@@ -943,11 +964,11 @@ header + main > .ez-gift,
   /* ---------- AMOUNT / CUSTOM LOGIC ---------- */
   function refreshAmount() {
     const sel = document.querySelector('input[name="amount"]:checked');
-    if (!sel) return;
+    if (!sel || !valueTag || !customWrap || !customHidden) return;
 
     if (sel.value === 'custom') {
       customWrap.hidden = false;
-      const v = Number(customInput.value || 0);
+      const v = Number(customInput ? customInput.value : 0);
       valueTag.textContent = v > 0 ? `$${v}` : '$—';
       customHidden.value = v > 0 ? v : '';
     } else {
@@ -960,9 +981,57 @@ header + main > .ez-gift,
   document.querySelectorAll('input[name="amount"]').forEach(r => {
     r.addEventListener('change', refreshAmount);
   });
-  customInput.addEventListener('input', refreshAmount);
 
-  // Initial state setup
+  if (customInput) {
+    customInput.addEventListener('input', refreshAmount);
+  }
+
+  /* ---------- RECIPIENT EMAIL VALIDATION ---------- */
+  function checkRecipientEmails() {
+    if (!recipientEmail || !recipientEmailConfirm) return true;
+
+    const emailOne = recipientEmail.value.trim();
+    const emailTwo = recipientEmailConfirm.value.trim();
+
+    const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+    recipientEmail.setCustomValidity('');
+    recipientEmailConfirm.setCustomValidity('');
+
+    if (!emailPattern.test(emailOne)) {
+      recipientEmail.setCustomValidity('Please enter a valid email address, for example name@gmail.com.');
+      recipientEmail.reportValidity();
+      return false;
+    }
+
+    if (!emailPattern.test(emailTwo)) {
+      recipientEmailConfirm.setCustomValidity('Please enter a valid confirmation email address.');
+      recipientEmailConfirm.reportValidity();
+      return false;
+    }
+
+    if (emailOne !== emailTwo) {
+      recipientEmailConfirm.setCustomValidity('Recipient emails must match exactly.');
+      recipientEmailConfirm.reportValidity();
+      return false;
+    }
+
+    return true;
+  }
+
+  if (recipientEmail && recipientEmailConfirm) {
+    recipientEmail.addEventListener('input', checkRecipientEmails);
+    recipientEmailConfirm.addEventListener('input', checkRecipientEmails);
+  }
+
+  if (giftForm) {
+    giftForm.addEventListener('submit', function (e) {
+      if (!checkRecipientEmails()) {
+        e.preventDefault();
+      }
+    });
+  }
+
   refreshAmount();
 })();
 </script>
